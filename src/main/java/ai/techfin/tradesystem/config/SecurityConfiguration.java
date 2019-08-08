@@ -34,9 +34,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final RememberMeServices rememberMeServices;
 
     private final CorsFilter corsFilter;
+
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(JHipsterProperties jHipsterProperties, RememberMeServices rememberMeServices, CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
+    public SecurityConfiguration(JHipsterProperties jHipsterProperties, RememberMeServices rememberMeServices,
+                                 CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
         this.jHipsterProperties = jHipsterProperties;
         this.rememberMeServices = rememberMeServices;
         this.corsFilter = corsFilter;
@@ -73,9 +75,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        final String loginUrl = "/api/authentication";
         // @formatter:off
         http
             .csrf()
+            .ignoringAntMatchers(loginUrl)
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
             .addFilterBefore(corsFilter, CsrfFilter.class)
@@ -89,7 +93,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
         .and()
             .formLogin()
-            .loginProcessingUrl("/api/authentication")
+            .loginProcessingUrl(loginUrl)
             .successHandler(ajaxAuthenticationSuccessHandler())
             .failureHandler(ajaxAuthenticationFailureHandler())
             .permitAll()
@@ -124,4 +128,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // @formatter:on
     }
+
 }
