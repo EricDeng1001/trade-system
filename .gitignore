@@ -2,41 +2,6 @@
 # Project Specific
 ######################
 /target/classes/static/**
-/src/test/javascript/coverage/
-
-######################
-# Node
-######################
-/node/
-node_tmp/
-node_modules/
-npm-debug.log.*
-/.awcache/*
-/.cache-loader/*
-
-######################
-# SASS
-######################
-.sass-cache/
-
-######################
-# Eclipse
-######################
-*.pydevproject
-.project
-.metadata
-tmp/
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-.factorypath
-/src/main/resources/rebel.xml
 
 # External tool builders
 .externalToolBuilders/**
