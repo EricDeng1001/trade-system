@@ -45,7 +45,7 @@ public class ElasticsearchConfiguration {
             new DefaultJestResultsMapper(simpleElasticsearchMappingContext, mapper));
     }
 
-    public class CustomEntityMapper implements EntityMapper {
+    public static class CustomEntityMapper implements EntityMapper {
 
         private ObjectMapper objectMapper;
 

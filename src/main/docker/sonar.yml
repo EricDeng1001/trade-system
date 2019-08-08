@@ -3,5 +3,5 @@ services:
   tradesystem-sonar:
     image: sonarqube:7.9.1-community
     ports:
-      - 9001:9000
-      - 9092:9092
+      - 59001:9000
+      - 59092:9092

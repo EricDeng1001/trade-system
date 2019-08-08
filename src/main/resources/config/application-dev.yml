@@ -27,8 +27,6 @@ management:
 spring:
   profiles:
     active: dev
-    include:
-      - swagger
       # Uncomment to activate TLS for the dev profile
       #- tls
   devtools:
@@ -39,22 +37,8 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group_id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/tradeSystem?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password:
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -64,8 +48,6 @@ spring:
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    database: MYSQL
     show-sql: true
     properties:
       hibernate.id.new_generator_mappings: true
@@ -92,7 +74,7 @@ spring:
     cache: false
 
 server:
-  port: 8080
+  port: 58080
 
 # ===================================================================
 # JHipster specific properties

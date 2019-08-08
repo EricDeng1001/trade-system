@@ -36,7 +36,7 @@ public class HibernateTimeZoneIT {
     private DateTimeFormatter dateFormatter;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         dateTimeWrapper = new DateTimeWrapper();
         dateTimeWrapper.setInstant(Instant.parse("2014-11-12T05:50:00.0Z"));
         dateTimeWrapper.setLocalDateTime(LocalDateTime.parse("2014-11-12T07:50:00.0"));

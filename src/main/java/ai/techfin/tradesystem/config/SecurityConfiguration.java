@@ -45,18 +45,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.problemSupport = problemSupport;
     }
 
-    @Bean
-    public AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
+    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
         return new AjaxAuthenticationSuccessHandler();
     }
 
-    @Bean
-    public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
+    private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
         return new AjaxAuthenticationFailureHandler();
     }
 
-    @Bean
-    public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
+    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
         return new AjaxLogoutSuccessHandler();
     }
 
