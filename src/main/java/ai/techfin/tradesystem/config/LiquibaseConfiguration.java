@@ -46,7 +46,7 @@ public class LiquibaseConfiguration {
             liquibase.setShouldRun(false);
         } else {
             liquibase.setShouldRun(liquibaseProperties.isEnabled());
-            log.debug("Configuring Liquibase");
+            log.debug("Configuring database by Liquibase");
         }
         return liquibase;
     }

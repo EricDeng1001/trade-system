@@ -48,7 +48,7 @@ public class AuditEventConverter {
      * @param data the data to convert.
      * @return a map of {@link String}, {@link Object}.
      */
-    public Map<String, Object> convertDataToObjects(Map<String, String> data) {
+    private Map<String, Object> convertDataToObjects(Map<String, String> data) {
         Map<String, Object> results = new HashMap<>();
 
         if (data != null) {
