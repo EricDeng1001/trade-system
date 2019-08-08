@@ -1,0 +1,15 @@
+version: '3'
+volumes:
+  tradesystem-elasticsearch-data:
+    driver: local
+services:
+  tradesystem-elasticsearch:
+    image: elasticsearch:7.3.0
+    volumes:
+      - tradesystem-elasticsearch-data:/usr/share/elasticsearch/data/
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      ES_JAVA_OPTS: -Xms1024m -Xmx1024m
+      discovery.type: single-node
