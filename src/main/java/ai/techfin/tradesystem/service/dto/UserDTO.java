@@ -92,6 +92,10 @@ public class UserDTO {
     }
 
     public String getFirstName() {
+        // TODO: remove this when the field is required
+        if (firstName == null) {
+            return login;
+        }
         return firstName;
     }
 
@@ -100,6 +104,10 @@ public class UserDTO {
     }
 
     public String getLastName() {
+        // TODO: remove this when the field is required
+        if (lastName == null) {
+            return login;
+        }
         return lastName;
     }
 
@@ -108,6 +116,10 @@ public class UserDTO {
     }
 
     public String getEmail() {
+        // TODO: remove this when the field is required
+        if (email == null) {
+            return login + "@" + "techfin.ai";
+        }
         return email;
     }
 
