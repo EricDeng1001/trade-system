@@ -85,7 +85,7 @@
     <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
     <!-- jhipster-needle-maven-property -->
 
-    <spring.profiles.test/>
+    <spring.profiles.cors/>
   </properties>
 
   <dependencyManagement>
@@ -844,7 +844,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <spring.profiles.active>dev${spring.profiles.test}</spring.profiles.active>
+        <spring.profiles.active>dev${spring.profiles.cors}</spring.profiles.active>
       </properties>
       <dependencies>
         <dependency>
@@ -861,7 +861,7 @@
     <profile>
       <id>prod</id>
       <properties>
-        <spring.profiles.active>prod${spring.profiles.test}</spring.profiles.active>
+        <spring.profiles.active>prod${spring.profiles.cors}</spring.profiles.active>
       </properties>
       <dependencies>
         <dependency>
@@ -922,9 +922,9 @@
       </dependencies>
     </profile>
     <profile>
-      <id>test</id>
+      <id>cors</id>
       <properties>
-        <spring.profiles.test>,test</spring.profiles.test>
+        <spring.profiles.cors>,cors</spring.profiles.cors>
       </properties>
     </profile>
     <!-- jhipster-needle-maven-add-profile -->

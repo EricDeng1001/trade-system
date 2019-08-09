@@ -17,6 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -38,7 +39,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         if (env.getActiveProfiles().length != 0) {
-            log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
+            log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
         }
         log.info("Web application fully configured");
     }
