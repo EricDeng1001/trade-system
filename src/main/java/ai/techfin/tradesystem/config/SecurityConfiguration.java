@@ -2,6 +2,7 @@ package ai.techfin.tradesystem.config;
 
 import ai.techfin.tradesystem.security.*;
 
+import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.security.*;
 
@@ -75,10 +76,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         final String loginUrl = "/api/authentication";
         // @formatter:off
         http
+            .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
             .csrf()
             .ignoringAntMatchers(loginUrl)
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .and()
+         .and()
             .addFilterBefore(corsFilter, CsrfFilter.class)
             .exceptionHandling()
             .authenticationEntryPoint(problemSupport)
