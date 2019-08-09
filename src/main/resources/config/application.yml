@@ -56,6 +56,7 @@ management:
         auto-time-requests: true
 
 spring:
+
   autoconfigure:
     exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
   application:
@@ -66,6 +67,7 @@ spring:
     # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     include:
       - swagger
+    active: @spring.profiles.active@
 
   kafka:
     consumer:

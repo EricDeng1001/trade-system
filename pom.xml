@@ -723,10 +723,6 @@
               </goals>
               <configuration>
                 <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                <useDefaultDelimiters>false</useDefaultDelimiters>
-                <delimiters>
-                  <delimiter>#</delimiter>
-                </delimiters>
                 <resources>
                   <resource>
                     <directory>src/main/resources/</directory>
@@ -840,6 +836,9 @@
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
+      <properties>
+        <spring.profiles.active>prod</spring.profiles.active>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>org.springframework.boot</groupId>
@@ -854,6 +853,9 @@
     </profile>
     <profile>
       <id>prod</id>
+      <properties>
+        <spring.profiles.active>prod</spring.profiles.active>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>org.springframework.boot</groupId>
