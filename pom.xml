@@ -84,6 +84,8 @@
     <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
     <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
     <!-- jhipster-needle-maven-property -->
+
+    <spring.profiles.test/>
   </properties>
 
   <dependencyManagement>
@@ -344,6 +346,11 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-messaging</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.allanditzel</groupId>
+      <artifactId>spring-security-csrf-token-filter</artifactId>
+      <version>1.1</version>
     </dependency>
     <!-- jhipster-needle-maven-add-dependency -->
   </dependencies>
@@ -837,7 +844,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <spring.profiles.active>prod</spring.profiles.active>
+        <spring.profiles.active>dev${spring.profiles.test}</spring.profiles.active>
       </properties>
       <dependencies>
         <dependency>
@@ -854,7 +861,7 @@
     <profile>
       <id>prod</id>
       <properties>
-        <spring.profiles.active>prod</spring.profiles.active>
+        <spring.profiles.active>prod${spring.profiles.test}</spring.profiles.active>
       </properties>
       <dependencies>
         <dependency>
@@ -917,7 +924,7 @@
     <profile>
       <id>test</id>
       <properties>
-        <spring.profiles.active>test</spring.profiles.active>
+        <spring.profiles.test>,test</spring.profiles.test>
       </properties>
     </profile>
     <!-- jhipster-needle-maven-add-profile -->
