@@ -4,7 +4,7 @@ volumes:
     driver: local
 services:
   tradesystem-elasticsearch:
-    image: elasticsearch:7.3.0
+    image: elasticsearch:6.4.3
     volumes:
       - tradesystem-elasticsearch-data:/usr/share/elasticsearch/data/
     ports:
