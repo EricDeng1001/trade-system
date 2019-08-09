@@ -11,4 +11,24 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+    private String author;
+
+    private String authorAs;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getAuthorAs() {
+        return authorAs;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setAuthorAs(String authorAs) {
+        this.authorAs = authorAs;
+    }
+
 }
