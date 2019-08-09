@@ -1,6 +1,7 @@
 version: '3'
 services:
   tradesystem-zookeeper:
+    restart: always
     image: confluentinc/cp-zookeeper:5.3.0
     environment:
       ZOOKEEPER_CLIENT_PORT: 52181
@@ -9,6 +10,7 @@ services:
     ports:
       - 52181:52181
   tradesystem-kafka:
+    restart: always
     image: confluentinc/cp-kafka:5.3.0
     environment:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:59092
@@ -17,3 +19,4 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     ports:
       - 59092:59092
+

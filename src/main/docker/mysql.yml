@@ -4,6 +4,7 @@ volumes:
     driver: local
 services:
   tradesystem-mysql:
+    restart: always
     image: mysql:8.0.16
     volumes:
       - tradesystem-mysql-data:/var/lib/mysql/

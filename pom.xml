@@ -914,6 +914,12 @@
         </dependency>
       </dependencies>
     </profile>
+    <profile>
+      <id>test</id>
+      <properties>
+        <spring.profiles.active>test</spring.profiles.active>
+      </properties>
+    </profile>
     <!-- jhipster-needle-maven-add-profile -->
   </profiles>
 </project>
