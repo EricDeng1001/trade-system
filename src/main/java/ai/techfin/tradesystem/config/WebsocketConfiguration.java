@@ -18,6 +18,8 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import io.github.jhipster.config.JHipsterProperties;
 
+import javax.validation.constraints.NotNull;
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer {

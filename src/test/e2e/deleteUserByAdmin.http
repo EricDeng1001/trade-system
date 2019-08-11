@@ -7,7 +7,7 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 DELETE http://localhost:8080/api/users/test
 Accept: application/json
-X-XSRF-TOKEN: 09b4dd10-1b92-422f-b7de-ffb9c0d5a38c
+X-XSRF-TOKEN: a1b8dfc8-e88d-48db-a415-806f01583eaf
 
 ###
 

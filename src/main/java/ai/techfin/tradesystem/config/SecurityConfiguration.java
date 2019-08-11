@@ -1,13 +1,11 @@
 package ai.techfin.tradesystem.config;
 
-import ai.techfin.tradesystem.security.*;
 
+import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.security.*;
 
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

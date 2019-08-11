@@ -1,9 +1,8 @@
 package ai.techfin.tradesystem;
 
 import ai.techfin.tradesystem.config.ApplicationProperties;
-import ai.techfin.tradesystem.config.DefaultProfileUtil;
 
-import io.github.jhipster.config.JHipsterConstants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 
@@ -21,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
-@EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
+@EnableConfigurationProperties({ApplicationProperties.class})
 public class TradeSystemApp implements InitializingBean {
 
     private static final Logger log = LoggerFactory.getLogger(TradeSystemApp.class);
@@ -40,11 +38,13 @@ public class TradeSystemApp implements InitializingBean {
      * You can find more information on how profiles work with JHipster on <a href="https://www.jhipster.tech/profiles/">https://www.jhipster.tech/profiles/</a>.
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
-            log.error("You have mis-configured your application! It should not run " +
-                "with both the 'dev' and 'prod' profiles at the same time.");
+        if (activeProfiles.contains(ApplicationConstants.Profile.DEVELOPMENT) && activeProfiles.contains(ApplicationConstants.Profile.PRODUCTION)) {
+            log.error(
+                "Application should not run with both the 'dev' and 'prod' profiles at the same time."
+            );
+            throw new Error("Application should not run with both the 'dev' and 'prod' profiles at the same time.");
         }
     }
 
@@ -55,7 +55,6 @@ public class TradeSystemApp implements InitializingBean {
      */
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(TradeSystemApp.class);
-        DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);
     }

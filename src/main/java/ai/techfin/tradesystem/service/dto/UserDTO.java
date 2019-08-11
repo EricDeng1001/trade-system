@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.service.dto;
 
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 
 import ai.techfin.tradesystem.domain.Authority;
 import ai.techfin.tradesystem.domain.User;
@@ -21,7 +21,7 @@ public class UserDTO {
     private Long id;
 
     @NotBlank
-    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Pattern(regexp = ApplicationConstants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     private String login;
 

@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.repository;
 
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.config.audit.AuditEventConverter;
 import ai.techfin.tradesystem.domain.PersistentAuditEvent;
 
@@ -52,7 +52,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void add(AuditEvent event) {
         if (!AUTHORIZATION_FAILURE.equals(event.getType()) &&
-            !Constants.ANONYMOUS_USER.equals(event.getPrincipal())) {
+            !ApplicationConstants.ANONYMOUS_USER.equals(event.getPrincipal())) {
 
             PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
             persistentAuditEvent.setPrincipal(event.getPrincipal());

@@ -35,10 +35,11 @@ public class ElasticsearchConfiguration {
 
     @Bean
     @Primary
-    public ElasticsearchOperations elasticsearchTemplate(final JestClient jestClient,
-                                                         final ElasticsearchConverter elasticsearchConverter,
-                                                         final SimpleElasticsearchMappingContext simpleElasticsearchMappingContext,
-                                                         EntityMapper mapper) {
+    public ElasticsearchOperations elasticsearchTemplate(
+        final JestClient jestClient,
+        final ElasticsearchConverter elasticsearchConverter,
+        final SimpleElasticsearchMappingContext simpleElasticsearchMappingContext,
+        EntityMapper mapper) {
         return new JestElasticsearchTemplate(
             jestClient,
             elasticsearchConverter,
@@ -63,10 +64,12 @@ public class ElasticsearchConfiguration {
             return objectMapper.writeValueAsString(object);
         }
 
+
         @Override
         public <T> T mapToObject(String source, Class<T> clazz) throws IOException {
             return objectMapper.readValue(source, clazz);
         }
+
     }
 
 }

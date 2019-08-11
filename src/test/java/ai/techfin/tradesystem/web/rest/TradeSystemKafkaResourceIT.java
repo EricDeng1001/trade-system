@@ -10,13 +10,12 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class TradeSystemKafkaResourceIT {
+class TradeSystemKafkaResourceIT {
 
     @Autowired
     private TradeSystemKafkaProducer kafkaProducer;
@@ -24,7 +23,7 @@ public class TradeSystemKafkaResourceIT {
     private MockMvc restMockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         TradeSystemKafkaResource kafkaResource = new TradeSystemKafkaResource(kafkaProducer);
 
         this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource)
@@ -32,7 +31,7 @@ public class TradeSystemKafkaResourceIT {
     }
 
     @Test
-    public void sendMessageToKafkaTopic() throws Exception {
+    void sendMessageToKafkaTopic() throws Exception {
         restMockMvc.perform(post("/api/trade-system-kafka/publish?message=yolo"))
             .andExpect(status().isOk());
     }

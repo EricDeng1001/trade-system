@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.domain;
 
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +37,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotNull
-    @Pattern(regexp = Constants.LOGIN_REGEX)
+    @Pattern(regexp = ApplicationConstants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
     @Column(length = 50, unique = true, nullable = false)
     private String login;

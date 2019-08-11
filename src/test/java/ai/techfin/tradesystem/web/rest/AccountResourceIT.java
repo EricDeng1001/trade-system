@@ -1,7 +1,7 @@
 package ai.techfin.tradesystem.web.rest;
 
 import ai.techfin.tradesystem.TradeSystemApp;
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.Authority;
 import ai.techfin.tradesystem.domain.PersistentToken;
 import ai.techfin.tradesystem.domain.User;
@@ -170,7 +170,7 @@ public class AccountResourceIT {
         validUser.setLastName("Test");
         validUser.setEmail("test-register-valid@example.com");
         validUser.setImageUrl("http://placehold.it/50x50");
-        validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        validUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
@@ -194,7 +194,7 @@ public class AccountResourceIT {
         invalidUser.setEmail("funky@example.com");
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        invalidUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         restUserMockMvc.perform(
@@ -218,7 +218,7 @@ public class AccountResourceIT {
         invalidUser.setEmail("invalid");// <-- invalid
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        invalidUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         restUserMockMvc.perform(
@@ -242,7 +242,7 @@ public class AccountResourceIT {
         invalidUser.setEmail("bob@example.com");
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        invalidUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         restUserMockMvc.perform(
@@ -266,7 +266,7 @@ public class AccountResourceIT {
         invalidUser.setEmail("bob@example.com");
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
-        invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        invalidUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         restUserMockMvc.perform(
@@ -290,7 +290,7 @@ public class AccountResourceIT {
         firstUser.setLastName("Something");
         firstUser.setEmail("alice@example.com");
         firstUser.setImageUrl("http://placehold.it/50x50");
-        firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        firstUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         // Duplicate login, different email
@@ -346,7 +346,7 @@ public class AccountResourceIT {
         firstUser.setLastName("Test");
         firstUser.setEmail("test-register-duplicate-email@example.com");
         firstUser.setImageUrl("http://placehold.it/50x50");
-        firstUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        firstUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.TRADER));
 
         // Register first user
@@ -428,7 +428,7 @@ public class AccountResourceIT {
         validUser.setEmail("badguy@example.com");
         validUser.setActivated(true);
         validUser.setImageUrl("http://placehold.it/50x50");
-        validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        validUser.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restMvc.perform(
@@ -489,7 +489,7 @@ public class AccountResourceIT {
         userDTO.setEmail("save-account@example.com");
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
-        userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restMvc.perform(
@@ -528,7 +528,7 @@ public class AccountResourceIT {
         userDTO.setEmail("invalid email");
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
-        userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restMvc.perform(
@@ -567,7 +567,7 @@ public class AccountResourceIT {
         userDTO.setEmail("save-existing-email2@example.com");
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
-        userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restMvc.perform(
@@ -599,7 +599,7 @@ public class AccountResourceIT {
         userDTO.setEmail("save-existing-email-and-login@example.com");
         userDTO.setActivated(false);
         userDTO.setImageUrl("http://placehold.it/50x50");
-        userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
+        userDTO.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
         restMvc.perform(

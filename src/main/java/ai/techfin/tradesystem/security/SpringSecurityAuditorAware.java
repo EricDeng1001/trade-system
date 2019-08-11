@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.security;
 
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 
 import java.util.Optional;
 
@@ -15,6 +15,6 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(Constants.SYSTEM_ACCOUNT));
+        return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(ApplicationConstants.SYSTEM_ACCOUNT));
     }
 }

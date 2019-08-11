@@ -1,14 +1,4 @@
 # ===================================================================
-# Spring Boot configuration.
-#
-# This configuration will be overridden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
-#
-# More information on profiles: https://www.jhipster.tech/profiles/
-# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-# ===================================================================
 # Standard Spring Boot properties.
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
@@ -19,7 +9,16 @@ management:
     web:
       base-path: /management
       exposure:
-        include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
+        include:
+        ? 'configprops'
+        ? 'env'
+        ? 'health'
+        ? 'info'
+        ? 'jhimetrics'
+        ? 'logfile'
+        ? 'loggers'
+        ? 'prometheus'
+        ? 'threaddump'
   endpoint:
     health:
       show-details: when_authorized
@@ -54,25 +53,24 @@ management:
     web:
       server:
         auto-time-requests: true
-
 spring:
-
-  autoconfigure:
-    exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
   application:
     name: tradeSystem
   profiles:
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: @spring.profiles.active@
     include:
       - swagger
-    active: @spring.profiles.active@
-
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+  liquibase:
+    change-log: classpath:config/liquibase/master.xml
   kafka:
     consumer:
       bootstrap-servers: localhost:59092
-      group-id: group_id
+      group-id: trade-system
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -82,16 +80,23 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:53306/tradeSystem?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: >-
+      jdbc:mysql://localhost:53306/tradeSystem
+      ?useUnicode=true
+      &characterEncoding=utf8
+      &useSSL=false
+      &useLegacyDatetimeCode=false
+      &serverTimezone=UTC
     username: root
     password:
-
-
-  jmx:
-    enabled: false
   data:
+    # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
+    jest:
+      uris:
+        - http://localhost:59200
     jpa:
       repositories:
+        enabled: true
         bootstrap-mode: deferred
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -124,6 +129,8 @@ spring:
         size: 2
   thymeleaf:
     mode: HTML
+  jmx:
+    enabled: false
 
 server:
   servlet:
@@ -137,22 +144,10 @@ info:
   display-ribbon-on-profiles: 'dev'
 
 # ===================================================================
-# JHipster specific properties
-#
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 jhipster:
-  clientApp:
-    name: 'tradeSystemApp'
-  # By default CORS is disabled. Uncomment to enable.
-  # cors:
-  #     allowed-origins: "*"
-  #     allowed-methods: "*"
-  #     allowed-headers: "*"
-  #     exposed-headers: "Link,X-Total-Count"
-  #     allow-credentials: true
-  #     max-age: 1800
   mail:
     from: tradeSystem@localhost
   swagger:

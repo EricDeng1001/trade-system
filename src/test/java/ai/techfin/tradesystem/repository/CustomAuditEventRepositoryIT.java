@@ -1,7 +1,7 @@
 package ai.techfin.tradesystem.repository;
 
 import ai.techfin.tradesystem.TradeSystemApp;
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.config.audit.AuditEventConverter;
 import ai.techfin.tradesystem.domain.PersistentAuditEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -146,7 +146,7 @@ public class CustomAuditEventRepositoryIT {
     public void addAuditEventWithAnonymousUser() {
         Map<String, Object> data = new HashMap<>();
         data.put("test-key", "test-value");
-        AuditEvent event = new AuditEvent(Constants.ANONYMOUS_USER, "test-type", data);
+        AuditEvent event = new AuditEvent(ApplicationConstants.ANONYMOUS_USER, "test-type", data);
         customAuditEventRepository.add(event);
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(0);

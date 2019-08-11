@@ -1,6 +1,7 @@
 package ai.techfin.tradesystem.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * Properties specific to Trade System.

@@ -1,7 +1,7 @@
 package ai.techfin.tradesystem.service;
 
 import ai.techfin.tradesystem.TradeSystemApp;
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.PersistentToken;
 import ai.techfin.tradesystem.domain.User;
 import ai.techfin.tradesystem.repository.PersistentTokenRepository;
@@ -238,14 +238,14 @@ public class UserServiceIT {
     @Test
     @Transactional
     public void assertThatAnonymousUserIsNotGet() {
-        user.setLogin(Constants.ANONYMOUS_USER);
-        if (!userRepository.findOneByLogin(Constants.ANONYMOUS_USER).isPresent()) {
+        user.setLogin(ApplicationConstants.ANONYMOUS_USER);
+        if (!userRepository.findOneByLogin(ApplicationConstants.ANONYMOUS_USER).isPresent()) {
             userRepository.saveAndFlush(user);
         }
         final PageRequest pageable = PageRequest.of(0, (int) userRepository.count());
         final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
         assertThat(allManagedUsers.getContent().stream()
-            .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
+            .noneMatch(user -> ApplicationConstants.ANONYMOUS_USER.equals(user.getLogin())))
             .isTrue();
     }
 

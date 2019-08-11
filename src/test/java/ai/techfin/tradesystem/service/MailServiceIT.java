@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.service;
 
-import ai.techfin.tradesystem.config.Constants;
+import ai.techfin.tradesystem.config.ApplicationConstants;
 
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.User;
@@ -30,8 +30,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -157,7 +155,7 @@ public class MailServiceIT {
     @Test
     public void testSendActivationEmail() throws Exception {
         User user = new User();
-        user.setLangKey(Constants.DEFAULT_LANGUAGE);
+        user.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
         mailService.sendActivationEmail(user);
@@ -172,7 +170,7 @@ public class MailServiceIT {
     @Test
     public void testCreationEmail() throws Exception {
         User user = new User();
-        user.setLangKey(Constants.DEFAULT_LANGUAGE);
+        user.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
         mailService.sendCreationEmail(user);
@@ -187,7 +185,7 @@ public class MailServiceIT {
     @Test
     public void testSendPasswordResetMail() throws Exception {
         User user = new User();
-        user.setLangKey(Constants.DEFAULT_LANGUAGE);
+        user.setLangKey(ApplicationConstants.DEFAULT_LANGUAGE);
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
         mailService.sendPasswordResetMail(user);
