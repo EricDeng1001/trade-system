@@ -1,8 +1,13 @@
-jhipster:
+web:
   cors:
     allowed-origins: '*'
     allowed-methods: '*'
     allowed-headers: '*'
-    exposed-headers: 'Link,X-Total-Count,X-CSRF-TOKEN,X-CSRF-HEADER,X-CSRF-PARAM'
+    exposed-headers:
+      - Link
+      - X-Total-Count
+      - X-CSRF-TOKEN
+      - X-CSRF-HEADER
+      - X-CSRF-PARAM
     allow-credentials: true
     max-age: 1800

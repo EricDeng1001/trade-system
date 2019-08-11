@@ -1,7 +1,8 @@
 package ai.techfin.tradesystem.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
 
 /**
  * Properties specific to Trade System.
@@ -14,22 +15,12 @@ public class ApplicationProperties {
 
     private String author;
 
-    private String authorAs;
-
     public String getAuthor() {
         return author;
     }
 
-    public String getAuthorAs() {
-        return authorAs;
-    }
-
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public void setAuthorAs(String authorAs) {
-        this.authorAs = authorAs;
     }
 
 }

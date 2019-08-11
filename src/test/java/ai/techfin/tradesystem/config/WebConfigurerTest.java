@@ -8,7 +8,6 @@ import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFa
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -48,7 +47,7 @@ public class WebConfigurerTest {
         env = new MockEnvironment();
         props = new JHipsterProperties();
 
-        webConfigurer = new WebConfigurer(env, props);
+        webConfigurer = new WebConfigurer(env);
     }
 
     @Test
@@ -84,7 +83,7 @@ public class WebConfigurerTest {
         props.getCors().setAllowCredentials(true);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
+            .addFilters(webConfigurer.corsFilter(webConfigurer.corsConfiguration()))
             .build();
 
         mockMvc.perform(
@@ -114,7 +113,7 @@ public class WebConfigurerTest {
         props.getCors().setAllowCredentials(true);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
+            .addFilters(webConfigurer.corsFilter(webConfigurer.corsConfiguration()))
             .build();
 
         mockMvc.perform(
@@ -129,7 +128,7 @@ public class WebConfigurerTest {
         props.getCors().setAllowedOrigins(null);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
+            .addFilters(webConfigurer.corsFilter(webConfigurer.corsConfiguration()))
             .build();
 
         mockMvc.perform(
@@ -144,7 +143,7 @@ public class WebConfigurerTest {
         props.getCors().setAllowedOrigins(new ArrayList<>());
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
+            .addFilters(webConfigurer.corsFilter(webConfigurer.corsConfiguration()))
             .build();
 
         mockMvc.perform(

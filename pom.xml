@@ -17,7 +17,7 @@
   <properties>
     <start-class>ai.techfin.tradesystem.TradeSystemApp</start-class>
     <!-- Build properties -->
-    <maven.version>3.6.1</maven.version>
+    <maven.version>3.6.0</maven.version>
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -242,10 +242,6 @@
       <artifactId>liquibase-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.logstash.logback</groupId>
-      <artifactId>logstash-logback-encoder</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
     </dependency>
@@ -278,20 +274,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
     </dependency>
-    <!-- Spring Data Jest dependencies for Elasticsearch -->
     <dependency>
       <groupId>com.github.vanroy</groupId>
       <artifactId>spring-boot-starter-data-jest</artifactId>
-      <version>${spring-boot-starter-data-jest.version}</version>
     </dependency>
-    <!-- log4j2-mock needed to create embedded elasticsearch instance with SLF4J -->
-    <dependency>
-      <groupId>de.dentrassi.elasticsearch</groupId>
-      <artifactId>log4j2-mock</artifactId>
-      <version>${log4j2-mock.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <!-- end of Spring Data Jest dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
@@ -353,7 +339,6 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Kafka support -->
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
@@ -393,33 +378,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-configuration-processor</artifactId>
-              <version>${spring-boot.version}</version>
-            </path>
-            <path>
-              <groupId>org.mapstruct</groupId>
-              <artifactId>mapstruct-processor</artifactId>
-              <version>${mapstruct.version}</version>
-            </path>
-            <!-- For JPA static metamodel generation -->
-            <path>
-              <groupId>org.hibernate</groupId>
-              <artifactId>hibernate-jpamodelgen</artifactId>
-              <version>${hibernate.version}</version>
-            </path>
-            <path>
-              <groupId>org.glassfish.jaxb</groupId>
-              <artifactId>jaxb-runtime</artifactId>
-              <version>${jaxb-runtime.version}</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -487,6 +445,35 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <useIncrementalCompilation>true</useIncrementalCompilation>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring-boot.version}</version>
+              </path>
+              <path>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+              </path>
+              <!-- For JPA static metamodel generation -->
+              <path>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <version>${hibernate.version}</version>
+              </path>
+              <path>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb-runtime.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+
         </plugin>
         <plugin>
           <groupId>pl.project13.maven</groupId>
@@ -762,6 +749,11 @@
   <dependencyManagement>
     <!-- Other dependencies are manged by spring-boot-dependencies -->
     <dependencies>
+      <dependency>
+        <groupId>com.github.vanroy</groupId>
+        <artifactId>spring-boot-starter-data-jest</artifactId>
+        <version>${spring-boot-starter-data-jest.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.github.jhipster</groupId>
         <artifactId>jhipster-framework</artifactId>
