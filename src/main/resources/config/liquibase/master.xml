@@ -13,5 +13,5 @@
     <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
     <property name="uuidType" value="varchar(36)" dbms="h2, mysql, mariadb"/>
 
-    <includeAll path="changelog" relativeToChangelogFile="true"/>
+  <includeAll path="config/liquibase/changelog"/>
 </databaseChangeLog>

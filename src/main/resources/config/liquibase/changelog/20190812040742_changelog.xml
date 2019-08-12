@@ -1,5 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <changeSet author="antinus (generated)" id="1565582878710-3">
         <createTable tableName="product_account">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -21,6 +23,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+      <loadData tableName="product_account" file="config/liquibase/data/product_account.csv"/>
     </changeSet>
     <changeSet author="antinus (generated)" id="1565582878710-4">
         <createTable tableName="user_product">
@@ -31,6 +34,7 @@
                 <constraints primaryKey="true"/>
             </column>
         </createTable>
+      <loadData tableName="user_product" file="config/liquibase/data/user_product.csv"/>
     </changeSet>
     <changeSet author="antinus (generated)" id="1565582878710-5">
         <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
