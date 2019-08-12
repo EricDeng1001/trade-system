@@ -1,9 +1,6 @@
 package ai.techfin.tradesystem.security;
 
-import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.security.AjaxAuthenticationFailureHandler;
-import io.github.jhipster.security.AjaxAuthenticationSuccessHandler;
 import io.github.jhipster.security.AjaxLogoutSuccessHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
@@ -66,12 +64,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         final String loginUrl = "/api/authentication";
         // @formatter:off
         http
-            .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
+            .addFilterBefore(corsFilter, CsrfFilter.class)
+            .addFilterAfter(new RemoveCsrfCookieHeaderFilter(), CsrfFilter.class)
             .csrf()
             .ignoringAntMatchers(loginUrl)
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .csrfTokenRepository(new CookieCsrfTokenRepository())
          .and()
-            .addFilterBefore(corsFilter, CsrfFilter.class)
             .exceptionHandling()
             .authenticationEntryPoint(problemSupport)
             .accessDeniedHandler(problemSupport)
@@ -83,8 +81,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .formLogin()
             .loginProcessingUrl(loginUrl)
-            .successHandler(ajaxAuthenticationSuccessHandler())
-            .failureHandler(ajaxAuthenticationFailureHandler())
+            .successHandler(new CsrfHeaderBindAuthenticationSuccessHandler())
+            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
             .permitAll()
         .and()
             .logout()
@@ -117,14 +115,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // @formatter:on
         log.info("config security done.");
-    }
-
-    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
-        return new AjaxAuthenticationSuccessHandler();
-    }
-
-    private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-        return new AjaxAuthenticationFailureHandler();
     }
 
     private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
