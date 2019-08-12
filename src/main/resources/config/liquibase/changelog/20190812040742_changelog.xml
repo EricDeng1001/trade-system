@@ -2,55 +2,60 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <changeSet author="antinus (generated)" id="1565582878710-3">
-        <createTable tableName="product_account">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="product_accountPK"/>
-            </column>
-            <column name="created_at" type="datetime(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="initial_asset" type="DECIMAL(21, 2)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="product" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="provider" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="total_asset" type="DECIMAL(21, 2)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-      <loadData tableName="product_account" file="config/liquibase/data/product_account.csv"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-4">
-        <createTable tableName="user_product">
-            <column name="user_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="product_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-      <loadData tableName="user_product" file="config/liquibase/data/user_product.csv"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-5">
-        <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-6">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_product" constraintName="FKm5193on8k7q5ys2xyi3jnl7g8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ts_user" validate="true"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-7">
-        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="user_product" constraintName="FKs02b1df7mkxmb1ieseb6gp4kd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-1">
-        <dropUniqueConstraint constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
-        <addUniqueConstraint columnNames="email" constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565582878710-2">
-        <dropUniqueConstraint constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
-        <addUniqueConstraint columnNames="login" constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
-    </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-3">
+    <createTable tableName="product_account">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="product_accountPK"/>
+      </column>
+      <column name="created_at" type="datetime(6)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="initial_asset" type="DECIMAL(21, 2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="product" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="provider" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="total_asset" type="DECIMAL(21, 2)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <loadData tableName="product_account" file="config/liquibase/data/product_account.csv"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-4">
+    <createTable tableName="user_product">
+      <column name="user_id" type="BIGINT">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="product_id" type="BIGINT">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+    <loadData tableName="user_product" file="config/liquibase/data/user_product.csv"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-5">
+    <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL"
+                         tableName="product_account"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-6">
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_product"
+                             constraintName="FKm5193on8k7q5ys2xyi3jnl7g8" deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id" referencedTableName="ts_user" validate="true"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-7">
+    <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="user_product"
+                             constraintName="FKs02b1df7mkxmb1ieseb6gp4kd" deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-1">
+    <dropUniqueConstraint constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
+    <addUniqueConstraint columnNames="email" constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1565582878710-2">
+    <dropUniqueConstraint constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
+    <addUniqueConstraint columnNames="login" constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
+  </changeSet>
 </databaseChangeLog>

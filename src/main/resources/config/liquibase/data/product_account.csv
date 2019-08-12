@@ -1,2 +1,2 @@
-id,product    ,initial_asset,total_asset,created_at         ,provider
-1 ,Model Train,100000000    ,100000000  ,2019-08-10T23:23:43,xtp
+id,product,initial_asset,total_asset,created_at,provider
+1 ,Model Train,100000000,100000000,2019-08-10T23:23:43,xtp

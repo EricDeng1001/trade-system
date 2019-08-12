@@ -1,5 +1,5 @@
 id,login,password_hash,first_name,last_name,email,image_url,activated,lang_key,created_by,last_modified_by
-1,system,$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG,System,System,system@localhost,,true,zh-cn,system,system
+1,system,$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG,System,System,system@localhost,null,true,zh-cn,system,system
 2,admin,$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC,Administrator,Administrator,admin@localhost,,true,zh-cn,system,system
-3 ,trader,$2a$10$hw8ZqVffBaMmhKwZXJ8PguCaT4dE4bYmgd55cn0Fi3K4N5upKjCG6,Trader       ,Trader       ,user@localhost  ,         ,true     ,zh-cn   ,system    ,system
-4 ,model ,$2a$10$zCvNDtGnJAW3acCmjE/4Cu.ozswgkbSrIoO6.zJJAAbGjRvVyUL46,Model        ,Model        ,model@localhost ,         ,true     ,zh-cn   ,system    ,system
+3,trader,$2a$10$hw8ZqVffBaMmhKwZXJ8PguCaT4dE4bYmgd55cn0Fi3K4N5upKjCG6,Trader,Trader,user@localhost,null,true,zh-cn,system,system
+4,model,$2a$10$zCvNDtGnJAW3acCmjE/4Cu.ozswgkbSrIoO6.zJJAAbGjRvVyUL46,Model,Model,model@localhost,null,true,zh-cn,system,system
