@@ -7,14 +7,16 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 
-POST http://localhost:8080/api/users
+POST http://localhost:58080/api/users
 Content-Type: application/json
-X-XSRF-TOKEN: 09b4dd10-1b92-422f-b7de-ffb9c0d5a38c
+X-XSRF-TOKEN: 1ba5dc08-bee6-4371-91ea-9aee335f347f
 
 {
-  "login": "test",
-  "password": "test",
-  "authorities": ["ROLE_TRADER"]
+  "login": "model",
+  "password": "trader",
+  "authorities": [
+    "ROLE_MODEL"
+  ]
 }
 
 ###

@@ -5,7 +5,9 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-POST http://localhost:58080/api/trade-system-kafka/publish?message=hello
 
+GET http://localhost:58080/api/product-accounts
+Accept: application/json
+X-XSRF-TOKEN: f758a34f-2007-417b-ad88-3878836ccfb5
 
 ###
