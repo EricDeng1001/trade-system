@@ -9,7 +9,7 @@
     "baseName": "tradeSystem",
     "packageName": "ai.techfin.tradesystem",
     "packageFolder": "ai/techfin/tradesystem",
-    "serverPort": "8080",
+    "serverPort": "58080",
     "authenticationType": "session",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
@@ -26,7 +26,7 @@
     "testFrameworks": [
       "gatling"
     ],
-    "jhiPrefix": "jhi",
+    "jhiPrefix": "ts",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
     "otherModules": [],
