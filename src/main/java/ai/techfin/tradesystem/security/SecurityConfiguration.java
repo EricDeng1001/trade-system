@@ -1,11 +1,12 @@
-package ai.techfin.tradesystem.config;
+package ai.techfin.tradesystem.security;
 
-
-import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import com.allanditzel.springframework.security.web.csrf.CsrfTokenResponseHeaderBindingFilter;
 import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.security.*;
-
+import io.github.jhipster.security.AjaxAuthenticationFailureHandler;
+import io.github.jhipster.security.AjaxAuthenticationSuccessHandler;
+import io.github.jhipster.security.AjaxLogoutSuccessHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,8 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
+
     private final JHipsterProperties jHipsterProperties;
 
     private final RememberMeServices rememberMeServices;
@@ -42,18 +45,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.rememberMeServices = rememberMeServices;
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
-    }
-
-    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
-        return new AjaxAuthenticationSuccessHandler();
-    }
-
-    private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-        return new AjaxAuthenticationFailureHandler();
-    }
-
-    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
-        return new AjaxLogoutSuccessHandler();
     }
 
     @Bean
@@ -71,6 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        log.info("start to config security.");
         final String loginUrl = "/api/authentication";
         // @formatter:off
         http
@@ -124,6 +116,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         // @formatter:on
+        log.info("config security done.");
+    }
+
+    private AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
+        return new AjaxAuthenticationSuccessHandler();
+    }
+
+    private AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
+        return new AjaxAuthenticationFailureHandler();
+    }
+
+    private AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
+        return new AjaxLogoutSuccessHandler();
     }
 
 }

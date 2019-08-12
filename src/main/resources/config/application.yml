@@ -53,20 +53,27 @@ management:
     web:
       server:
         auto-time-requests: true
+
 spring:
   application:
     name: tradeSystem
+
   profiles:
     active: @spring.profiles.active@
     include:
       - swagger
+
   autoconfigure:
     exclude:
       - org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
       - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration
       - org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
+
   liquibase:
+    enabled: true
     change-log: classpath:config/liquibase/master.xml
+    drop-first: false
+
   kafka:
     consumer:
       bootstrap-servers: localhost:59092
@@ -78,6 +85,7 @@ spring:
       bootstrap-servers: localhost:59092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: >-
@@ -94,6 +102,7 @@ spring:
     jest:
       uris:
         - http://localhost:59200
+
     jpa:
       repositories:
         enabled: true
@@ -109,13 +118,17 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
   messages:
     basename: i18n/messages
+
   main:
     allow-bean-definition-overriding: true
+
   mvc:
     favicon:
       enabled: false
+
   task:
     execution:
       thread-name-prefix: trade-system-task-
@@ -127,8 +140,10 @@ spring:
       thread-name-prefix: trade-system-scheduling-
       pool:
         size: 2
+
   thymeleaf:
     mode: HTML
+
   jmx:
     enabled: false
 
@@ -166,8 +181,6 @@ jhipster:
 # Add your own application properties here, see the ApplicationProperties class
 # to have type-safe configuration, like in the JHipsterProperties above
 #
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 application:

@@ -45,8 +45,7 @@ public final class SecurityUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
             .map(authentication -> {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                    authorities.addAll(authentication.getAuthorities());
+                List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
                 return authorities.stream()
                     .noneMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(AuthoritiesConstants.ANONYMOUS));
             })
@@ -65,8 +64,7 @@ public final class SecurityUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
             .map(authentication -> {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                    authorities.addAll(authentication.getAuthorities());
+                List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
                 return authorities.stream()
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
             })
