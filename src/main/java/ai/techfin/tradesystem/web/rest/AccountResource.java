@@ -1,19 +1,20 @@
 package ai.techfin.tradesystem.web.rest;
 
-
 import ai.techfin.tradesystem.domain.PersistentToken;
-import ai.techfin.tradesystem.repository.PersistentTokenRepository;
 import ai.techfin.tradesystem.domain.User;
+import ai.techfin.tradesystem.repository.PersistentTokenRepository;
 import ai.techfin.tradesystem.repository.UserRepository;
 import ai.techfin.tradesystem.security.SecurityUtils;
 import ai.techfin.tradesystem.service.MailService;
 import ai.techfin.tradesystem.service.UserService;
 import ai.techfin.tradesystem.service.dto.PasswordChangeDTO;
 import ai.techfin.tradesystem.service.dto.UserDTO;
-import ai.techfin.tradesystem.web.rest.errors.*;
+import ai.techfin.tradesystem.web.rest.errors.EmailAlreadyUsedException;
+import ai.techfin.tradesystem.web.rest.errors.EmailNotFoundException;
+import ai.techfin.tradesystem.web.rest.errors.InvalidPasswordException;
+import ai.techfin.tradesystem.web.rest.errors.LoginAlreadyUsedException;
 import ai.techfin.tradesystem.web.rest.vm.KeyAndPasswordVM;
 import ai.techfin.tradesystem.web.rest.vm.ManagedUserVM;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -84,7 +86,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }
@@ -129,7 +131,7 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
@@ -179,17 +181,14 @@ public class AccountResource {
      *   cookie.
      *
      * @param series the series of an existing session.
-     * @throws UnsupportedEncodingException if the series couldn't be URL decoded.
      */
     @DeleteMapping("/account/sessions/{series}")
-    public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
-        String decodedSeries = URLDecoder.decode(series, "UTF-8");
+    public void invalidateSession(@PathVariable String series) {
+        String decodedSeries = URLDecoder.decode(series, StandardCharsets.UTF_8);
         SecurityUtils.getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(u ->
-                persistentTokenRepository.findByUser(u).stream()
-                    .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
-                    .findAny().ifPresent(t -> persistentTokenRepository.deleteById(decodedSeries)));
+            .flatMap(userRepository::findOneByLogin).flatMap(u -> persistentTokenRepository.findByUser(u).stream()
+            .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
+            .findAny()).ifPresent(t -> persistentTokenRepository.deleteById(decodedSeries));
     }
 
     /**

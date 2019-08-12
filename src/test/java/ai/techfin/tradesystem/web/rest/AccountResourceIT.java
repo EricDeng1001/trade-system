@@ -17,7 +17,6 @@ import ai.techfin.tradesystem.web.rest.errors.ExceptionTranslator;
 import ai.techfin.tradesystem.web.rest.vm.KeyAndPasswordVM;
 import ai.techfin.tradesystem.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -35,7 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -84,7 +86,7 @@ public class AccountResourceIT {
     private MockMvc restUserMockMvc;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
@@ -102,7 +104,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testNonAuthenticatedUser() throws Exception {
+    void testNonAuthenticatedUser() throws Exception {
         restUserMockMvc.perform(get("/api/authenticate")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -110,7 +112,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testAuthenticatedUser() throws Exception {
+    void testAuthenticatedUser() throws Exception {
         restUserMockMvc.perform(get("/api/authenticate")
             .with(request -> {
                 request.setRemoteUser("test");
@@ -122,7 +124,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testGetExistingAccount() throws Exception {
+    void testGetExistingAccount() throws Exception {
         Set<Authority> authorities = new HashSet<>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.ADMIN);
@@ -152,7 +154,7 @@ public class AccountResourceIT {
     }
 
     @Test
-    public void testGetUnknownAccount() throws Exception {
+    void testGetUnknownAccount() throws Exception {
         when(mockUserService.getUserWithAuthorities()).thenReturn(Optional.empty());
 
         restUserMockMvc.perform(get("/api/account")
@@ -162,7 +164,7 @@ public class AccountResourceIT {
 
     @Test
     @Transactional
-    public void testRegisterValid() throws Exception {
+    void testRegisterValid() throws Exception {
         ManagedUserVM validUser = new ManagedUserVM();
         validUser.setLogin("test-register-valid");
         validUser.setPassword("password");
@@ -185,7 +187,7 @@ public class AccountResourceIT {
 
     @Test
     @Transactional
-    public void testRegisterInvalidLogin() throws Exception {
+    void testRegisterInvalidLogin() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("funky-log!n");// <-- invalid
         invalidUser.setPassword("password");
