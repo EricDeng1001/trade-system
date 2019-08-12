@@ -29,7 +29,6 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     private final Environment env;
 
-
     @Autowired
     public WebConfigurer(Environment env) {
         this.env = env;

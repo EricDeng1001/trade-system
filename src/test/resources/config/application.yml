@@ -16,6 +16,7 @@
 spring:
   application:
     name: tradeSystem
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:h2:mem:tradeSystem;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MULTI_THREADED=FALSE
@@ -50,6 +51,9 @@ spring:
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
   liquibase:
+    enabled: true
+    change-log: classpath:config/liquibase/master.xml
+    drop-first: false
     contexts: test
   mail:
     host: localhost
@@ -92,10 +96,11 @@ jhipster:
     use-json-format: true # By default, logs are in Json format
     # To test logstash appender
     logstash:
-      enabled: true
+      enabled: false
       host: localhost
       port: 5000
       queue-size: 512
+
   mail:
     from: test@localhost
     base-url: http://127.0.0.1:8080

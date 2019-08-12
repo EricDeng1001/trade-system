@@ -8,5 +8,5 @@
 
 GET http://localhost:58080/api/users/authorities
 Accept: application/json
-X-XSRF-TOKEN: 09b4dd10-1b92-422f-b7de-ffb9c0d5a38c
+X-XSRF-TOKEN: 0172018d-d707-4cf6-bc9a-43d59b575f44
 ###

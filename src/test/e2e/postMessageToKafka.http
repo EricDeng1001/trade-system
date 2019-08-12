@@ -6,6 +6,6 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 POST http://localhost:58080/api/trade-system-kafka/publish?message=hello
-
+X-XSRF-TOKEN: 0172018d-d707-4cf6-bc9a-43d59b575f44
 
 ###

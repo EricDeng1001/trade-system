@@ -3,8 +3,10 @@ package ai.techfin.tradesystem.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +16,8 @@ import java.io.IOException;
 /**
  * when auth is success, let the user have a csrf token.
  */
-public final class CsrfHeaderBindAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+@Component
+public final class CsrfHeaderBindAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final Logger log = LoggerFactory.getLogger(CsrfHeaderBindAuthenticationSuccessHandler.class);
 
@@ -25,7 +28,6 @@ public final class CsrfHeaderBindAuthenticationSuccessHandler extends SimpleUrlA
         if (token != null) {
             response.setHeader("X-CSRF-TOKEN", token.getToken());
         }
-        super.onAuthenticationSuccess(request, response, authentication);
     }
 
 }

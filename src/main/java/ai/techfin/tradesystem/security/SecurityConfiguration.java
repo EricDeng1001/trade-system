@@ -4,6 +4,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.security.AjaxLogoutSuccessHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -16,8 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
@@ -26,6 +27,8 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    static final String LOGIN_URI = "/api/authentication";
 
     private final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
@@ -37,12 +40,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final SecurityProblemSupport problemSupport;
 
+    private final CsrfCookieFilterFilter csrfCookieFilterFilter;
+
+    private final CsrfTokenRepository csrfTokenRepository;;
+
+    @Autowired
     public SecurityConfiguration(JHipsterProperties jHipsterProperties, RememberMeServices rememberMeServices,
-                                 CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
+                                 CorsFilter corsFilter, SecurityProblemSupport problemSupport,
+                                 CsrfCookieFilterFilter csrfCookieFilterFilter,
+                                 CsrfTokenRepository csrfTokenRepository) {
         this.jHipsterProperties = jHipsterProperties;
         this.rememberMeServices = rememberMeServices;
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
+        this.csrfCookieFilterFilter = csrfCookieFilterFilter;
+        this.csrfTokenRepository = csrfTokenRepository;
     }
 
     @Bean
@@ -61,14 +73,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         log.info("start to config security.");
-        final String loginUrl = "/api/authentication";
         // @formatter:off
         http
             .addFilterBefore(corsFilter, CsrfFilter.class)
-            .addFilterAfter(new RemoveCsrfCookieHeaderFilter(), CsrfFilter.class)
+            .addFilterAfter(csrfCookieFilterFilter, CsrfFilter.class)
             .csrf()
-            .ignoringAntMatchers(loginUrl)
-            .csrfTokenRepository(new CookieCsrfTokenRepository())
+            .ignoringAntMatchers(LOGIN_URI)
+            .csrfTokenRepository(csrfTokenRepository)
          .and()
             .exceptionHandling()
             .authenticationEntryPoint(problemSupport)
@@ -80,7 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .key(jHipsterProperties.getSecurity().getRememberMe().getKey())
         .and()
             .formLogin()
-            .loginProcessingUrl(loginUrl)
+            .loginProcessingUrl(LOGIN_URI)
             .successHandler(new CsrfHeaderBindAuthenticationSuccessHandler())
             .failureHandler(new SimpleUrlAuthenticationFailureHandler())
             .permitAll()

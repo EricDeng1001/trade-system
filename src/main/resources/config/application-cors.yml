@@ -7,7 +7,5 @@ web:
       - Link
       - X-Total-Count
       - X-CSRF-TOKEN
-      - X-CSRF-HEADER
-      - X-CSRF-PARAM
     allow-credentials: true
     max-age: 1800

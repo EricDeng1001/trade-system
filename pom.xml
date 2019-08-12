@@ -23,9 +23,6 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
     <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-    <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx1024m</argLine>
-    <m2e.apt.activation>jdt_apt</m2e.apt.activation>
-    <run.addResources>false</run.addResources>
     <!-- Version management -->
     <spring-boot.version>${project.parent.version}</spring-boot.version>
     <javassist.version>3.24.0-GA</javassist.version>
