@@ -45,6 +45,7 @@ public class CacheConfiguration {
             createCache(cm, ai.techfin.tradesystem.domain.User.class.getName() + ".authorities");
             createCache(cm, ai.techfin.tradesystem.domain.PersistentToken.class.getName());
             createCache(cm, ai.techfin.tradesystem.domain.User.class.getName() + ".persistentTokens");
+            createCache(cm, ai.techfin.tradesystem.domain.ProductAccount.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
