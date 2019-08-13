@@ -683,7 +683,6 @@
             <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
             <excludes>
               <exclude>**/*IT*</exclude>
-              <exclude>**/*IntTest*</exclude>
             </excludes>
           </configuration>
         </plugin>
