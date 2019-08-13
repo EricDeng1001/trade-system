@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.rememberme.*;
 import org.springframework.stereotype.Service;
@@ -71,7 +72,7 @@ public class PersistentTokenRememberMeServices extends
     private final UserRepository userRepository;
 
     public PersistentTokenRememberMeServices(JHipsterProperties jHipsterProperties,
-            org.springframework.security.core.userdetails.UserDetailsService userDetailsService,
+            UserDetailsService userDetailsService,
             PersistentTokenRepository persistentTokenRepository, UserRepository userRepository) {
 
         super(jHipsterProperties.getSecurity().getRememberMe().getKey(), userDetailsService);
@@ -178,7 +179,7 @@ public class PersistentTokenRememberMeServices extends
         String presentedSeries = cookieTokens[0];
         String presentedToken = cookieTokens[1];
         Optional<PersistentToken> optionalToken = persistentTokenRepository.findById(presentedSeries);
-        if (!optionalToken.isPresent()) {
+        if (optionalToken.isEmpty()) {
             // No series match, so we can't authenticate using this cookie
             throw new RememberMeAuthenticationException("No persistent token found for series id: " + presentedSeries);
         }
