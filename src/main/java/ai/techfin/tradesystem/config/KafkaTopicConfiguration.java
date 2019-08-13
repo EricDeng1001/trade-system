@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KafkaTopicConfiguration {
 
-    public static final String XTP_PRICE_CHANGE_TOPIC = "xtpPriceChange";
+    public static final String XTP_PRICE_CHANGE_TOPIC = "xtpPriceChangeTopic";
 
     @Bean(XTP_PRICE_CHANGE_TOPIC)
     public NewTopic xtpPriceChange() {

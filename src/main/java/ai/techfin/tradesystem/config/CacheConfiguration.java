@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomi
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 
+import javax.cache.CacheManager;
+
 @Configuration
 @EnableCaching
 public class CacheConfiguration {
@@ -31,7 +33,7 @@ public class CacheConfiguration {
     }
 
     @Bean
-    public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(javax.cache.CacheManager cacheManager) {
+    public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(CacheManager cacheManager) {
         return hibernateProperties -> hibernateProperties.put(ConfigSettings.CACHE_MANAGER, cacheManager);
     }
 
@@ -46,11 +48,10 @@ public class CacheConfiguration {
             createCache(cm, ai.techfin.tradesystem.domain.PersistentToken.class.getName());
             createCache(cm, ai.techfin.tradesystem.domain.User.class.getName() + ".persistentTokens");
             createCache(cm, ai.techfin.tradesystem.domain.ProductAccount.class.getName());
-            // jhipster-needle-ehcache-add-entry
         };
     }
 
-    private void createCache(javax.cache.CacheManager cm, String cacheName) {
+    private void createCache(CacheManager cm, String cacheName) {
         javax.cache.Cache<Object, Object> cache = cm.getCache(cacheName);
         if (cache != null) {
             cm.destroyCache(cacheName);

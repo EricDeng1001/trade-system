@@ -20,5 +20,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableElasticsearchRepositories("ai.techfin.tradesystem.repository.search")
 public class DatabaseConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
+    private final Logger logger = LoggerFactory.getLogger(DatabaseConfiguration.class);
 }
