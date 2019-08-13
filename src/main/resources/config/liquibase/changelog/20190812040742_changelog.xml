@@ -43,7 +43,7 @@
   <changeSet author="antinus (generated)" id="1565582878710-6">
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_product"
                              constraintName="FKm5193on8k7q5ys2xyi3jnl7g8" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="ts_user" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="user" validate="true"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565582878710-7">
     <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="user_product"
@@ -51,11 +51,11 @@
                              referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565582878710-1">
-    <dropUniqueConstraint constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
-    <addUniqueConstraint columnNames="email" constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
+    <dropUniqueConstraint constraintName="UC_userEMAIL_COL" tableName="user"/>
+    <addUniqueConstraint columnNames="email" constraintName="UC_userEMAIL_COL" tableName="user"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565582878710-2">
-    <dropUniqueConstraint constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
-    <addUniqueConstraint columnNames="login" constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
+    <dropUniqueConstraint constraintName="UC_userLOGIN_COL" tableName="user"/>
+    <addUniqueConstraint columnNames="login" constraintName="UC_userLOGIN_COL" tableName="user"/>
   </changeSet>
 </databaseChangeLog>

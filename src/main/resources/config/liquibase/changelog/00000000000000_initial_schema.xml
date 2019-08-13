@@ -48,9 +48,9 @@
     </createTable>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-5">
-    <createTable tableName="ts_user">
+    <createTable tableName="user">
       <column autoIncrement="true" name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="ts_userPK"/>
+        <constraints primaryKey="true" primaryKeyName="userPK"/>
       </column>
       <column name="created_by" type="VARCHAR(50)">
         <constraints nullable="false"/>
@@ -76,7 +76,7 @@
       <column name="reset_date" type="datetime(6)"/>
       <column name="reset_key" type="VARCHAR(20)"/>
     </createTable>
-    <loadData tableName="ts_user" file="config/liquibase/data/user.csv"/>
+    <loadData tableName="user" file="config/liquibase/data/user.csv"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-6">
     <createTable tableName="user_authority">
@@ -107,10 +107,10 @@
     </createTable>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-7">
-    <addUniqueConstraint columnNames="email" constraintName="UC_TS_USEREMAIL_COL" tableName="ts_user"/>
+    <addUniqueConstraint columnNames="email" constraintName="UC_userEMAIL_COL" tableName="user"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-8">
-    <addUniqueConstraint columnNames="login" constraintName="UC_TS_USERLOGIN_COL" tableName="ts_user"/>
+    <addUniqueConstraint columnNames="login" constraintName="UC_userLOGIN_COL" tableName="user"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-9">
     <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="user_authority"
@@ -120,7 +120,7 @@
   <changeSet author="antinus (generated)" id="1565267718220-10">
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="persistent_token"
                              constraintName="FK7lylc52or2d50rei25eacfqmd" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="ts_user" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="user" validate="true"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565267718220-11">
     <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="persistent_audit_evt_data"
@@ -131,6 +131,6 @@
   <changeSet author="antinus (generated)" id="1565267718220-12">
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_authority"
                              constraintName="FKgl8xdcnstpfxlpu9pky85i9i5" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="ts_user" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="user" validate="true"/>
   </changeSet>
 </databaseChangeLog>
