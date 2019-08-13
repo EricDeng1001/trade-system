@@ -9,11 +9,11 @@
 
 POST http://localhost:58080/api/users
 Content-Type: application/json
-X-XSRF-TOKEN: 1ba5dc08-bee6-4371-91ea-9aee335f347f
+X-XSRF-TOKEN: 53cff226-bd3c-4e38-840e-ec52629aa3ca
 
 {
-  "login": "model",
-  "password": "trader",
+  "login": "systemx",
+  "password": "1998Dzh1001*!",
   "authorities": [
     "ROLE_MODEL"
   ]
