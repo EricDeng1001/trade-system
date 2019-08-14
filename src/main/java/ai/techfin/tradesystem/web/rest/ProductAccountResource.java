@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link ai.techfin.tradesystem.domain.ProductAccount}.
@@ -26,14 +27,14 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ProductAccountResource {
 
+    private static final String ENTITY_NAME = "productAccount";
+
     private final Logger log = LoggerFactory.getLogger(ProductAccountResource.class);
 
-    private static final String ENTITY_NAME = "productAccount";
+    private final ProductAccountRepository productAccountRepository;
 
     @Value("${spring.application.name}")
     private String applicationName;
-
-    private final ProductAccountRepository productAccountRepository;
 
     public ProductAccountResource(ProductAccountRepository productAccountRepository) {
         this.productAccountRepository = productAccountRepository;
@@ -43,19 +44,23 @@ public class ProductAccountResource {
      * {@code POST  /product-accounts} : Create a new productAccount.
      *
      * @param productAccount the productAccount to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productAccount, or with status {@code 400 (Bad Request)} if the productAccount has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productAccount, or
+     * with status {@code 400 (Bad Request)} if the productAccount has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/product-accounts")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ProductAccount> createProductAccount(@Valid @RequestBody ProductAccount productAccount) throws URISyntaxException {
+    public ResponseEntity<ProductAccount> createProductAccount(@Valid @RequestBody ProductAccount productAccount)
+        throws URISyntaxException {
         log.debug("REST request to save ProductAccount : {}", productAccount);
         if (productAccount.getId() != null) {
-            throw new BadRequestAlertException("A new productAccount cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new productAccount cannot already have an ID", ENTITY_NAME,
+                                               "idexists");
         }
         ProductAccount result = productAccountRepository.save(productAccount);
         return ResponseEntity.created(new URI("/api/product-accounts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(
+                HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -63,7 +68,8 @@ public class ProductAccountResource {
      * {@code GET  /product-accounts/:id} : get the "id" productAccount.
      *
      * @param id the id of the productAccount to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productAccount, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productAccount, or with
+     * status {@code 404 (Not Found)}.
      */
     @GetMapping("/product-accounts/{id}")
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL})
@@ -71,6 +77,16 @@ public class ProductAccountResource {
         log.debug("REST request to get ProductAccount : {}", id);
         Optional<ProductAccount> productAccount = productAccountRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(productAccount);
+    }
+
+    @GetMapping("/product-accounts/ids")
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL})
+    public List<Long> getProductAccountIds() {
+        log.debug("REST request to get ProductAccount ids");
+        return productAccountRepository.findAll()
+            .stream()
+            .map(ProductAccount::getId)
+            .collect(Collectors.toList());
     }
 
     /**

@@ -29,6 +29,9 @@ public class ManagedUserVM extends UserDTO {
 
     @Override
     public String toString() {
-        return "ManagedUserVM{" + super.toString() + "} ";
+        return "ManagedUserVM{"
+            + "\n\tsuper: " + super.toString()
+            + "\n\tpassword: " + password
+            + "\n}";
     }
 }
