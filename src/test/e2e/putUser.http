@@ -1,0 +1,14 @@
+PUT http://localhost:58080/api/users
+Content-Type: application/json
+X-XSRF-TOKEN: 476329ca-8b0c-4b7f-ae58-50636bc76408
+
+{
+  "id": 9,
+  "login": "test",
+  "authorities": [
+    "ROLE_MODEL"
+  ],
+  "managedProducts": [1]
+}
+
+###

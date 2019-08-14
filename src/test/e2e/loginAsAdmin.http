@@ -8,7 +8,8 @@
 
 POST http://localhost:58080/api/authentication
 Content-Type: application/x-www-form-urlencoded
+X-XSRF-TOKEN: 43c904bd-208d-4154-9741-e389a6cc6aa4
 
-username=admin&password=admin
+username=admin&password=admin&remember-me=true
 
 ###

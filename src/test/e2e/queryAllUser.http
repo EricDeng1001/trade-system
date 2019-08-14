@@ -6,8 +6,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-GET http://localhost:8080/api/users
+GET http://localhost:58080/api/users
 Accept: application/json
-X-XSRF-TOKEN: 09b4dd10-1b92-422f-b7de-ffb9c0d5a38c
 
 ###

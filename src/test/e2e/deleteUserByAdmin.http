@@ -5,9 +5,9 @@
 # * 'gtrp' and 'gtr' create a GET request with or without query parameters;
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
-DELETE http://localhost:8080/api/users/test
+DELETE http://localhost:58080/api/users/test
 Accept: application/json
-X-XSRF-TOKEN: a1b8dfc8-e88d-48db-a415-806f01583eaf
+X-XSRF-TOKEN: a1d8c77d-bfd6-46bc-b984-455af0720197
 
 ###
 
