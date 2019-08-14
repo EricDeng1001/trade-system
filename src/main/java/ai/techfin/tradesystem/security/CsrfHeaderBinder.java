@@ -27,18 +27,19 @@ public final class CsrfHeaderBinder extends OncePerRequestFilter implements Auth
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
+        logger.debug("bind handler called");
         bindHeader(request, response);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
+        logger.debug("bind filter called");
         bindHeader(request, response);
         filterChain.doFilter(request, response);
     }
 
     private static void bindHeader(HttpServletRequest request, HttpServletResponse response) {
-        logger.debug("bind filter called");
         CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         if (token != null) {
             response.setHeader(HEADER, token.getToken());

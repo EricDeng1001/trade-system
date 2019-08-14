@@ -5,8 +5,6 @@ import ai.techfin.tradesystem.repository.PersistentTokenRepository;
 import ai.techfin.tradesystem.repository.UserRepository;
 import ai.techfin.tradesystem.service.util.RandomUtil;
 
-
-import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.security.PersistentTokenCache;
 
 import org.slf4j.Logger;
@@ -71,11 +69,10 @@ public class PersistentTokenRememberMeServices extends
 
     private final UserRepository userRepository;
 
-    public PersistentTokenRememberMeServices(JHipsterProperties jHipsterProperties,
-            UserDetailsService userDetailsService,
-            PersistentTokenRepository persistentTokenRepository, UserRepository userRepository) {
-
-        super(jHipsterProperties.getSecurity().getRememberMe().getKey(), userDetailsService);
+    public PersistentTokenRememberMeServices(SecurityProperties securityProperties,
+                                             UserDetailsService userDetailsService,
+                                             PersistentTokenRepository persistentTokenRepository, UserRepository userRepository) {
+        super(securityProperties.getRememberMeKey(), userDetailsService);
         this.persistentTokenRepository = persistentTokenRepository;
         this.userRepository = userRepository;
         upgradedTokenCache = new PersistentTokenCache<>(UPGRADED_TOKEN_VALIDITY_MILLIS);
