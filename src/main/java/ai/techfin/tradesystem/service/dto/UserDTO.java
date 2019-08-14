@@ -1,14 +1,14 @@
 package ai.techfin.tradesystem.service.dto;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
-
 import ai.techfin.tradesystem.domain.Authority;
+import ai.techfin.tradesystem.domain.ProductAccount;
 import ai.techfin.tradesystem.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,8 +53,9 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private Set<Long> managedProducts;
+
     public UserDTO() {
-        // Empty constructor needed for Jackson.
     }
 
     public UserDTO(User user) {
@@ -73,6 +74,27 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        this.managedProducts = user.getManagedProducts().stream()
+            .map(ProductAccount::getId).collect(Collectors.toSet());
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+            "\n\tlogin: " + login +
+            "\n\tfirstName: " + firstName +
+            "\n\tlastName: " + lastName +
+            "\n\temail: " + email +
+            "\n\timageUrl: " + imageUrl +
+            "\n\tactivated: " + activated +
+            "\n\tlangKey: " + langKey +
+            "\n\tcreatedBy: " + createdBy +
+            "\n\tcreatedDate: " + createdDate +
+            "\n\tlastModifiedBy: " + lastModifiedBy +
+            "\n\tlastModifiedDate: " + lastModifiedDate +
+            "\n\tauthorities: " + authorities +
+            "\n\tauthorizedProducts: " + managedProducts +
+            "\n}";
     }
 
     public Long getId() {
@@ -81,6 +103,14 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Long> getManagedProducts() {
+        return managedProducts;
+    }
+
+    public void setManagedProducts(Set<Long> managedProducts) {
+        this.managedProducts = managedProducts;
     }
 
     public String getLogin() {
@@ -191,21 +221,4 @@ public class UserDTO {
         this.authorities = authorities;
     }
 
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", createdBy=" + createdBy +
-            ", createdDate=" + createdDate +
-            ", lastModifiedBy='" + lastModifiedBy + '\'' +
-            ", lastModifiedDate=" + lastModifiedDate +
-            ", authorities=" + authorities +
-            "}";
-    }
 }

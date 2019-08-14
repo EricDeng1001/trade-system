@@ -4,10 +4,12 @@ import ai.techfin.tradesystem.config.ApplicationProperties;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
 
+import ai.techfin.tradesystem.security.SecurityProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,12 +24,14 @@ import java.util.Collection;
 @EnableConfigurationProperties({ApplicationProperties.class})
 public class TradeSystemApp implements InitializingBean {
 
-    private static final Logger log = LoggerFactory.getLogger(TradeSystemApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(TradeSystemApp.class);
 
     private final Environment env;
 
-    public TradeSystemApp(Environment env) {
+    @Autowired
+    public TradeSystemApp(Environment env, ApplicationProperties applicationProperties) {
         this.env = env;
+        logger.info("written by: {}", applicationProperties.getAuthor());
     }
 
     /**
@@ -41,7 +45,7 @@ public class TradeSystemApp implements InitializingBean {
     public void afterPropertiesSet() {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
         if (activeProfiles.contains(ApplicationConstants.Profile.DEVELOPMENT) && activeProfiles.contains(ApplicationConstants.Profile.PRODUCTION)) {
-            log.error(
+            logger.error(
                 "Application should not run with both the 'dev' and 'prod' profiles at the same time."
             );
             throw new Error("Application should not run with both the 'dev' and 'prod' profiles at the same time.");
@@ -73,21 +77,21 @@ public class TradeSystemApp implements InitializingBean {
         try {
             hostAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            log.warn("The host name could not be determined, using `localhost` as fallback");
+            logger.warn("The host name could not be determined, using `localhost` as fallback");
         }
-        log.info("\n----------------------------------------------------------\n\t" +
+        logger.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}{}\n\t" +
                 "External: \t{}://{}:{}{}\n\t" +
                 "Profile(s): \t{}\n----------------------------------------------------------",
-            env.getProperty("spring.application.name"),
-            protocol,
-            serverPort,
-            contextPath,
-            protocol,
-            hostAddress,
-            serverPort,
-            contextPath,
-            env.getActiveProfiles());
+                    env.getProperty("spring.application.name"),
+                    protocol,
+                    serverPort,
+                    contextPath,
+                    protocol,
+                    hostAddress,
+                    serverPort,
+                    contextPath,
+                    env.getActiveProfiles());
     }
 }
