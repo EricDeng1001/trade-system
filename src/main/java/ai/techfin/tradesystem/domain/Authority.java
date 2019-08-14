@@ -21,15 +21,15 @@ public class Authority implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public String getName() {
+        return name;
+    }
+
     @NotNull
     @Size(max = 50)
     @Id
     @Column(length = 50)
     private String name;
-
-    public String getName() {
-        return name;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -54,7 +54,7 @@ public class Authority implements Serializable {
     @Override
     public String toString() {
         return "Authority{" +
-            "name='" + name + '\'' +
-            "}";
+            "\n\tname=" + name +
+            "\n}";
     }
 }

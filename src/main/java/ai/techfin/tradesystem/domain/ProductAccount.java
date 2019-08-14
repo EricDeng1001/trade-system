@@ -1,14 +1,19 @@
 package ai.techfin.tradesystem.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A ProductAccount.
@@ -18,11 +23,12 @@ import java.time.Instant;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProductAccount implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Logger logger = LoggerFactory.getLogger(ProductAccount.class);
+
+    private static final long serialVersionUID = 665934918284011794L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
     private Long id;
 
     @NotNull
@@ -47,78 +53,11 @@ public class ProductAccount implements Serializable {
     @Column(name = "provider", nullable = false)
     private String provider;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public ProductAccount product(String product) {
-        this.product = product;
-        return this;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public BigDecimal getInitialAsset() {
-        return initialAsset;
-    }
-
-    public ProductAccount initialAsset(BigDecimal initialAsset) {
-        this.initialAsset = initialAsset;
-        return this;
-    }
-
-    public void setInitialAsset(BigDecimal initialAsset) {
-        this.initialAsset = initialAsset;
-    }
-
-    public BigDecimal getTotalAsset() {
-        return totalAsset;
-    }
-
-    public ProductAccount totalAsset(BigDecimal totalAsset) {
-        this.totalAsset = totalAsset;
-        return this;
-    }
-
-    public void setTotalAsset(BigDecimal totalAsset) {
-        this.totalAsset = totalAsset;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public ProductAccount createdAt(Instant createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public ProductAccount provider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
+    @ManyToMany(
+        cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+        fetch = FetchType.LAZY
+    )
+    private Set<User> managers = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -133,18 +72,89 @@ public class ProductAccount implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        return 42;
     }
 
     @Override
     public String toString() {
         return "ProductAccount{" +
-            "id=" + getId() +
-            ", product='" + getProduct() + "'" +
-            ", initialAsset=" + getInitialAsset() +
-            ", totalAsset=" + getTotalAsset() +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", provider='" + getProvider() + "'" +
-            "}";
+            "\n\tid=" + getId() +
+            "\n\tproduct=" + getProduct() +
+            "\n\tinitialAsset=" + getInitialAsset() +
+            "\n\ttotalAsset=" + getTotalAsset() +
+            "\n\tcreatedAt=" + getCreatedAt() +
+            "\n\tprovider=" + getProvider() +
+            "\n}";
     }
+
+    public void addManager(User user) {
+        logger.debug("add a manager");
+        this.managers.add(user);
+        if (!user.canManageProduct(this)) {
+            user.addManagedProduct(this);
+        }
+    }
+
+    public boolean managedBy(User user) {
+        return this.managers.contains(user);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<User> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(Set<User> managers) {
+        logger.debug("setting managers");
+        this.managers.clear();
+        managers.forEach(this::addManager);
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    public BigDecimal getInitialAsset() {
+        return initialAsset;
+    }
+
+    public void setInitialAsset(BigDecimal initialAsset) {
+        this.initialAsset = initialAsset;
+    }
+
+    public BigDecimal getTotalAsset() {
+        return totalAsset;
+    }
+
+    public void setTotalAsset(BigDecimal totalAsset) {
+        this.totalAsset = totalAsset;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
 }

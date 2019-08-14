@@ -3,14 +3,13 @@ package ai.techfin.tradesystem.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import java.io.Serializable;
-import java.util.Objects;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Persistent tokens are used by Spring Security to automatically log in users.
@@ -22,7 +21,7 @@ import java.time.LocalDate;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentToken implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3786238153584758073L;
 
     private static final int MAX_USER_AGENT_LEN = 255;
 
@@ -33,12 +32,12 @@ public class PersistentToken implements Serializable {
     @NotNull
     @Column(name = "token_value", nullable = false)
     private String tokenValue;
-    
+
     @Column(name = "token_date")
     private LocalDate tokenDate;
 
     //an IPV6 address max length is 39 characters
-    @Size(min = 0, max = 39)
+    @Length(max = 39)
     @Column(name = "ip_address", length = 39)
     private String ipAddress;
 
@@ -48,6 +47,33 @@ public class PersistentToken implements Serializable {
     @JsonIgnore
     @ManyToOne
     private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PersistentToken)) {
+            return false;
+        }
+        return Objects.equals(series, ((PersistentToken) o).series);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(series);
+    }
+
+    @Override
+    public String toString() {
+        return "PersistentToken{" +
+            "\n\tseries=" + series +
+            "\n\ttokenValue=" + tokenValue +
+            "\n\ttokenDate=" + tokenDate +
+            "\n\tipAddress=" + ipAddress +
+            "\n\tuserAgent=" + userAgent +
+            "\n}";
+    }
 
     public String getSeries() {
         return series;
@@ -101,30 +127,4 @@ public class PersistentToken implements Serializable {
         this.user = user;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PersistentToken)) {
-            return false;
-        }
-        return Objects.equals(series, ((PersistentToken) o).series);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(series);
-    }
-
-    @Override
-    public String toString() {
-        return "PersistentToken{" +
-            "series='" + series + '\'' +
-            ", tokenValue='" + tokenValue + '\'' +
-            ", tokenDate=" + tokenDate +
-            ", ipAddress='" + ipAddress + '\'' +
-            ", userAgent='" + userAgent + '\'' +
-            "}";
-    }
 }

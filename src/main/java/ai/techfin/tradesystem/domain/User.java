@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
@@ -23,10 +25,12 @@ import java.util.Set;
  * A user.
  */
 @Entity
-@Table(name = "ts_user")
+@Table(name = "user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "user")
 public class User extends AbstractAuditingEntity implements Serializable {
+
+    private static final Logger logger = LoggerFactory.getLogger(User.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -85,7 +89,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
         name = "user_authority",
@@ -100,13 +103,19 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(
+        cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+        fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_product",
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id")
-    )
-    private Set<ProductAccount> authorizedProducts = new HashSet<>();
+        inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<ProductAccount> managedProducts = new HashSet<>();
+
+    public User() {
+        logger.debug("A user is created");
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -127,15 +136,27 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            "}";
+            "\n\tlogin='" + login + '\'' +
+            "\n\tfirstName='" + firstName + '\'' +
+            "\n\tlastName='" + lastName + '\'' +
+            "\n\temail='" + email + '\'' +
+            "\n\timageUrl='" + imageUrl + '\'' +
+            "\n\tactivated='" + activated + '\'' +
+            "\n\tlangKey='" + langKey + '\'' +
+            "\n\tactivationKey='" + activationKey + '\'' +
+            "\n}";
+    }
+
+    public void addManagedProduct(ProductAccount productAccount) {
+        logger.debug("adding a product");
+        this.managedProducts.add(productAccount);
+        if (!productAccount.managedBy(this)) {
+            productAccount.addManager(this);
+        }
+    }
+
+    public boolean canManageProduct(ProductAccount productAccount) {
+        return this.managedProducts.contains(productAccount);
     }
 
     public Long getId() {
@@ -143,15 +164,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     public void setId(Long id) {
+        logger.debug("setting id: {}", id);
         this.id = id;
     }
 
-    public Set<ProductAccount> getAuthorizedProducts() {
-        return authorizedProducts;
+    public Set<ProductAccount> getManagedProducts() {
+        return managedProducts;
     }
 
-    public void setAuthorizedProducts(Set<ProductAccount> authorizedProducts) {
-        this.authorizedProducts = authorizedProducts;
+    public void setManagedProducts(Set<ProductAccount> managedProducts) {
+        logger.debug("setting products");
+        this.managedProducts.clear();
+        managedProducts.forEach(this::addManagedProduct);
     }
 
     public String getLogin() {
@@ -160,6 +184,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     // Lowercase the login before saving it in database
     public void setLogin(String login) {
+        logger.debug("setting login");
         this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
     }
 
