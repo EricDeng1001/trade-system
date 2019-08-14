@@ -48,6 +48,7 @@ spring:
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
+      hibernate.enable_lazy_load_no_trans: true
 
   liquibase:
     contexts: prod
@@ -82,6 +83,9 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
     min-response-size: 1024
 
+security:
+  rememberMeKey: 5be9c81018863860683c04e3fd3e05c306005b56b1e56a6292768910f7da6c1e7891c97c31751eb43b25692fdcbe01cde37e
+
 # ===================================================================
 # JHipster specific properties
 #
@@ -96,10 +100,6 @@ jhipster:
     ehcache: # Ehcache configuration
       time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
       max-entries: 1000 # Number of objects in each cache entry
-  security:
-    remember-me:
-      # security key (this key should be unique for your application, and kept secret)
-      key: 5be9c81018863860683c04e3fd3e05c306005b56b1e56a6292768910f7da6c1e7891c97c31751eb43b25692fdcbe01cde37e
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://my-server-url-to-change # Modify according to your server's URL
   metrics:

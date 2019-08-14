@@ -4,6 +4,9 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+application:
+  author: Eric Deng
+
 spring:
   application:
     name: tradeSystem
@@ -26,15 +29,19 @@ spring:
 
   kafka:
     consumer:
-      bootstrap-servers: localhost:59092
+      bootstrap-servers:
+        - localhost:59092
       group-id: trade-system
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
     producer:
-      bootstrap-servers: localhost:59092
+      bootstrap-servers:
+        - localhost:59092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      client-id: 1
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -127,8 +134,7 @@ jhipster:
     license:
     license-url:
 
-application:
-  author: Eric Deng
+
 
 management:
   endpoints:
