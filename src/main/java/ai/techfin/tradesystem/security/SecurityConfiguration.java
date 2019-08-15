@@ -95,7 +95,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .logout()
             .logoutUrl("/api/logout")
-            // .logoutSuccessHandler(ajaxLogoutSuccessHandler())
+            .logoutSuccessHandler(csrfHeaderBinder)
             .permitAll()
         .and()
             .headers()

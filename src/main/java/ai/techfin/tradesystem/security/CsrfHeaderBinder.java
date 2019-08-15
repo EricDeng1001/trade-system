@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,7 +19,8 @@ import java.io.IOException;
  * 把csrfFilter中设置的cookie放在header
  */
 @Component
-public final class CsrfHeaderBinder extends OncePerRequestFilter implements AuthenticationSuccessHandler {
+public final class CsrfHeaderBinder extends OncePerRequestFilter implements AuthenticationSuccessHandler,
+                                                                            LogoutSuccessHandler {
 
     private static final String HEADER = "X-CSRF-TOKEN";
 
@@ -27,6 +29,13 @@ public final class CsrfHeaderBinder extends OncePerRequestFilter implements Auth
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
+        logger.debug("bind handler called");
+        bindHeader(request, response);
+    }
+
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                Authentication authentication) {
         logger.debug("bind handler called");
         bindHeader(request, response);
     }
