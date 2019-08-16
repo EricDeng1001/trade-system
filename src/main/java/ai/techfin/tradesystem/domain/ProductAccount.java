@@ -1,6 +1,5 @@
 package ai.techfin.tradesystem.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.slf4j.Logger;
@@ -32,8 +31,8 @@ public class ProductAccount implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "product", nullable = false, unique = true)
-    private String product;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @NotNull
     @DecimalMin(value = "0")
@@ -61,6 +60,21 @@ public class ProductAccount implements Serializable {
                joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<User> managers = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_orders",
+               inverseJoinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    private Set<ModelOrderList> modelOrderLists;
+
+    /**
+     * simply add a MOL relation to this PA
+     *
+     * @param modelOrderList the object to build relation with
+     */
+    public void addModelOrderList(ModelOrderList modelOrderList) {
+        modelOrderLists.add(modelOrderList);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,7 +95,7 @@ public class ProductAccount implements Serializable {
     public String toString() {
         return "ProductAccount{" +
             "\n\tid=" + getId() +
-            "\n\tproduct=" + getProduct() +
+            "\n\tproduct=" + getName() +
             "\n\tinitialAsset=" + getInitialAsset() +
             "\n\ttotalAsset=" + getTotalAsset() +
             "\n\tcreatedAt=" + getCreatedAt() +
@@ -99,6 +113,14 @@ public class ProductAccount implements Serializable {
 
     public boolean managedBy(User user) {
         return this.managers.contains(user);
+    }
+
+    public Set<ModelOrderList> getModelOrderLists() {
+        return modelOrderLists;
+    }
+
+    public void setModelOrderLists(Set<ModelOrderList> modelOrderLists) {
+        this.modelOrderLists = modelOrderLists;
     }
 
     public Long getId() {
@@ -119,12 +141,12 @@ public class ProductAccount implements Serializable {
         managers.forEach(this::addManager);
     }
 
-    public String getProduct() {
-        return product;
+    public String getName() {
+        return name;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public BigDecimal getInitialAsset() {

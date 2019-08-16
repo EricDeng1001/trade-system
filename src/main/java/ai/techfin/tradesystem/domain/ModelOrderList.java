@@ -23,11 +23,24 @@ public class ModelOrderList {
     @Column(name = "model", nullable = false)
     private String model;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_orders",
+               joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    private ProductAccount productAccount;
+
     @ElementCollection(targetClass = ModelOrder.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "model_order_list_data",
-                     joinColumns =
-                     @JoinColumn(name = "list_id", referencedColumnName = "id"))
+                     joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
     private Set<ModelOrder> orders;
+
+    public ModelOrderList(String model, ProductAccount productAccount,
+                          Set<ModelOrder> orders) {
+        logger.debug("A model order list is created with full data");
+        this.model = model;
+        this.orders = orders;
+        setProductAccount(productAccount);
+    }
 
     public ModelOrderList() {
         logger.debug("A model order list is created");
@@ -40,6 +53,15 @@ public class ModelOrderList {
     public void setId(Long id) {
         logger.debug("Setting id");
         this.id = id;
+    }
+
+    public ProductAccount getProductAccount() {
+        return productAccount;
+    }
+
+    public void setProductAccount(ProductAccount productAccount) {
+        this.productAccount = productAccount;
+        productAccount.addModelOrderList(this);
     }
 
     public String getModel() {
@@ -58,4 +80,5 @@ public class ModelOrderList {
         logger.debug("Setting model orders for id: {}", id);
         this.orders = orders;
     }
+
 }

@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="antinus (generated)" id="1565966715626-5">
+        <createTable tableName="product_orders">
+            <column name="product_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565966715626-6">
+        <addUniqueConstraint columnNames="order_id" constraintName="UK_9yhi8t7i708n4rmf4ilbsh5gd" tableName="product_orders"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565966715626-7">
+        <createIndex indexName="IX_null" tableName="user_product" unique="true">
+            <column name="product_id"/>
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565966715626-8">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_orders" constraintName="FKfah0s8s73bf3e88yytmifxpg0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565966715626-9">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="product_orders" constraintName="FKmmta74vbel7n44v0gpcwno97w" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="model_order_list" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

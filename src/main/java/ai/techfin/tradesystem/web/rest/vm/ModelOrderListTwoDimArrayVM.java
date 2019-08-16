@@ -6,6 +6,16 @@ public class ModelOrderListTwoDimArrayVM {
 
     private String model;
 
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    private String product;
+
     private String[][] data;
 
     public ModelOrderListTwoDimArrayVM() {}
@@ -30,7 +40,7 @@ public class ModelOrderListTwoDimArrayVM {
     public String toString() {
         return "ModelOrderListTwoDimArrayVM{" +
             "model: " + model +
-            "orders: " + Arrays.toString(data) +
+            "orders: " + Arrays.deepToString(data) +
             "}";
     }
 
