@@ -2,6 +2,11 @@ package ai.techfin.tradesystem.config;
 
 import java.time.Duration;
 
+import ai.techfin.tradesystem.domain.Authority;
+import ai.techfin.tradesystem.domain.PersistentToken;
+import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.User;
+import ai.techfin.tradesystem.repository.UserRepository;
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
 
@@ -40,14 +45,15 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            createCache(cm, ai.techfin.tradesystem.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-            createCache(cm, ai.techfin.tradesystem.repository.UserRepository.USERS_BY_EMAIL_CACHE);
-            createCache(cm, ai.techfin.tradesystem.domain.User.class.getName());
-            createCache(cm, ai.techfin.tradesystem.domain.Authority.class.getName());
-            createCache(cm, ai.techfin.tradesystem.domain.User.class.getName() + ".authorities");
-            createCache(cm, ai.techfin.tradesystem.domain.PersistentToken.class.getName());
-            createCache(cm, ai.techfin.tradesystem.domain.User.class.getName() + ".persistentTokens");
-            createCache(cm, ai.techfin.tradesystem.domain.ProductAccount.class.getName());
+            createCache(cm, UserRepository.USERS_BY_LOGIN_CACHE);
+            createCache(cm, UserRepository.USERS_BY_EMAIL_CACHE);
+            createCache(cm, Authority.class.getName());
+            createCache(cm, User.class.getName());
+            createCache(cm, User.class.getName() + ".authorities");
+            createCache(cm, User.class.getName() + ".persistentTokens");
+            createCache(cm, User.class.getName() + ".managedProducts");
+            createCache(cm, PersistentToken.class.getName());
+            createCache(cm, ProductAccount.class.getName());
         };
     }
 
