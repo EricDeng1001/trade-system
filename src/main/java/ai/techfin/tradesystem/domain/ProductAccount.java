@@ -55,8 +55,10 @@ public class ProductAccount implements Serializable {
 
     @ManyToMany(
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-        fetch = FetchType.LAZY
-    )
+        fetch = FetchType.LAZY)
+    @JoinTable(name = "user_product",
+               inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+               joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<User> managers = new HashSet<>();
 
     @Override

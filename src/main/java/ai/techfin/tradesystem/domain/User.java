@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.domain;
 
+import ai.techfin.tradesystem.aop.validation.group.PERSIST;
 import ai.techfin.tradesystem.config.ApplicationConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
@@ -11,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
@@ -37,6 +35,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.springframework.data.elasticsearch.annotations.Field(type = FieldType.Keyword)
+    @Null(groups = PERSIST.class)
     private Long id;
 
     @NotNull

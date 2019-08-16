@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="antinus (generated)" id="1565941444170-4">
+        <createTable tableName="model_order_list">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="model_order_listPK"/>
+            </column>
+            <column name="model" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565941444170-5">
+        <createTable tableName="model_order_list_data">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="market" type="VARCHAR(255)"/>
+            <column name="stock" type="VARCHAR(255)"/>
+            <column name="weight" type="DECIMAL(15, 15)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565941444170-6">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="model_order_list_data" constraintName="FKqtihjg9guhrprh8br8vh7pydv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="model_order_list" validate="true"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565941444170-1">
+        <dropUniqueConstraint constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
+        <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565941444170-2">
+        <dropUniqueConstraint constraintName="UC_USEREMAIL_COL" tableName="user"/>
+        <addUniqueConstraint columnNames="email" constraintName="UC_USEREMAIL_COL" tableName="user"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1565941444170-3">
+        <dropUniqueConstraint constraintName="UC_USERLOGIN_COL" tableName="user"/>
+        <addUniqueConstraint columnNames="login" constraintName="UC_USERLOGIN_COL" tableName="user"/>
+    </changeSet>
+</databaseChangeLog>

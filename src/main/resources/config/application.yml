@@ -30,7 +30,7 @@ spring:
   kafka:
     consumer:
       bootstrap-servers:
-        - localhost:59092
+        - "localhost:59092"
       group-id: trade-system
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -38,20 +38,21 @@ spring:
 
     producer:
       bootstrap-servers:
-        - localhost:59092
+        - "localhost:59092"
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       client-id: 1
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: >-
       jdbc:mysql://localhost:53306/tradeSystem
       ?useUnicode=true
       &characterEncoding=utf8
       &useSSL=false
       &useLegacyDatetimeCode=false
-      &serverTimezone=UTC
+      &serverTimezone=GMT%2B8
     username: root
     password:
   data:
@@ -59,17 +60,22 @@ spring:
     jest:
       uris:
         - http://localhost:59200
-
+    rest:
+      base-path: /api
     jpa:
       repositories:
         enabled: true
         bootstrap-mode: deferred
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     database: MYSQL
     open-in-view: false
     properties:
-      hibernate.jdbc.time_zone: UTC
+      hibernate.jdbc.time_zone: GMT+8
+      javax.persistence.validation.group.pre-update: ai.techfin.tradesystem.aop.validation.group.UPDATE
+      javax.persistence.validation.group.pre-create: ai.techfin.tradesystem.aop.validation.group.PERSIST
+
     hibernate:
       ddl-auto: none
       naming:
@@ -133,8 +139,6 @@ jhipster:
     contact-email:
     license:
     license-url:
-
-
 
 management:
   endpoints:

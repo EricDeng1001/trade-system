@@ -178,7 +178,7 @@ public class UserService {
     }
 
     /**
-     * Update basic information (first name, last name, email, language) for the current user.
+     * UPDATE basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user.
      * @param lastName  last name of user.
@@ -202,7 +202,7 @@ public class UserService {
     }
 
     /**
-     * Update all information for a specific user, and return the modified user.
+     * UPDATE all information for a specific user, and return the modified user.
      *
      * @param userDTO user to update.
      * @return updated user.
