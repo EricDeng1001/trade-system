@@ -3,6 +3,8 @@ package ai.techfin.tradesystem.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -20,6 +22,7 @@ import java.io.IOException;
  */
 @Component
 public final class CsrfHeaderBinder extends OncePerRequestFilter implements AuthenticationSuccessHandler,
+                                                                            AuthenticationFailureHandler,
                                                                             LogoutSuccessHandler {
 
     private static final String HEADER = "X-CSRF-TOKEN";
@@ -31,6 +34,15 @@ public final class CsrfHeaderBinder extends OncePerRequestFilter implements Auth
                                         Authentication authentication) {
         logger.debug("bind handler called");
         bindHeader(request, response);
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
+        logger.debug("bind handler called");
+        bindHeader(request, response);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
     @Override
@@ -38,6 +50,7 @@ public final class CsrfHeaderBinder extends OncePerRequestFilter implements Auth
                                 Authentication authentication) {
         logger.debug("bind handler called");
         bindHeader(request, response);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override

@@ -61,7 +61,7 @@ public class PersistentTokenRememberMeServices extends
 
     private static final int TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * TOKEN_VALIDITY_DAYS;
 
-    private static final long UPGRADED_TOKEN_VALIDITY_MILLIS = 5000l;
+    private static final long UPGRADED_TOKEN_VALIDITY_MILLIS = 5000L;
 
     private final PersistentTokenCache<UpgradedRememberMeToken> upgradedTokenCache;
 
@@ -94,7 +94,7 @@ public class PersistentTokenRememberMeServices extends
                 PersistentToken token = getPersistentToken(cookieTokens);
                 login = token.getUser().getLogin();
 
-                // Token also matches, so login is valid. Update the token value, keeping the *same* series number.
+                // Token also matches, so login is valid. UPDATE the token value, keeping the *same* series number.
                 log.debug("Refreshing persistent login token for user '{}', series '{}'", login, token.getSeries());
                 token.setTokenDate(LocalDate.now());
                 token.setTokenValue(RandomUtil.generateTokenData());
@@ -158,8 +158,8 @@ public class PersistentTokenRememberMeServices extends
                 persistentTokenRepository.deleteById(token.getSeries());
             } catch (InvalidCookieException ice) {
                 log.info("Invalid cookie, no persistent token could be deleted", ice);
-            } catch (RememberMeAuthenticationException rmae) {
-                log.debug("No persistent token found, so no token could be deleted", rmae);
+            } catch (RememberMeAuthenticationException e) {
+                log.debug("No persistent token found, so no token could be deleted", e);
             }
         }
         super.logout(request, response, authentication);
