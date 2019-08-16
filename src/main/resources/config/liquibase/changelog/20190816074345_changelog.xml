@@ -12,7 +12,7 @@
     </changeSet>
     <changeSet author="antinus (generated)" id="1565941444170-5">
         <createTable tableName="model_order_list_data">
-            <column name="id" type="BIGINT">
+            <column name="list_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="market" type="VARCHAR(255)"/>
@@ -21,18 +21,7 @@
         </createTable>
     </changeSet>
     <changeSet author="antinus (generated)" id="1565941444170-6">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="model_order_list_data" constraintName="FKqtihjg9guhrprh8br8vh7pydv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="model_order_list" validate="true"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565941444170-1">
-        <dropUniqueConstraint constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
-        <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL" tableName="product_account"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565941444170-2">
-        <dropUniqueConstraint constraintName="UC_USEREMAIL_COL" tableName="user"/>
-        <addUniqueConstraint columnNames="email" constraintName="UC_USEREMAIL_COL" tableName="user"/>
-    </changeSet>
-    <changeSet author="antinus (generated)" id="1565941444170-3">
-        <dropUniqueConstraint constraintName="UC_USERLOGIN_COL" tableName="user"/>
-        <addUniqueConstraint columnNames="login" constraintName="UC_USERLOGIN_COL" tableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="list_id" baseTableName="model_order_list_data"
+                                 constraintName="FKqtihjg9guhrprh8br8vh7pydv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="model_order_list" validate="true"/>
     </changeSet>
 </databaseChangeLog>

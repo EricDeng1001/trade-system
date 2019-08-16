@@ -13,7 +13,7 @@
       <column name="initial_asset" type="DECIMAL(21, 2)">
         <constraints nullable="false"/>
       </column>
-      <column name="product" type="VARCHAR(255)">
+      <column name="name" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
       <column name="provider" type="VARCHAR(255)">
@@ -37,7 +37,7 @@
     <loadData tableName="user_product" file="config/liquibase/data/user_product.csv"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565582878710-5">
-    <addUniqueConstraint columnNames="product" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL"
+    <addUniqueConstraint columnNames="name" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL"
                          tableName="product_account"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565582878710-6">
@@ -49,13 +49,5 @@
     <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="user_product"
                              constraintName="FKs02b1df7mkxmb1ieseb6gp4kd" deferrable="false" initiallyDeferred="false"
                              referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
-  </changeSet>
-  <changeSet author="antinus (generated)" id="1565582878710-1">
-    <dropUniqueConstraint constraintName="UC_userEMAIL_COL" tableName="user"/>
-    <addUniqueConstraint columnNames="email" constraintName="UC_userEMAIL_COL" tableName="user"/>
-  </changeSet>
-  <changeSet author="antinus (generated)" id="1565582878710-2">
-    <dropUniqueConstraint constraintName="UC_userLOGIN_COL" tableName="user"/>
-    <addUniqueConstraint columnNames="login" constraintName="UC_userLOGIN_COL" tableName="user"/>
   </changeSet>
 </databaseChangeLog>

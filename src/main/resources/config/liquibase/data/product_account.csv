@@ -1,4 +1,4 @@
-id,product,initial_asset,total_asset,created_at,provider
+id,name,initial_asset,total_asset,created_at,provider
 1,Model Train1,100000000,100000000,2019-08-10T23:23:43,xtp
 2,Model Train2,100000000,100000000,2019-08-10T23:23:43,xtp
 3,Model Train3,100000000,100000000,2019-08-10T23:23:43,xtp
