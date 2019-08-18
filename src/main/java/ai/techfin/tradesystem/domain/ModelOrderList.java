@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.Null;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -23,16 +24,19 @@ public class ModelOrderList {
     @Column(name = "model", nullable = false)
     private String model;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "product_orders",
-               joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-    private ProductAccount productAccount;
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt = Instant.now();
 
     @ElementCollection(targetClass = ModelOrder.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "model_order_list_data",
                      joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
     private Set<ModelOrder> orders;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_orders",
+               joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    private ProductAccount productAccount;
 
     public ModelOrderList(String model, ProductAccount productAccount,
                           Set<ModelOrder> orders) {
@@ -44,6 +48,14 @@ public class ModelOrderList {
 
     public ModelOrderList() {
         logger.debug("A model order list is created");
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getId() {

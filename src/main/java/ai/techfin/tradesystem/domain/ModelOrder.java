@@ -1,6 +1,7 @@
 package ai.techfin.tradesystem.domain;
 
 import ai.techfin.tradesystem.domain.enums.MarketType;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
