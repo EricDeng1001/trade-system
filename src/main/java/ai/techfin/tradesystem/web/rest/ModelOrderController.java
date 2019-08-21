@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.HashSet;
@@ -98,12 +97,8 @@ public class ModelOrderController {
                     order -> {
                         // TODO: 从消息中心获取价格
                         BigDecimal price = BigDecimal.valueOf(2);
-                        BigInteger quantity = totalAsset
-                            .multiply(order.getWeight())
-                            // 买少不买多 Floor 模式
-                            .divide(price, RoundingMode.FLOOR)
-                            .toBigInteger();
-                        return new ModelOrderVM(order.getStock(), order.getMarket(), price, quantity);
+                        BigDecimal money = totalAsset.multiply(order.getWeight());
+                        return new ModelOrderVM(order.getStock(), order.getMarket(), price, money);
                     }
                 ).collect(Collectors.toList());
                 return new ModelOrderListVM(placements, orderList.getModel(), product.get().getName(),

@@ -3,7 +3,6 @@ package ai.techfin.tradesystem.web.rest.vm;
 import ai.techfin.tradesystem.domain.enums.MarketType;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 public class ModelOrderVM {
 
@@ -13,13 +12,13 @@ public class ModelOrderVM {
 
     private BigDecimal price;
 
-    private BigInteger quantity;
+    private BigDecimal money;
 
-    public ModelOrderVM(String stock, MarketType market, BigDecimal price, BigInteger quantity) {
+    public ModelOrderVM(String stock, MarketType market, BigDecimal price, BigDecimal money) {
         this.stock = stock;
         this.market = market;
         this.price = price;
-        this.quantity = quantity;
+        this.money = money;
     }
 
     public String getStock() {
@@ -46,12 +45,12 @@ public class ModelOrderVM {
         this.price = price;
     }
 
-    public BigInteger getQuantity() {
-        return quantity;
+    public BigDecimal getMoney() {
+        return money;
     }
 
-    public void setQuantity(BigInteger quantity) {
-        this.quantity = quantity;
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
 }
