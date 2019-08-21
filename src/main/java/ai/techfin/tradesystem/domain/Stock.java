@@ -13,8 +13,17 @@ public class Stock {
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
 
     @Column(name = "stock", nullable = false)
-    private String stock;
+    private String name;
 
     @Column(name = "market", nullable = false)
     private MarketType market;
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public MarketType getMarket() { return market; }
+
+    public void setMarket(MarketType market) { this.market = market; }
+
 }
