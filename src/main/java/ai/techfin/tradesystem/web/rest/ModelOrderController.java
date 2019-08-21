@@ -7,9 +7,10 @@ import ai.techfin.tradesystem.domain.enums.MarketType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
+import ai.techfin.tradesystem.service.ModelOrderService;
+import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListTwoDimArrayVM;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListVM;
-import ai.techfin.tradesystem.web.rest.vm.ModelOrderVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -37,11 +37,15 @@ public class ModelOrderController {
 
     private final ProductAccountRepository productAccountRepository;
 
+    private final ModelOrderService modelOrderService;
+
     @Autowired
     public ModelOrderController(ModelOrderListRepository modelOrderListRepository,
-                                ProductAccountRepository productAccountRepository) {
+                                ProductAccountRepository productAccountRepository,
+                                ModelOrderService modelOrderService) {
         this.modelOrderListRepository = modelOrderListRepository;
         this.productAccountRepository = productAccountRepository;
+        this.modelOrderService = modelOrderService;
     }
 
     @PostMapping("/model-order-list")
@@ -93,13 +97,8 @@ public class ModelOrderController {
 
         return orderLists.stream().map(
             orderList -> {
-                List<ModelOrderVM> placements = orderList.getOrders().stream().map(
-                    order -> {
-                        // TODO: 从消息中心获取价格
-                        BigDecimal price = BigDecimal.valueOf(2);
-                        BigDecimal money = totalAsset.multiply(order.getWeight());
-                        return new ModelOrderVM(order.getStock(), order.getMarket(), price, money);
-                    }
+                List<ModelOrderDTO> placements = orderList.getOrders().stream().map(
+                    order -> modelOrderService.loadDTOWithNewestPrice(order, totalAsset)
                 ).collect(Collectors.toList());
                 return new ModelOrderListVM(placements, orderList.getModel(), product.get().getName(),
                                             orderList.getCreatedAt());
