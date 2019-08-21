@@ -1,10 +1,10 @@
-package ai.techfin.tradesystem.web.rest.vm;
+package ai.techfin.tradesystem.service.dto;
 
 import ai.techfin.tradesystem.domain.enums.MarketType;
 
 import java.math.BigDecimal;
 
-public class ModelOrderVM {
+public class ModelOrderDTO {
 
     private String stock;
 
@@ -14,7 +14,7 @@ public class ModelOrderVM {
 
     private BigDecimal money;
 
-    public ModelOrderVM(String stock, MarketType market, BigDecimal price, BigDecimal money) {
+    public ModelOrderDTO(String stock, MarketType market, BigDecimal price, BigDecimal money) {
         this.stock = stock;
         this.market = market;
         this.price = price;
