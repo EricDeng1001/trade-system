@@ -1,11 +1,13 @@
 package ai.techfin.tradesystem.web.rest.vm;
 
+import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
+
 import java.time.Instant;
 import java.util.List;
 
 public class ModelOrderListVM {
 
-    private List<ModelOrderVM> placements;
+    private List<ModelOrderDTO> placements;
 
     private String model;
 
@@ -13,18 +15,18 @@ public class ModelOrderListVM {
 
     private Instant createdAt;
 
-    public ModelOrderListVM(List<ModelOrderVM> placements, String model, String product, Instant createdAt) {
+    public ModelOrderListVM(List<ModelOrderDTO> placements, String model, String product, Instant createdAt) {
         this.placements = placements;
         this.model = model;
         this.product = product;
         this.createdAt = createdAt;
     }
 
-    public List<ModelOrderVM> getPlacements() {
+    public List<ModelOrderDTO> getPlacements() {
         return placements;
     }
 
-    public void setPlacements(List<ModelOrderVM> placements) {
+    public void setPlacements(List<ModelOrderDTO> placements) {
         this.placements = placements;
     }
 
