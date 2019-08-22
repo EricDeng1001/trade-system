@@ -18,6 +18,11 @@ public class Stock {
     @Column(name = "market", nullable = false)
     private MarketType market;
 
+    public Stock(String name, MarketType market) {
+        this.name = name;
+        this.market = market;
+    }
+
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
