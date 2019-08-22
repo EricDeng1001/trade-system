@@ -14,9 +14,21 @@ public class PriceUpdateDTO {
 
     private BigDecimal price;
 
+    private String broker;
+
+    public PriceUpdateDTO(Stock stock, BigDecimal price, String broker) {
+        this.stock = stock;
+        this.price = price;
+        this.broker = broker;
+    }
+
     public Stock getStock() { return stock; }
 
     public void setStock(Stock stock) { this.stock = stock; }
+
+    public String getBroker() { return broker; }
+
+    public void setBroker(String broker) { this.broker = broker; }
 
     public BigDecimal getPrice() { return price; }
 
