@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.web.websocket;
 
+import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.tradesystem.domain.Stock;
 import ai.techfin.tradesystem.domain.enums.MarketType;
 import ai.techfin.tradesystem.web.websocket.dto.PriceUpdateDTO;
@@ -17,8 +18,9 @@ public class PriceUpdateNotifier {
     private static final Logger log = LoggerFactory.getLogger(PriceUpdateNotifier.class);
 
     @SendTo("/topic/price-change")
-    @KafkaListener(topics = "price-change", groupId = "trade-system")
-    public PriceUpdateDTO updatePrice() {
-        return new PriceUpdateDTO(new Stock("000001", MarketType.SZ), BigDecimal.valueOf(2));
+    @KafkaListener(topics = {KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC}, groupId = "trade-system")
+    public PriceUpdateDTO updatePrice(PriceUpdateDTO data) {
+        return data;
     }
+
 }
