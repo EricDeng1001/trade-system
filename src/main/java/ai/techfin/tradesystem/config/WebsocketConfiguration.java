@@ -42,7 +42,7 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
         String[] allowedOrigins = Optional.ofNullable(jHipsterProperties.getCors().getAllowedOrigins()).map(origins -> origins.toArray(new String[0])).orElse(new String[0]);
         registry.addEndpoint("/websocket")
             .setHandshakeHandler(defaultHandshakeHandler())
-            .setAllowedOrigins(allowedOrigins)
+            .setAllowedOrigins("*")
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());
     }
