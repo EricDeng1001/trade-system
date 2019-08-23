@@ -60,7 +60,7 @@ public class ModelOrderController {
         }
 
         Set<ModelOrder> orders = new HashSet<>();
-        for (String[] orderData : vm.getData()) {
+        for (String[] orderData : vm.getData().getBuyList()) {
             // format is "stock.market"
             logger.debug("{}, {}, {}", orderData[1], Double.parseDouble(orderData[1]),
                          BigDecimal.valueOf(Double.parseDouble(orderData[1])));
@@ -69,6 +69,17 @@ public class ModelOrderController {
                 orderData[0].substring(0, splitPoint),
                 MarketType.valueOf(orderData[0].substring(splitPoint + 1)),
                 new BigDecimal(orderData[1])
+            ));
+        }
+        for (String[] orderData : vm.getData().getSellList()) {
+            // format is "stock.market"
+            logger.debug("{}, {}, {}", orderData[1], Double.parseDouble(orderData[1]),
+                         BigDecimal.valueOf(Double.parseDouble(orderData[1])));
+            int splitPoint = orderData[0].indexOf('.');
+            orders.add(new ModelOrder(
+                orderData[0].substring(0, splitPoint),
+                MarketType.valueOf(orderData[0].substring(splitPoint + 1)),
+                new BigDecimal("-" + orderData[1])
             ));
         }
         ModelOrderList created = new ModelOrderList(vm.getModel(), productAccount.get(), orders);
