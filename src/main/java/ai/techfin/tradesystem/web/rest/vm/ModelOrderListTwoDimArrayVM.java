@@ -46,7 +46,7 @@ public class ModelOrderListTwoDimArrayVM {
         this.data = data;
     }
 
-    private static class Data {
+    public static class Data {
 
         @JsonProperty("sell_list")
         private String[][] sellList;
