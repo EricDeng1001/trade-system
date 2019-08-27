@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.config;
+package ai.techfin.tradesystem.security;
 
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import org.springframework.context.annotation.Configuration;

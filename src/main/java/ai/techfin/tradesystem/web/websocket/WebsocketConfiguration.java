@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.config;
+package ai.techfin.tradesystem.web.websocket;
 
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 
@@ -26,11 +26,6 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     public static final String IP_ADDRESS = "IP_ADDRESS";
 
-    private final JHipsterProperties jHipsterProperties;
-
-    public WebsocketConfiguration(JHipsterProperties jHipsterProperties) {
-        this.jHipsterProperties = jHipsterProperties;
-    }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -39,7 +34,6 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        String[] allowedOrigins = Optional.ofNullable(jHipsterProperties.getCors().getAllowedOrigins()).map(origins -> origins.toArray(new String[0])).orElse(new String[0]);
         registry.addEndpoint("/websocket")
             .setHandshakeHandler(defaultHandshakeHandler())
             .setAllowedOrigins("*")
