@@ -19,7 +19,7 @@ public class ModelOrder {
     @Enumerated(EnumType.STRING)
     private MarketType market;
 
-    @Column(name = "weight", precision = 15, scale = 15)
+    @Column(name = "weight", precision = 16, scale = 15)
     private BigDecimal weight;
 
     public ModelOrder() {

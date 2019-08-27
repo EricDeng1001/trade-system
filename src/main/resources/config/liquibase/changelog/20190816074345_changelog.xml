@@ -17,7 +17,7 @@
             </column>
             <column name="market" type="VARCHAR(255)"/>
             <column name="stock" type="VARCHAR(255)"/>
-            <column name="weight" type="DECIMAL(15, 15)"/>
+            <column name="weight" type="DECIMAL(16, 15)"/>
         </createTable>
     </changeSet>
     <changeSet author="antinus (generated)" id="1565941444170-6">
