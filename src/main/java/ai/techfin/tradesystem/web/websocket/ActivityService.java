@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.web.websocket;
 
-import static ai.techfin.tradesystem.config.WebsocketConfiguration.IP_ADDRESS;
+import static ai.techfin.tradesystem.web.websocket.WebsocketConfiguration.IP_ADDRESS;
 
 import ai.techfin.tradesystem.web.websocket.dto.ActivityDTO;
 
