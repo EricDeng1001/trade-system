@@ -12,10 +12,10 @@ public class Stock {
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
 
-    @Column(name = "stock", nullable = false)
+    @Column(name = "stock_name", nullable = false)
     private String name;
 
-    @Column(name = "market", nullable = false)
+    @Column(name = "stock_market", nullable = false)
     private MarketType market;
 
     public Stock(String name, MarketType market) {
