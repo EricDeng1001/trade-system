@@ -16,7 +16,7 @@ public class Placement {
     @Embedded
     private Stock stock;
 
-    @Column(name = "money", nullable = false, precision = 16, scale = 15)
+    @Column(name = "money", nullable = false, precision = 21, scale = 2)
     private BigDecimal money;
 
     @Column(name = "price_min", nullable = false, precision = 21, scale = 2)
