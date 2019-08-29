@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -13,6 +14,7 @@ public class XtpAccount {
 
     private static final Logger log = LoggerFactory.getLogger(XtpAccount.class);
 
+    @Id
     @Column(name = "account")
     private String account;
 
