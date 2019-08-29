@@ -1,40 +1,21 @@
 package ai.techfin.tradesystem.service.dto;
 
-import ai.techfin.tradesystem.domain.enums.MarketType;
+import ai.techfin.tradesystem.domain.Stock;
 
 import java.math.BigDecimal;
 
 public class ModelOrderDTO {
 
-    private String stock;
-
-    private MarketType market;
+    private Stock stock;
 
     private BigDecimal price;
 
     private BigDecimal money;
 
-    public ModelOrderDTO(String stock, MarketType market, BigDecimal price, BigDecimal money) {
+    public ModelOrderDTO(Stock stock, BigDecimal price, BigDecimal money) {
         this.stock = stock;
-        this.market = market;
         this.price = price;
         this.money = money;
-    }
-
-    public String getStock() {
-        return stock;
-    }
-
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
-
-    public MarketType getMarket() {
-        return market;
-    }
-
-    public void setMarket(MarketType market) {
-        this.market = market;
     }
 
     public BigDecimal getPrice() {
@@ -44,6 +25,10 @@ public class ModelOrderDTO {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    public Stock getStock() { return stock; }
+
+    public void setStock(Stock stock) { this.stock = stock; }
 
     public BigDecimal getMoney() {
         return money;

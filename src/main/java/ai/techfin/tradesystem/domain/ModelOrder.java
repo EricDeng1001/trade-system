@@ -1,23 +1,15 @@
 package ai.techfin.tradesystem.domain;
 
-import ai.techfin.tradesystem.domain.enums.MarketType;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.Embedded;
 import java.math.BigDecimal;
 
 @Embeddable
 public class ModelOrder {
 
-    @Column(name = "stock")
-    private String stock;
-
-    @Column(name = "market")
-    @Enumerated(EnumType.STRING)
-    private MarketType market;
+    @Embedded
+    private Stock stock;
 
     @Column(name = "weight", precision = 16, scale = 15)
     private BigDecimal weight;
@@ -25,9 +17,8 @@ public class ModelOrder {
     public ModelOrder() {
     }
 
-    public ModelOrder(String stock, MarketType market, BigDecimal weight) {
+    public ModelOrder(Stock stock, BigDecimal weight) {
         this.stock = stock;
-        this.market = market;
         this.weight = weight;
     }
 
@@ -39,20 +30,8 @@ public class ModelOrder {
         this.weight = weight;
     }
 
-    public String getStock() {
-        return stock;
-    }
+    public Stock getStock() { return stock; }
 
-    public void setStock(String stock) {
-        this.stock = stock;
-    }
-
-    public MarketType getMarket() {
-        return market;
-    }
-
-    public void setMarket(MarketType market) {
-        this.market = market;
-    }
+    public void setStock(Stock stock) { this.stock = stock; }
 
 }

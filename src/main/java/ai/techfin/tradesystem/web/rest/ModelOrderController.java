@@ -3,6 +3,7 @@ package ai.techfin.tradesystem.web.rest;
 import ai.techfin.tradesystem.domain.ModelOrder;
 import ai.techfin.tradesystem.domain.ModelOrderList;
 import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Stock;
 import ai.techfin.tradesystem.domain.enums.MarketType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
@@ -55,8 +56,8 @@ public class ModelOrderController {
         String productName = vm.getProduct();
         Optional<ProductAccount> productAccount = productAccountRepository.findByName(productName);
         if (productAccount.isEmpty()) {
-            // TODO: throw an error
-            return;
+            // TODO: throw an bad request error
+            throw new Error("product not found!");
         }
 
         Set<ModelOrder> orders = new HashSet<>();
@@ -66,8 +67,8 @@ public class ModelOrderController {
                          BigDecimal.valueOf(Double.parseDouble(orderData[1])));
             int splitPoint = orderData[0].indexOf('.');
             orders.add(new ModelOrder(
-                orderData[0].substring(0, splitPoint),
-                MarketType.valueOf(orderData[0].substring(splitPoint + 1)),
+                new Stock(orderData[0].substring(0, splitPoint),
+                          MarketType.valueOf(orderData[0].substring(splitPoint + 1))),
                 new BigDecimal(orderData[1])
             ));
         }
@@ -77,13 +78,20 @@ public class ModelOrderController {
                          BigDecimal.valueOf(Double.parseDouble(orderData[1])));
             int splitPoint = orderData[0].indexOf('.');
             orders.add(new ModelOrder(
-                orderData[0].substring(0, splitPoint),
-                MarketType.valueOf(orderData[0].substring(splitPoint + 1)),
+                new Stock(orderData[0].substring(0, splitPoint),
+                          MarketType.valueOf(orderData[0].substring(splitPoint + 1))),
                 new BigDecimal("-" + orderData[1])
             ));
         }
         ModelOrderList created = new ModelOrderList(vm.getModel(), productAccount.get(), orders);
+        logger.info("going to save: {}", created);
         modelOrderListRepository.save(created);
+    }
+
+    @GetMapping("/model-order-list/all")
+    @Secured(AuthoritiesConstants.TRADER)
+    public List<ModelOrderList> queryAll() {
+        return modelOrderListRepository.findAll();
     }
 
     @GetMapping("/model-order-list")
@@ -93,6 +101,7 @@ public class ModelOrderController {
         @RequestParam @NotNull Instant end,
         @RequestParam @NotNull Long productId
     ) {
+        logger.info("going to select between: {} to {}", begin, end);
         Optional<ProductAccount> product = productAccountRepository.findById(productId);
         if (product.isEmpty()) {
             return null;
