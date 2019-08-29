@@ -17,7 +17,7 @@
       <column name="list_id" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="money" type="DECIMAL(16, 15)">
+      <column name="money" type="DECIMAL(21, 2)">
         <constraints nullable="false"/>
       </column>
       <column name="price_max" type="DECIMAL(21, 2)">
@@ -26,8 +26,8 @@
       <column name="price_min" type="DECIMAL(21, 2)">
         <constraints nullable="false"/>
       </column>
-      <column name="market" type="INT"/>
-      <column name="name" type="VARCHAR(255)"/>
+      <column name="stock_market" type="INT"/>
+      <column name="stock_name" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
   <changeSet author="antinus (generated)" id="1567077272772-8">
@@ -38,11 +38,7 @@
       <column name="password" type="VARCHAR(255)"/>
       <column name="trade_key" type="VARCHAR(255)"/>
     </createTable>
-  </changeSet>
-  <changeSet author="antinus (generated)" id="1567077272772-9">
-    <addColumn tableName="model_order_list_data">
-      <column name="name" type="varchar(255)"/>
-    </addColumn>
+    <loadData tableName="xtp_account" file="config/liquibase/data/xtp_account.csv"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1567077272772-10">
     <addForeignKeyConstraint baseColumnNames="list_id" baseTableName="placement_list_data"
