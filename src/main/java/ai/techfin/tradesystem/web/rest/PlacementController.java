@@ -5,6 +5,7 @@ import ai.techfin.tradesystem.domain.PlacementList;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
+import ai.techfin.tradesystem.web.rest.errors.ResourceNotExistException;
 import ai.techfin.tradesystem.web.rest.vm.PlacementListVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,17 +38,16 @@ public class PlacementController {
     @PostMapping("/placement-list")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(AuthoritiesConstants.TRADER)
-    public void createPlacement(@RequestBody PlacementListVM placementListVM) throws Exception {
+    public void createPlacement(@RequestBody PlacementListVM placementListVM) {
         final long id = placementListVM.getModelOrderListId();
         Optional<ModelOrderList> modelOrderListOp = modelOrderListRepository.findById(id);
         if (modelOrderListOp.isEmpty()) {
-            throw new Exception("model order list is empty");
+            throw new ResourceNotExistException();
         }
         PlacementList created = new PlacementList();
         ModelOrderList modelOrderList = modelOrderListOp.get();
         created.setModelOrderList(modelOrderList);
         created.setPlacements(placementListVM.getPlacements());
-        modelOrderList.setPlacementList(created);
         placementListRepository.save(created);
     }
 
