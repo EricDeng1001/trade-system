@@ -9,7 +9,7 @@ import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.ModelOrderService;
-import ai.techfin.tradesystem.dto.ModelOrderDTO;
+import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListTwoDimArrayVM;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListVM;
 import org.slf4j.Logger;
@@ -52,12 +52,12 @@ public class ModelOrderController {
     @PostMapping("/model-order-list")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(AuthoritiesConstants.MODEL)
-    public void create(@RequestBody ModelOrderListTwoDimArrayVM vm) {
+    public void create(@RequestBody ModelOrderListTwoDimArrayVM vm) throws Exception {
         String productName = vm.getProduct();
         Optional<ProductAccount> productAccount = productAccountRepository.findByName(productName);
         if (productAccount.isEmpty()) {
             // TODO: throw an bad request error
-            throw new Error("product not found!");
+            throw new Exception("product not found!");
         }
 
         Set<ModelOrder> orders = new HashSet<>();

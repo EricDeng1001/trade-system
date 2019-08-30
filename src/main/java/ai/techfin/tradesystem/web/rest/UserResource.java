@@ -7,7 +7,7 @@ import ai.techfin.tradesystem.repository.search.UserSearchRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.MailService;
 import ai.techfin.tradesystem.service.UserService;
-import ai.techfin.tradesystem.dto.UserDTO;
+import ai.techfin.tradesystem.service.dto.UserDTO;
 import ai.techfin.tradesystem.web.rest.errors.BadRequestAlertException;
 import ai.techfin.tradesystem.web.rest.errors.EmailAlreadyUsedException;
 import ai.techfin.tradesystem.web.rest.errors.LoginAlreadyUsedException;

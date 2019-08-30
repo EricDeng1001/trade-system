@@ -38,7 +38,7 @@ public class ModelOrderList {
                inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private ProductAccount productAccount;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PlacementList placementList;
 
     public ModelOrderList(String model, ProductAccount productAccount,

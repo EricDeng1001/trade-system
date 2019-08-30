@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.dto;
+package ai.techfin.tradesystem.service.dto;
 
 import java.time.Instant;
 

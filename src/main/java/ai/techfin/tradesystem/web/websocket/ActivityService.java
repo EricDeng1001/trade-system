@@ -2,7 +2,7 @@ package ai.techfin.tradesystem.web.websocket;
 
 import static ai.techfin.tradesystem.web.websocket.WebsocketConfiguration.IP_ADDRESS;
 
-import ai.techfin.tradesystem.dto.ActivityDTO;
+import ai.techfin.tradesystem.service.dto.ActivityDTO;
 
 import java.security.Principal;
 import java.time.Instant;

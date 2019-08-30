@@ -11,7 +11,7 @@ import ai.techfin.tradesystem.repository.UserRepository;
 import ai.techfin.tradesystem.repository.search.UserSearchRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.security.SecurityUtils;
-import ai.techfin.tradesystem.dto.UserDTO;
+import ai.techfin.tradesystem.service.dto.UserDTO;
 import ai.techfin.tradesystem.service.util.RandomUtil;
 import ai.techfin.tradesystem.web.rest.errors.EmailAlreadyUsedException;
 import ai.techfin.tradesystem.web.rest.errors.InvalidPasswordException;

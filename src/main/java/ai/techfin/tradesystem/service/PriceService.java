@@ -3,7 +3,7 @@ package ai.techfin.tradesystem.service;
 import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.tradesystem.domain.Stock;
 import ai.techfin.tradesystem.domain.enums.MarketType;
-import ai.techfin.tradesystem.dto.PriceUpdateDTO;
+import ai.techfin.tradesystem.service.dto.PriceUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;

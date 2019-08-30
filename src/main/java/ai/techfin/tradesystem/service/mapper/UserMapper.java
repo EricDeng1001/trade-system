@@ -1,8 +1,8 @@
-package ai.techfin.tradesystem.dto.mapper;
+package ai.techfin.tradesystem.service.mapper;
 
 import ai.techfin.tradesystem.domain.Authority;
 import ai.techfin.tradesystem.domain.User;
-import ai.techfin.tradesystem.dto.UserDTO;
+import ai.techfin.tradesystem.service.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
 

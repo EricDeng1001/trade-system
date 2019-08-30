@@ -30,6 +30,14 @@ public class Placement {
         this.money = money;
     }
 
+    public BigDecimal getPriceMin() { return priceMin; }
+
+    public void setPriceMin(BigDecimal priceMin) { this.priceMin = priceMin; }
+
+    public BigDecimal getPriceMax() { return priceMax; }
+
+    public void setPriceMax(BigDecimal priceMax) { this.priceMax = priceMax; }
+
     public Stock getStock() { return stock; }
 
     public void setStock(Stock stock) { this.stock = stock; }

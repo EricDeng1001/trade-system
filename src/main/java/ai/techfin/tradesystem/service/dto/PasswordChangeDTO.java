@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.dto;
+package ai.techfin.tradesystem.service.dto;
 
 /**
  * A DTO representing a password change required data - current and new password.

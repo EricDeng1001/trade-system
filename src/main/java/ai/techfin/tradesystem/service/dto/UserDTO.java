@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.dto;
+package ai.techfin.tradesystem.service.dto;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.Authority;
