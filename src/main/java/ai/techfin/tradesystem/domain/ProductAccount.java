@@ -31,7 +31,7 @@ public class ProductAccount implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @NotNull
@@ -49,7 +49,7 @@ public class ProductAccount implements Serializable {
     private Instant createdAt;
 
     @NotNull
-    @Column(name = "provider", nullable = false)
+    @Column(nullable = false)
     private String provider;
 
     @ManyToMany(

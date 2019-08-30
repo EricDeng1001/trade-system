@@ -18,10 +18,9 @@ public class ModelOrderList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Null(groups = PERSIST.class)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "model", nullable = false)
+    @Column(nullable = false)
     private String model;
 
     @Column(name = "created_at", nullable = false)
@@ -63,7 +62,21 @@ public class ModelOrderList {
 
     public PlacementList getPlacementList() { return placementList; }
 
-    public void setPlacementList(PlacementList placementList) { this.placementList = placementList; }
+    public void setPlacementList(PlacementList placementList) {
+        if (this.placementList != null) {
+            this.placementList.setModelOrderList(null);
+        }
+        this.placementList = placementList;
+        if (placementList != null) {
+            final ModelOrderList modelOrderList = placementList.getModelOrderList();
+            if (modelOrderList != this) {
+                if (modelOrderList != null) {
+                    modelOrderList.setPlacementList(null);
+                }
+                placementList.setModelOrderList(this);
+            }
+        }
+    }
 
     public Long getId() {
         return id;

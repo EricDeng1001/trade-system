@@ -11,7 +11,7 @@ public class ModelOrder {
     @Embedded
     private Stock stock;
 
-    @Column(name = "weight", precision = 16, scale = 15)
+    @Column(precision = 16, scale = 15)
     private BigDecimal weight;
 
     public ModelOrder() {

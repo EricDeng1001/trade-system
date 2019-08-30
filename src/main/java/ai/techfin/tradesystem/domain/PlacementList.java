@@ -42,7 +42,18 @@ public class PlacementList {
     public ModelOrderList getModelOrderList() { return modelOrderList; }
 
     public void setModelOrderList(ModelOrderList modelOrderList) {
+        if (this.modelOrderList != null) {
+            this.modelOrderList.setPlacementList(null);
+        }
         this.modelOrderList = modelOrderList;
+        if (modelOrderList == null) { return; }
+        final PlacementList placementList = modelOrderList.getPlacementList();
+        if (placementList != this) {
+            if (placementList != null) {
+                placementList.setModelOrderList(null);
+            }
+            modelOrderList.setPlacementList(this);
+        }
     }
 
     public Instant getCreatedAt() { return createdAt; }
