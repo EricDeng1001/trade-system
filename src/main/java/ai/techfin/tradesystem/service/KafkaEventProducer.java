@@ -8,14 +8,14 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TradeSystemKafkaProducer {
+public class KafkaEventProducer {
 
-    private static final Logger log = LoggerFactory.getLogger(TradeSystemKafkaProducer.class);
+    private static final Logger log = LoggerFactory.getLogger(KafkaEventProducer.class);
 
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
-    public TradeSystemKafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
