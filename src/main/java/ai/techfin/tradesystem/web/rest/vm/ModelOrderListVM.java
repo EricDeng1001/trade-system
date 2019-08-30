@@ -15,11 +15,15 @@ public class ModelOrderListVM {
 
     private Instant createdAt;
 
-    public ModelOrderListVM(List<ModelOrderDTO> placements, String model, String product, Instant createdAt) {
+    private Long id;
+
+    public ModelOrderListVM(List<ModelOrderDTO> placements, String model, String product, Instant createdAt,
+                            Long id) {
         this.placements = placements;
         this.model = model;
         this.product = product;
         this.createdAt = createdAt;
+        this.id = id;
     }
 
     public List<ModelOrderDTO> getPlacements() {
@@ -29,6 +33,10 @@ public class ModelOrderListVM {
     public void setPlacements(List<ModelOrderDTO> placements) {
         this.placements = placements;
     }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getModel() {
         return model;
