@@ -88,12 +88,6 @@ public class ModelOrderController {
         modelOrderListRepository.save(created);
     }
 
-    @GetMapping("/model-order-list/all")
-    @Secured(AuthoritiesConstants.TRADER)
-    public List<ModelOrderList> queryAll() {
-        return modelOrderListRepository.findAll();
-    }
-
     @GetMapping("/model-order-list")
     @Secured(AuthoritiesConstants.TRADER)
     public List<ModelOrderListVM> queryPlacementList(
