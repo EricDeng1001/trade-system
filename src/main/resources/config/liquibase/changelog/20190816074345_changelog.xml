@@ -17,7 +17,7 @@
       <column name="list_id" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="market" type="VARCHAR(255)"/>
+      <column name="market" type="INT"/>
       <column name="name" type="VARCHAR(255)"/>
       <column name="weight" type="DECIMAL(16, 15)"/>
     </createTable>
