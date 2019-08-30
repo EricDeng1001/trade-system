@@ -26,8 +26,8 @@
       <column name="price_min" type="DECIMAL(21, 2)">
         <constraints nullable="false"/>
       </column>
-      <column name="stock_market" type="INT"/>
-      <column name="stock_name" type="VARCHAR(255)"/>
+      <column name="market" type="INT"/>
+      <column name="name" type="VARCHAR(255)"/>
     </createTable>
   </changeSet>
   <changeSet author="antinus (generated)" id="1567077272772-8">

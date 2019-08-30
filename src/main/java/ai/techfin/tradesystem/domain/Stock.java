@@ -14,10 +14,10 @@ public class Stock {
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
 
-    @Column(name = "stock_name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "stock_market", nullable = false)
+    @Column(nullable = false)
     @Enumerated(value = EnumType.ORDINAL)
     private MarketType market;
 
