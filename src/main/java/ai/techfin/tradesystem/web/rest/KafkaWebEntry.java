@@ -1,19 +1,19 @@
 package ai.techfin.tradesystem.web.rest;
 
-import ai.techfin.tradesystem.service.TradeSystemKafkaProducer;
+import ai.techfin.tradesystem.service.KafkaEventProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/trade-system-kafka")
-public class TradeSystemKafkaResource {
+public class KafkaWebEntry {
 
-    private final Logger log = LoggerFactory.getLogger(TradeSystemKafkaResource.class);
+    private final Logger log = LoggerFactory.getLogger(KafkaWebEntry.class);
 
-    private TradeSystemKafkaProducer kafkaProducer;
+    private KafkaEventProducer kafkaProducer;
 
-    public TradeSystemKafkaResource(TradeSystemKafkaProducer kafkaProducer) {
+    public KafkaWebEntry(KafkaEventProducer kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
     }
 
