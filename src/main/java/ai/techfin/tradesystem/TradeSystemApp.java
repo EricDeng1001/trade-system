@@ -1,10 +1,7 @@
 package ai.techfin.tradesystem;
 
-import ai.techfin.tradesystem.config.ApplicationProperties;
-
 import ai.techfin.tradesystem.config.ApplicationConstants;
-
-import ai.techfin.tradesystem.security.SecurityProperties;
+import ai.techfin.tradesystem.config.ApplicationProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,32 +32,31 @@ public class TradeSystemApp implements InitializingBean {
     }
 
     /**
-     * Initializes tradeSystem.
-     * <p>
-     * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
-     * <p>
-     * You can find more information on how profiles work with JHipster on <a href="https://www.jhipster.tech/profiles/">https://www.jhipster.tech/profiles/</a>.
-     */
-    @Override
-    public void afterPropertiesSet() {
-        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(ApplicationConstants.Profile.DEVELOPMENT) && activeProfiles.contains(ApplicationConstants.Profile.PRODUCTION)) {
-            logger.error(
-                "Application should not run with both the 'dev' and 'prod' profiles at the same time."
-            );
-            throw new Error("Application should not run with both the 'dev' and 'prod' profiles at the same time.");
-        }
-    }
-
-    /**
      * Main method, used to run the application.
-     *
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(TradeSystemApp.class);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);
+    }
+
+    /**
+     * Initializes tradeSystem.
+     * <p>
+     * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
+     * </p>
+     */
+    @Override
+    public void afterPropertiesSet() {
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(ApplicationConstants.Profile.DEVELOPMENT) &&
+            activeProfiles.contains(ApplicationConstants.Profile.PRODUCTION)) {
+            logger.error(
+                "Application should not run with both the 'dev' and 'prod' profiles at the same time."
+            );
+            throw new Error("Application should not run with both the 'dev' and 'prod' profiles at the same time.");
+        }
     }
 
     private static void logApplicationStartup(Environment env) {
@@ -80,10 +76,10 @@ public class TradeSystemApp implements InitializingBean {
             logger.warn("The host name could not be determined, using `localhost` as fallback");
         }
         logger.info("\n----------------------------------------------------------\n\t" +
-                "Application '{}' is running! Access URLs:\n\t" +
-                "Local: \t\t{}://localhost:{}{}\n\t" +
-                "External: \t{}://{}:{}{}\n\t" +
-                "Profile(s): \t{}\n----------------------------------------------------------",
+                        "Application '{}' is running! Access URLs:\n\t" +
+                        "Local: \t\t{}://localhost:{}{}\n\t" +
+                        "External: \t{}://{}:{}{}\n\t" +
+                        "Profile(s): \t{}\n----------------------------------------------------------",
                     env.getProperty("spring.application.name"),
                     protocol,
                     serverPort,
@@ -94,4 +90,5 @@ public class TradeSystemApp implements InitializingBean {
                     contextPath,
                     env.getActiveProfiles());
     }
+
 }
