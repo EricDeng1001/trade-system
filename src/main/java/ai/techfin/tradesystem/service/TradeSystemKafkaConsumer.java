@@ -13,9 +13,8 @@ public class TradeSystemKafkaConsumer {
 
     private final Logger log = LoggerFactory.getLogger(TradeSystemKafkaConsumer.class);
 
-
     @KafkaListener(topics = KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, groupId = "trade-system")
-    public void consume(String message) throws IOException {
+    public void consume(String message) {
         log.info("Consumed message in {} : {}", KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, message);
     }
 
