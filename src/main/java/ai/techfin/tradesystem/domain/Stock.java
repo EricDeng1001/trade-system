@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Embeddable
 public class Stock {
@@ -16,6 +18,7 @@ public class Stock {
     private String name;
 
     @Column(name = "stock_market", nullable = false)
+    @Enumerated(value = EnumType.ORDINAL)
     private MarketType market;
 
     public Stock(String name, MarketType market) {
