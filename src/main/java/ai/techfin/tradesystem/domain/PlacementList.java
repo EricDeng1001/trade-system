@@ -25,6 +25,9 @@ public class PlacementList {
                      joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
     private Set<Placement> placements;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private ModelOrderList modelOrderList;
+
     public PlacementList(Set<Placement> placements) {
         this.placements = placements;
     }
@@ -35,6 +38,12 @@ public class PlacementList {
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
+
+    public ModelOrderList getModelOrderList() { return modelOrderList; }
+
+    public void setModelOrderList(ModelOrderList modelOrderList) {
+        this.modelOrderList = modelOrderList;
+    }
 
     public Instant getCreatedAt() { return createdAt; }
 

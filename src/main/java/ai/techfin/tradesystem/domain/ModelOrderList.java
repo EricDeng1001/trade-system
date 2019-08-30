@@ -38,6 +38,9 @@ public class ModelOrderList {
                inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private ProductAccount productAccount;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private PlacementList placementList;
+
     public ModelOrderList(String model, ProductAccount productAccount,
                           Set<ModelOrder> orders) {
         logger.debug("A model order list is created with full data");
@@ -57,6 +60,10 @@ public class ModelOrderList {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
+    public PlacementList getPlacementList() { return placementList; }
+
+    public void setPlacementList(PlacementList placementList) { this.placementList = placementList; }
 
     public Long getId() {
         return id;
