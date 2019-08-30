@@ -21,6 +21,9 @@ public class Stock {
     @Enumerated(value = EnumType.ORDINAL)
     private MarketType market;
 
+    public Stock() {
+    }
+
     public Stock(String name, MarketType market) {
         this.name = name;
         this.market = market;
