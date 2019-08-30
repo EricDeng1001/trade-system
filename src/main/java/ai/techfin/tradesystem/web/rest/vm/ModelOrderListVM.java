@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.web.rest.vm;
 
-import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
+import ai.techfin.tradesystem.dto.ModelOrderDTO;
 
 import java.time.Instant;
 import java.util.List;

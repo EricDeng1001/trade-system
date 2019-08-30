@@ -1,7 +1,7 @@
 package ai.techfin.tradesystem.service;
 
 import ai.techfin.tradesystem.domain.ModelOrder;
-import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
+import ai.techfin.tradesystem.dto.ModelOrderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

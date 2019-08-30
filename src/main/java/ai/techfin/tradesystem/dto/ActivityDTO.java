@@ -1,4 +1,4 @@
-package ai.techfin.tradesystem.web.websocket.dto;
+package ai.techfin.tradesystem.dto;
 
 import java.time.Instant;
 

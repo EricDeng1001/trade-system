@@ -3,7 +3,7 @@ package ai.techfin.tradesystem.service;
 import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.tradesystem.domain.Stock;
 import ai.techfin.tradesystem.domain.enums.MarketType;
-import ai.techfin.tradesystem.web.websocket.dto.PriceUpdateDTO;
+import ai.techfin.tradesystem.dto.PriceUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,17 +17,18 @@ public class PriceService {
 
     private static final Logger log = LoggerFactory.getLogger(PriceService.class);
 
-    private final KafkaTemplate<String, PriceUpdateDTO> priceUpdatePublisher;
+    private final KafkaTemplate<String, String> priceUpdatePublisher;
 
-    public PriceService(KafkaTemplate<String, PriceUpdateDTO> priceUpdatePublisher) {
+    public PriceService(KafkaTemplate<String, String> priceUpdatePublisher) {
         this.priceUpdatePublisher = priceUpdatePublisher;
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 10000)
     public void updatePrice() {
         priceUpdatePublisher.send(
             KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC,
-            new PriceUpdateDTO(new Stock("000001", MarketType.SZ), BigDecimal.valueOf(2), "xtp"));
+            new PriceUpdateDTO(new Stock("000001", MarketType.SZ), BigDecimal.valueOf(20 + 10 * Math.random()), "xtp").toString());
     }
+
 
 }

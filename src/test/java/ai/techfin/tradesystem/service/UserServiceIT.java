@@ -7,7 +7,7 @@ import ai.techfin.tradesystem.domain.User;
 import ai.techfin.tradesystem.repository.PersistentTokenRepository;
 import ai.techfin.tradesystem.repository.search.UserSearchRepository;
 import ai.techfin.tradesystem.repository.UserRepository;
-import ai.techfin.tradesystem.service.dto.UserDTO;
+import ai.techfin.tradesystem.dto.UserDTO;
 import ai.techfin.tradesystem.service.util.RandomUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;

@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.web.rest.vm;
 
-import ai.techfin.tradesystem.service.dto.UserDTO;
+import ai.techfin.tradesystem.dto.UserDTO;
 import javax.validation.constraints.Size;
 
 /**

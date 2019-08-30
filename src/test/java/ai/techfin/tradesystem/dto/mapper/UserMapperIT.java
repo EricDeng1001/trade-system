@@ -1,9 +1,9 @@
-package ai.techfin.tradesystem.service.mapper;
+package ai.techfin.tradesystem.dto.mapper;
 
 
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.User;
-import ai.techfin.tradesystem.service.dto.UserDTO;
+import ai.techfin.tradesystem.dto.UserDTO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
