@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="antinus (generated)" id="1567147927717-8">
+        <addColumn tableName="placement_list">
+            <column name="model_order_list_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1567147927717-11">
+        <addColumn tableName="model_order_list">
+            <column name="placement_list_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1567147927717-12">
+        <addForeignKeyConstraint baseColumnNames="placement_list_id" baseTableName="model_order_list" constraintName="FKbo4lcpl3d2qf2raosos5mqf12" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="placement_list" validate="true"/>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1567147927717-13">
+        <addForeignKeyConstraint baseColumnNames="model_order_list_id" baseTableName="placement_list" constraintName="FKqtue9fj685hdy6rnegxbvk3kt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="model_order_list" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
