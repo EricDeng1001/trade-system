@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.web.rest;
 
+import ai.techfin.tradesystem.TestUtil;
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.Authority;
 import ai.techfin.tradesystem.domain.User;
@@ -41,24 +42,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class UserResourceIT {
+class UserResourceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
-    private static final String UPDATED_LOGIN = "jhipster";
+    private static final String UPDATED_LOGIN = "xyz";
 
     private static final Long DEFAULT_ID = 1L;
 
     private static final String DEFAULT_PASSWORD = "passjohndoe";
-    private static final String UPDATED_PASSWORD = "passjhipster";
+    private static final String UPDATED_PASSWORD = "passcc";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
-    private static final String UPDATED_EMAIL = "jhipster@localhost";
+    private static final String UPDATED_EMAIL = "xyz@localhost";
 
     private static final String DEFAULT_FIRSTNAME = "john";
-    private static final String UPDATED_FIRSTNAME = "jhipsterFirstName";
+    private static final String UPDATED_FIRSTNAME = "ccc";
 
     private static final String DEFAULT_LASTNAME = "doe";
-    private static final String UPDATED_LASTNAME = "jhipsterLastName";
+    private static final String UPDATED_LASTNAME = "ffsada";
 
     private static final String DEFAULT_IMAGEURL = "http://placehold.it/50x50";
     private static final String UPDATED_IMAGEURL = "http://placehold.it/40x40";
@@ -71,8 +72,6 @@ public class UserResourceIT {
 
     /**
      * This repository is mocked in the ai.techfin.tradesystem.repository.search test package.
-     *
-     * @see ai.techfin.tradesystem.repository.search.UserSearchRepositoryMockConfiguration
      */
     @Autowired
     private UserSearchRepository mockUserSearchRepository;

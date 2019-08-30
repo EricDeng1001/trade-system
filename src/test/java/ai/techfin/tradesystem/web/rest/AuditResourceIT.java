@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.web.rest;
 
+import ai.techfin.tradesystem.TestUtil;
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.config.audit.AuditEventConverter;
 import ai.techfin.tradesystem.domain.PersistentAuditEvent;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
 @Transactional
-public class AuditResourceIT {
+class AuditResourceIT {
 
     private static final String SAMPLE_PRINCIPAL = "SAMPLE_PRINCIPAL";
 

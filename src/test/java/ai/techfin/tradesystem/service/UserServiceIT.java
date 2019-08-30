@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
 @Transactional
-public class UserServiceIT {
+class UserServiceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
 

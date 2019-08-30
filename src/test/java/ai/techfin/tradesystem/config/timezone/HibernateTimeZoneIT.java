@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
@@ -23,40 +24,22 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class HibernateTimeZoneIT {
+@ActiveProfiles("test")
+class HibernateTimeZoneIT {
 
     @Autowired
     private DateTimeWrapperRepository dateTimeWrapperRepository;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private DateTimeWrapper dateTimeWrapper;
+
     private DateTimeFormatter dateTimeFormatter;
+
     private DateTimeFormatter timeFormatter;
+
     private DateTimeFormatter dateFormatter;
-
-    @BeforeEach
-    void setup() {
-        dateTimeWrapper = new DateTimeWrapper();
-        dateTimeWrapper.setInstant(Instant.parse("2014-11-12T05:50:00.0Z"));
-        dateTimeWrapper.setLocalDateTime(LocalDateTime.parse("2014-11-12T07:50:00.0"));
-        dateTimeWrapper.setOffsetDateTime(OffsetDateTime.parse("2011-12-14T08:30:00.0Z"));
-        dateTimeWrapper.setZonedDateTime(ZonedDateTime.parse("2011-12-14T08:30:00.0Z"));
-        dateTimeWrapper.setLocalTime(LocalTime.parse("14:30:00"));
-        dateTimeWrapper.setOffsetTime(OffsetTime.parse("14:30:00+02:00"));
-        dateTimeWrapper.setLocalDate(LocalDate.parse("2016-09-10"));
-
-        dateTimeFormatter = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss.S")
-            .withZone(ZoneId.of("UTC"));
-
-        timeFormatter = DateTimeFormatter
-            .ofPattern("HH:mm:ss")
-            .withZone(ZoneId.of("UTC"));
-
-        dateFormatter = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd");
-    }
 
     @Test
     @Transactional
@@ -161,10 +144,11 @@ public class HibernateTimeZoneIT {
     }
 
     private String generateSqlRequest(String fieldName, long id) {
-        return format("SELECT %s FROM jhi_date_time_wrapper where id=%d", fieldName, id);
+        return format("SELECT %s FROM date_time_wrapper where id=%d", fieldName, id);
     }
 
-    private void assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(SqlRowSet sqlRowSet, String expectedValue) {
+    private void assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(SqlRowSet sqlRowSet,
+                                                                                String expectedValue) {
         while (sqlRowSet.next()) {
             String dbValue = sqlRowSet.getString(1);
 
@@ -172,4 +156,28 @@ public class HibernateTimeZoneIT {
             assertThat(dbValue).isEqualTo(expectedValue);
         }
     }
+
+    @BeforeEach
+    void setup() {
+        dateTimeWrapper = new DateTimeWrapper();
+        dateTimeWrapper.setInstant(Instant.parse("2014-11-12T05:50:00.0Z"));
+        dateTimeWrapper.setLocalDateTime(LocalDateTime.parse("2014-11-12T07:50:00.0"));
+        dateTimeWrapper.setOffsetDateTime(OffsetDateTime.parse("2011-12-14T08:30:00.0Z"));
+        dateTimeWrapper.setZonedDateTime(ZonedDateTime.parse("2011-12-14T08:30:00.0Z"));
+        dateTimeWrapper.setLocalTime(LocalTime.parse("14:30:00"));
+        dateTimeWrapper.setOffsetTime(OffsetTime.parse("14:30:00+02:00"));
+        dateTimeWrapper.setLocalDate(LocalDate.parse("2016-09-10"));
+
+        dateTimeFormatter = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss.S")
+            .withZone(ZoneId.of("UTC"));
+
+        timeFormatter = DateTimeFormatter
+            .ofPattern("HH:mm:ss")
+            .withZone(ZoneId.of("UTC"));
+
+        dateFormatter = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd");
+    }
+
 }

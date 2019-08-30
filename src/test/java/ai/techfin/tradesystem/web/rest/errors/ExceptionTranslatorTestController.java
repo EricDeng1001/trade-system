@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-public class ExceptionTranslatorTestController {
+class ExceptionTranslatorTestController {
 
     @GetMapping("/test/concurrency-failure")
     public void concurrencyFailure() {
@@ -30,7 +30,7 @@ public class ExceptionTranslatorTestController {
     }
 
     @GetMapping("/test/access-denied")
-    public void accessdenied() {
+    public void accessDenied() {
         throw new AccessDeniedException("test access denied!");
     }
 

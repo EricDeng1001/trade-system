@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class ExceptionTranslatorIT {
+class ExceptionTranslatorIT {
 
     @Autowired
     private ExceptionTranslatorTestController controller;

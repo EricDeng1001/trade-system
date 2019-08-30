@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
 @Transactional
-public class DomainUserDetailsServiceIT {
+class DomainUserDetailsServiceIT {
 
     private static final String USER_ONE_LOGIN = "test-user-one";
 

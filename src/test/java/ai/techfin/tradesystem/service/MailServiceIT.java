@@ -43,7 +43,7 @@ import static org.mockito.Mockito.*;
  */
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class MailServiceIT {
+class MailServiceIT {
 
     private static String languages[] = {
         "zh-cn"

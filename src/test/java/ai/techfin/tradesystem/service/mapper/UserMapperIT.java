@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @EmbeddedKafka
 @SpringBootTest(classes = TradeSystemApp.class)
-public class UserMapperIT {
+class UserMapperIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
     private static final Long DEFAULT_ID = 1L;
