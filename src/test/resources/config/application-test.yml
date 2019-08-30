@@ -14,19 +14,14 @@
 # ===================================================================
 
 spring:
-  application:
-    name: tradeSystem
-
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:tradeSystem;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MULTI_THREADED=FALSE
-    name:
-    username:
-    password:
     hikari:
       auto-commit: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     database: H2
     open-in-view: false
     show-sql: false
@@ -51,9 +46,6 @@ spring:
   kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
   liquibase:
-    enabled: true
-    change-log: classpath:config/liquibase/master.xml
-    drop-first: false
     contexts: test
   mail:
     host: localhost
@@ -81,45 +73,3 @@ spring:
 server:
   port: 10344
   address: localhost
-
-# ===================================================================
-# JHipster specific properties
-#
-# Full reference is available at: https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-jhipster:
-  clientApp:
-    name: 'tradeSystemApp'
-  logging:
-    # To test json console appender
-    use-json-format: true # By default, logs are in Json format
-    # To test logstash appender
-    logstash:
-      enabled: false
-      host: localhost
-      port: 5000
-      queue-size: 512
-
-  mail:
-    from: test@localhost
-    base-url: http://127.0.0.1:8080
-  security:
-    remember-me:
-      # security key (this key should be unique for your application, and kept secret)
-      key: 5be9c81018863860683c04e3fd3e05c306005b56b1e56a6292768910f7da6c1e7891c97c31751eb43b25692fdcbe01cde37e
-  metrics:
-    logs: # Reports metrics in the logs
-      enabled: true
-      report-frequency: 60 # in seconds
-
-# ===================================================================
-# Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-# application:

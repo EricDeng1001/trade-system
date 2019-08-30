@@ -83,9 +83,6 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
     min-response-size: 1024
 
-security:
-  rememberMeKey: 5be9c81018863860683c04e3fd3e05c306005b56b1e56a6292768910f7da6c1e7891c97c31751eb43b25692fdcbe01cde37e
-
 # ===================================================================
 # JHipster specific properties
 #
