@@ -2,14 +2,18 @@ package ai.techfin.tradesystem.web.rest.vm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 
 public class ModelOrderListTwoDimArrayVM {
 
+    @NotNull
     private String model;
 
+    @NotNull
     private String product;
 
+    @NotNull
     private Data data;
 
     public ModelOrderListTwoDimArrayVM() {}
@@ -49,9 +53,11 @@ public class ModelOrderListTwoDimArrayVM {
     public static class Data {
 
         @JsonProperty("sell_list")
+        @NotNull
         private String[][] sellList;
 
         @JsonProperty("buy_list")
+        @NotNull
         private String[][] buyList;
 
         public String[][] getSellList() { return sellList; }
