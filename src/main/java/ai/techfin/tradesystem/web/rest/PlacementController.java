@@ -1,10 +1,9 @@
 package ai.techfin.tradesystem.web.rest;
 
 import ai.techfin.tradesystem.domain.ModelOrderList;
-import ai.techfin.tradesystem.domain.PlacementList;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
-import ai.techfin.tradesystem.repository.PlacementListRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
+import ai.techfin.tradesystem.service.PlacementService;
 import ai.techfin.tradesystem.web.rest.errors.ResourceNotExistException;
 import ai.techfin.tradesystem.web.rest.vm.PlacementListVM;
 import org.slf4j.Logger;
@@ -27,12 +26,12 @@ public class PlacementController {
 
     private final ModelOrderListRepository modelOrderListRepository;
 
-    private final PlacementListRepository placementListRepository;
+    private final PlacementService placementService;
 
     public PlacementController(ModelOrderListRepository modelOrderListRepository,
-                               PlacementListRepository placementListRepository) {
+                               PlacementService placementService) {
         this.modelOrderListRepository = modelOrderListRepository;
-        this.placementListRepository = placementListRepository;
+        this.placementService = placementService;
     }
 
     @PostMapping("/placement-list")
@@ -44,11 +43,7 @@ public class PlacementController {
         if (modelOrderListOp.isEmpty()) {
             throw new ResourceNotExistException();
         }
-        PlacementList created = new PlacementList();
-        ModelOrderList modelOrderList = modelOrderListOp.get();
-        created.setModelOrderList(modelOrderList);
-        created.setPlacements(placementListVM.getPlacements());
-        placementListRepository.save(created);
+        placementService.makePlacement(modelOrderListOp.get(), placementListVM.getPlacements());
     }
 
 }
