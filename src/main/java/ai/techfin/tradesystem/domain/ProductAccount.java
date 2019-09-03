@@ -46,7 +46,7 @@ public class ProductAccount implements Serializable {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @NotNull
     @Column(nullable = false)
@@ -65,6 +65,9 @@ public class ProductAccount implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
                joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<ModelOrderList> modelOrderLists;
+
+    public ProductAccount() {
+    }
 
     /**
      * simply add a MOL relation to this PA
