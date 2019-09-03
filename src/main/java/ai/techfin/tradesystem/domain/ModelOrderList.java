@@ -4,6 +4,7 @@ import ai.techfin.tradesystem.aop.validation.group.PERSIST;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 import java.time.Instant;
@@ -26,6 +27,7 @@ public class ModelOrderList {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
+    @Nullable
     @ElementCollection(targetClass = ModelOrder.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "model_order_list_data",
                      joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
@@ -63,6 +65,8 @@ public class ModelOrderList {
     public PlacementList getPlacementList() { return placementList; }
 
     public void setPlacementList(PlacementList placementList) {
+        if (placementList == this.placementList) return;
+
         if (this.placementList != null) {
             this.placementList.setModelOrderList(null);
         }
