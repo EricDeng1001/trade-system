@@ -24,9 +24,8 @@ class KafkaWebEntryIT {
 
     @BeforeEach
     void setup() {
-        KafkaWebEntry kafkaResource = new KafkaWebEntry(kafkaProducer);
-
-        this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource)
+        KafkaWebEntry kafkaWebEntry = new KafkaWebEntry(kafkaProducer);
+        this.restMockMvc = MockMvcBuilders.standaloneSetup(kafkaWebEntry)
             .build();
     }
 

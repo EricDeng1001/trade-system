@@ -68,7 +68,6 @@ class UserServiceIT {
     /**
      * This repository is mocked in the ai.techfin.tradesystem.repository.search test package.
      *
-     * @see ai.techfin.tradesystem.repository.search.UserSearchRepositoryMockConfiguration
      */
     @Autowired
     private UserSearchRepository mockUserSearchRepository;
