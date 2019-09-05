@@ -13,7 +13,7 @@ public class KafkaEventLogger {
 
     @KafkaListener(topics = KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, groupId = "trade-system")
     public void consume(String message) {
-        log.info("Consumed message in {} : {}", KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, message);
+        log.debug("Consumed message in {} : {}", KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, message);
     }
 
 }
