@@ -43,7 +43,7 @@ public class ModelOrderList {
     private PlacementList placementList;
 
     public ModelOrderList(String model, ProductAccount productAccount,
-                          Set<ModelOrder> orders) {
+                          @Nullable Set<ModelOrder> orders) {
         logger.debug("A model order list is created with full data");
         this.model = model;
         this.orders = orders;
@@ -52,6 +52,10 @@ public class ModelOrderList {
 
     public ModelOrderList() {
         logger.debug("A model order list is created");
+    }
+
+    private void removeRelationship(PlacementList modelOrderList) {
+
     }
 
     public Instant getCreatedAt() {
@@ -65,19 +69,26 @@ public class ModelOrderList {
     public PlacementList getPlacementList() { return placementList; }
 
     public void setPlacementList(PlacementList placementList) {
-        if (placementList == this.placementList) return;
-
-        if (this.placementList != null) {
-            this.placementList.setModelOrderList(null);
+        if (placementList == this.placementList) {
+            return;
         }
-        this.placementList = placementList;
-        if (placementList != null) {
-            final ModelOrderList modelOrderList = placementList.getModelOrderList();
-            if (modelOrderList != this) {
-                if (modelOrderList != null) {
-                    modelOrderList.setPlacementList(null);
-                }
-                placementList.setModelOrderList(this);
+
+        var origin = this.placementList;
+        if (placementList == null) {
+            this.placementList = null;
+            origin.setModelOrderList(null);
+        } else {
+            this.placementList = placementList;
+            // do that side
+            placementList.setModelOrderList(this);
+            // do origin side
+            if (origin != null) {
+                origin.setModelOrderList(null);
+            }
+
+            var thatOrigin = placementList.getModelOrderList();
+            if (thatOrigin != null) {
+                thatOrigin.setPlacementList(null);
             }
         }
     }

@@ -41,18 +41,37 @@ public class PlacementList {
 
     public ModelOrderList getModelOrderList() { return modelOrderList; }
 
+    /**
+     * Add a relationship between this entity with the given MOL
+     * Will remove the existing(previous) relationship within (this -- this's origin, the given object -- it's origin)
+     *
+     * @param modelOrderList set to null to just remove the existing relationship
+     */
     public void setModelOrderList(ModelOrderList modelOrderList) {
-        if (this.modelOrderList != null) {
-            this.modelOrderList.setPlacementList(null);
+        // base line -- when it is the same, no state need to be changed
+        if (modelOrderList == this.modelOrderList) {
+            return;
         }
-        this.modelOrderList = modelOrderList;
-        if (modelOrderList == null) { return; }
-        final PlacementList placementList = modelOrderList.getPlacementList();
-        if (placementList != this) {
-            if (placementList != null) {
-                placementList.setModelOrderList(null);
-            }
+        var origin = this.modelOrderList;
+        if (modelOrderList == null) { // remove the relationship
+            // do this side
+            this.modelOrderList = null;
+            // do the other side
+            origin.setPlacementList(null);
+        } else { // set up new relationship and remove the old one
+            // do this side
+            this.modelOrderList = modelOrderList;
+            // do that side
             modelOrderList.setPlacementList(this);
+            // do origin side
+            if (origin != null) {
+                origin.setPlacementList(null);
+            }
+
+            var thatOrigin = modelOrderList.getPlacementList();
+            if (thatOrigin != null) {
+                thatOrigin.setModelOrderList(null);
+            }
         }
     }
 
