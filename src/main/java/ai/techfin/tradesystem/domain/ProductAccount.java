@@ -64,7 +64,7 @@ public class ProductAccount implements Serializable {
     @JoinTable(name = "product_orders",
                inverseJoinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
                joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-    private Set<ModelOrderList> modelOrderLists;
+    private Set<ModelOrderList> modelOrderLists = new HashSet<>();
 
     public ProductAccount() {
     }
