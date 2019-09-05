@@ -1,11 +1,11 @@
 logging:
   level:
-    ROOT: DEBUG
-    io.github.jhipster: DEBUG
-    ai.techfin.tradesystem: DEBUG
+    ROOT: debug
+    io.github.jhipster: debug
+    ai.techfin.tradesystem: debug
     org:
       springframework:
-        security: INFO
+        security: info
 
 management:
   health:

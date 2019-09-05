@@ -15,9 +15,12 @@
 
 logging:
   level:
-    ROOT: INFO
-    ai.techfin.tradesystem: INFO
-    io.github.jhipster: INFO
+    ROOT: info
+    ai.techfin.tradesystem: info
+    io.github.jhipster: info
+    org:
+      springframework:
+        security: warn
 
 management:
   metrics:
