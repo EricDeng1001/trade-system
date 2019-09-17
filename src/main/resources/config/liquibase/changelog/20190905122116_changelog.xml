@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="antinus (generated)" id="1567686090865-6">
+        <createTable tableName="hibernate_test">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="hibernate_testPK"/>
+            </column>
+            <column name="string_value" type="VARCHAR(255)"/>
+            <column name="string_value_with_column" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1567688121584-7">
+        <createTable tableName="hibernate_test_integers">
+            <column name="hibernate_test_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="integers" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="antinus (generated)" id="1567688121584-8">
+        <addForeignKeyConstraint baseColumnNames="hibernate_test_id" baseTableName="hibernate_test_integers" constraintName="FK9rjrd189j4iqqdkwhblh2lr9i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="hibernate_test" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
