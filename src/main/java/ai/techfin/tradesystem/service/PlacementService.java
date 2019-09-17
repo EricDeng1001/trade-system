@@ -28,4 +28,8 @@ public class PlacementService {
         created.setPlacements(placements);
         placementListRepository.save(created);
     }
+
+    public List<PlacementList> findAll() {
+        return placementListRepository.findAll();
+    }
 }
