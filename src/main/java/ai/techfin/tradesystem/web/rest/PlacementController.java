@@ -1,6 +1,7 @@
 package ai.techfin.tradesystem.web.rest;
 
 import ai.techfin.tradesystem.domain.ModelOrderList;
+import ai.techfin.tradesystem.domain.PlacementList;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.PlacementService;
@@ -11,11 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -46,4 +45,9 @@ public class PlacementController {
         placementService.makePlacement(modelOrderListOp.get(), placementListVM.getPlacements());
     }
 
+    @GetMapping("/placement-list")
+    @Secured({AuthoritiesConstants.TRADER, AuthoritiesConstants.ADMIN})
+    public List<PlacementList> queryPlacement() {
+        return placementService.findAll();
+    }
 }

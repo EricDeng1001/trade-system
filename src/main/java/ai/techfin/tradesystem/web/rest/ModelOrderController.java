@@ -90,7 +90,7 @@ public class ModelOrderController {
 
     @GetMapping("/model-order-list")
     @Secured(AuthoritiesConstants.TRADER)
-    public List<ModelOrderListVM> queryPlacementList(
+    public List<ModelOrderListVM> queryModelOrderListInVM(
         @RequestParam @NotNull Instant begin,
         @RequestParam @NotNull Instant end,
         @RequestParam @NotNull Long productId
