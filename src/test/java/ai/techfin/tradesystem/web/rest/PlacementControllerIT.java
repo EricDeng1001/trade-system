@@ -4,6 +4,7 @@ import ai.techfin.tradesystem.TestUtil;
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.ModelOrderList;
 import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.enums.BrokerType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.service.PlacementService;
@@ -24,7 +25,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,7 +64,7 @@ class PlacementControllerIT {
         productAccount.setInitialAsset(new BigDecimal(1));
         productAccount.setTotalAsset(new BigDecimal(1));
         productAccount.setName("TestProductAccount");
-        productAccount.setProvider("provider");
+        productAccount.setBrokerType(BrokerType.INTERNAL_SIM);
         productAccountRepository.save(productAccount);
         modelOrderList.setModel("model");
         modelOrderList.setOrders(Collections.emptySet());

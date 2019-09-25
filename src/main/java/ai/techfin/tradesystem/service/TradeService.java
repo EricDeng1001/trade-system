@@ -43,13 +43,14 @@ public class TradeService {
         ModelOrderList modelOrderList = placementList.getModelOrderList();
         Set<Placement> placements = placementList.getPlacements();
         String brokerUser = modelOrderList.getProductAccount().getName();
-        BrokerService brokerService;
-        switch (modelOrderList.getProductAccount().getProvider()) {
-            case "xtp":
+        BrokerService brokerService = null;
+
+        switch (modelOrderList.getProductAccount().getBrokerType()) {
+            case INTERNAL_SIM:
+            case CTP:
+            case XTP:
                 brokerService = xtpService;
                 break;
-            default:
-                brokerService = noopBrokerService;
         }
 
         for (Placement placement : placements) {

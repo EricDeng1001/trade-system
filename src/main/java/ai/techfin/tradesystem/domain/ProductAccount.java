@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.domain;
 
+import ai.techfin.tradesystem.domain.enums.BrokerType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.slf4j.Logger;
@@ -50,7 +51,8 @@ public class ProductAccount implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private BrokerType brokerType;
 
     @ManyToMany(
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
@@ -102,7 +104,7 @@ public class ProductAccount implements Serializable {
             "\n\tinitialAsset=" + getInitialAsset() +
             "\n\ttotalAsset=" + getTotalAsset() +
             "\n\tcreatedAt=" + getCreatedAt() +
-            "\n\tprovider=" + getProvider() +
+            "\n\tprovider=" + getBrokerType() +
             "\n}";
     }
 
@@ -176,12 +178,12 @@ public class ProductAccount implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public String getProvider() {
-        return provider;
+    public BrokerType getBrokerType() {
+        return brokerType;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setBrokerType(BrokerType brokerType) {
+        this.brokerType = brokerType;
     }
 
 }
