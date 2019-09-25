@@ -23,17 +23,13 @@ public class TradeService {
 
     private final BrokerService xtpService;
 
-    private final BrokerService noopBrokerService;
-
     private final PriceService priceService;
 
     public TradeService(PlacementListRepository placementListRepository,
                         @Qualifier("xtpService") BrokerService xtpService,
-                        @Qualifier("noopBrokerService") BrokerService noopBrokerService,
                         PriceService priceService) {
         this.placementListRepository = placementListRepository;
         this.xtpService = xtpService;
-        this.noopBrokerService = noopBrokerService;
         this.priceService = priceService;
     }
 
@@ -59,9 +55,9 @@ public class TradeService {
             Stock stock = placement.getStock();
             BigInteger quantity = placement.getMoney().divide(latestPrice, RoundingMode.FLOOR).toBigInteger();
             if (abs < 0) {
-                brokerService.sell(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED);
+                while (!brokerService.sell(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED));
             } else if (abs > 0) {
-                brokerService.buy(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED);
+                while (!brokerService.buy(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED));
             }
         }
     }
