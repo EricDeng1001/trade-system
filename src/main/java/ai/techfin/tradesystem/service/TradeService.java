@@ -1,10 +1,8 @@
 package ai.techfin.tradesystem.service;
 
+import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
-import ai.techfin.tradesystem.domain.ModelOrderList;
-import ai.techfin.tradesystem.domain.Placement;
-import ai.techfin.tradesystem.domain.PlacementList;
-import ai.techfin.tradesystem.domain.Stock;
+import ai.techfin.tradesystem.domain.*;
 import ai.techfin.tradesystem.domain.enums.PriceType;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,11 +24,12 @@ public class TradeService {
     private final PriceService priceService;
 
     public TradeService(PlacementListRepository placementListRepository,
-                        @Qualifier("xtpService") BrokerService xtpService,
+                        @Qualifier(ApplicationConstants.XTP_BROKER_SERVICE) BrokerService xtpService,
                         PriceService priceService) {
         this.placementListRepository = placementListRepository;
         this.xtpService = xtpService;
         this.priceService = priceService;
+        xtpService.init();
     }
 
     @KafkaListener(topics = KafkaTopicConfiguration.NEW_TRADE_COMMAND)
@@ -38,10 +37,11 @@ public class TradeService {
         PlacementList placementList = placementListRepository.getOne(placementId);
         ModelOrderList modelOrderList = placementList.getModelOrderList();
         Set<Placement> placements = placementList.getPlacements();
-        String brokerUser = modelOrderList.getProductAccount().getName();
+        ProductAccount productAccount = modelOrderList.getProductAccount();
+        String brokerUser = productAccount.getName();
         BrokerService brokerService = null;
 
-        switch (modelOrderList.getProductAccount().getBrokerType()) {
+        switch (productAccount.getBrokerType()) {
             case INTERNAL_SIM:
             case CTP:
             case XTP:

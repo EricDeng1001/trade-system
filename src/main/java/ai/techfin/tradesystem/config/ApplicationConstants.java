@@ -12,7 +12,9 @@ public final class ApplicationConstants {
 
     public static final String DEFAULT_LANGUAGE = "zh-cn";
 
-    public static final String ANONYMOUS_USER = "anonymoususer";
+    public static final String ANONYMOUS_USER = "anonymous-user";
+
+    public static final String XTP_BROKER_SERVICE = "xtp-broker";
 
     public static final class Profile {
 
