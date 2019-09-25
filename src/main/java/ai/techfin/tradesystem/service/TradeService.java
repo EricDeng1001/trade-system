@@ -48,16 +48,20 @@ public class TradeService {
                 brokerService = xtpService;
                 break;
         }
-
+        boolean succeed;
         for (Placement placement : placements) {
             int abs = placement.getMoney().compareTo(BigDecimal.ZERO);
             BigDecimal latestPrice = priceService.getPrice();
             Stock stock = placement.getStock();
             BigInteger quantity = placement.getMoney().divide(latestPrice, RoundingMode.FLOOR).toBigInteger();
             if (abs < 0) {
-                while (!brokerService.sell(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED));
+                do {
+                    succeed = brokerService.sell(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED);
+                } while (!succeed);
             } else if (abs > 0) {
-                while (!brokerService.buy(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED));
+                do {
+                    succeed = brokerService.buy(brokerUser, stock, quantity, latestPrice, PriceType.LIMITED);
+                } while (!succeed);
             }
         }
     }
