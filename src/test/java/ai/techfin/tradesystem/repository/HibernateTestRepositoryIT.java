@@ -18,7 +18,7 @@ import java.util.HashSet;
 @SpringBootTest(classes = TradeSystemApp.class)
 @EmbeddedKafka
 @ActiveProfiles("test")
-class HibernateTestRepositoryTestBase {
+class HibernateTestRepositoryIT {
 
     @Autowired
     private HibernateTestRepository hibernateTestRepository;
