@@ -54,6 +54,12 @@ public class ProductAccount implements Serializable {
     @Enumerated(EnumType.STRING)
     private BrokerType brokerType;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_in_xtp",
+               joinColumns = @JoinColumn(name = "product", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "xtp_account", referencedColumnName = "account"))
+    private XtpAccount xtpAccount;
+
     @ManyToMany(
         cascade = {CascadeType.MERGE, CascadeType.PERSIST},
         fetch = FetchType.LAZY)
@@ -124,6 +130,10 @@ public class ProductAccount implements Serializable {
         return modelOrderLists;
     }
 
+    public XtpAccount getXtpAccount() {
+        return xtpAccount;
+    }
+
     public void setModelOrderLists(Set<ModelOrderList> modelOrderLists) {
         this.modelOrderLists = modelOrderLists;
     }
@@ -184,6 +194,10 @@ public class ProductAccount implements Serializable {
 
     public void setBrokerType(BrokerType brokerType) {
         this.brokerType = brokerType;
+    }
+
+    public void setXtpAccount(XtpAccount xtpAccount) {
+        this.xtpAccount = xtpAccount;
     }
 
 }
