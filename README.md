@@ -1,10 +1,14 @@
 # trade-system
 
+**IMPORTANT**
+
+本文档等待Eric完善
+
 ## Development
 
 To start your application in the dev profile, simply run:
 
-    ./mvnw
+    mvn spring-boot:run
 
 ### Doing API-First development using openapi-generator
 

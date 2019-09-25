@@ -8,11 +8,27 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
-public class Stock {
+public class Stock implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj instanceof Stock) {
+            return name != null && name.equals(((Stock) obj).name);
+        }
+        return false;
+    }
 
     @Column(nullable = false)
     private String name;

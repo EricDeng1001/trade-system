@@ -83,4 +83,19 @@ public class PlacementList {
 
     public void setPlacements(Set<Placement> placements) { this.placements = placements; }
 
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PlacementList)) {
+            return false;
+        }
+        return id != null && id.equals(((PlacementList) o).id);
+    }
 }
