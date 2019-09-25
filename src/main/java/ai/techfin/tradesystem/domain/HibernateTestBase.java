@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "hibernate_test")
 public class HibernateTestBase {
 
     private static final Logger log = LoggerFactory.getLogger(HibernateTestBase.class);
@@ -23,18 +24,9 @@ public class HibernateTestBase {
     private String stringValueWithColumn;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "hibernate_test_integers", joinColumns = @JoinColumn(name = "hibernate_test_id", referencedColumnName = "id"))
     private Set<Integer> integers = new HashSet<>(Arrays.asList(1, 2, 3));
 
-    @OneToOne
-    private HibernateTestOneToOne hibernateTestOneToOne;
-
-    public HibernateTestOneToOne getHibernateTestOneToOne() {
-        return hibernateTestOneToOne;
-    }
-
-    public void setHibernateTestOneToOne(HibernateTestOneToOne hibernateTestOneToOne) {
-        this.hibernateTestOneToOne = hibernateTestOneToOne;
-    }
 
     public HibernateTestBase(String stringValue, String stringValueWithColumn, Set<Integer> integers) {
         this.stringValue = stringValue;
