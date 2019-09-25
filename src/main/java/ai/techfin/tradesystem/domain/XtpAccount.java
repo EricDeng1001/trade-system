@@ -3,16 +3,15 @@ package ai.techfin.tradesystem.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "xtp_account")
 public class XtpAccount {
 
     private static final Logger log = LoggerFactory.getLogger(XtpAccount.class);
+
+    public static final String TRADE_KEY_PROP_NAME = "trade-key";
 
     @Id
     @Column(name = "account")

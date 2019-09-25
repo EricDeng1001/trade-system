@@ -5,6 +5,7 @@ import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.tradesystem.domain.*;
 import ai.techfin.tradesystem.domain.enums.PriceType;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
+import ai.techfin.tradesystem.repository.XtpAccountRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -25,11 +28,30 @@ public class TradeService {
 
     public TradeService(PlacementListRepository placementListRepository,
                         @Qualifier(ApplicationConstants.XTP_BROKER_SERVICE) BrokerService xtpService,
-                        PriceService priceService) {
+                        PriceService priceService,
+                        XtpAccountRepository xtpAccountRepository) {
         this.placementListRepository = placementListRepository;
         this.xtpService = xtpService;
         this.priceService = priceService;
         xtpService.init();
+    }
+
+    public void loginUser(ProductAccount productAccount) {
+        String username = null;
+        String password = null;
+        Map<String, String> additional = new HashMap<>();
+        BrokerService brokerService = null;
+        switch (productAccount.getBrokerType()) {
+            case INTERNAL_SIM:
+            case CTP:
+            case XTP:
+                XtpAccount xtpAccount = productAccount.getXtpAccount();
+                username = xtpAccount.getAccount();
+                password = xtpAccount.getPassword();
+                additional.put(XtpAccount.TRADE_KEY_PROP_NAME, xtpAccount.getTradeKey());
+                brokerService = xtpService;
+        }
+        brokerService.loginUser(username, password, additional);
     }
 
     @KafkaListener(topics = KafkaTopicConfiguration.NEW_TRADE_COMMAND)
