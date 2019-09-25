@@ -11,6 +11,12 @@ public class KafkaTopicConfiguration {
 
     public static final String NEW_TRADE_COMMAND = "trade_trade_trade";
 
+    public static final String XTP_TRADE_SUCCEED = "xtp-t-s";
+
+    public static final String XTP_TRADE_FAILED = "xtp-t-f";
+
+    public static final String XTP_ASSET_RESPONSE = "xtp-a-s";
+
     @Bean(XTP_PRICE_CHANGE_TOPIC)
     public NewTopic xtpPriceChange() {
         return new NewTopic(XTP_PRICE_CHANGE_TOPIC, 1, (short) 1);
