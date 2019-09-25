@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="antinus (generated)" id="1569381915567-32">
+    <createTable tableName="product_in_xtp">
+      <column name="product" type="BIGINT">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="xtp_account" type="VARCHAR(255)">
+        <constraints primaryKey="true"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1567147927717-42">
+    <addForeignKeyConstraint baseColumnNames="product" baseTableName="product_in_xtp"
+                             constraintName="FKfdsafwrqwsfafwqefasd" deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+  </changeSet>
+  <changeSet author="antinus (generated)" id="1567147927717-16">
+    <addForeignKeyConstraint baseColumnNames="xtp_account" baseTableName="product_in_xtp"
+                             constraintName="FKhiofsahfuiwfasfewqeq" deferrable="false" initiallyDeferred="false"
+                             referencedColumnNames="account" referencedTableName="xtp_account" validate="true"/>
+  </changeSet>
+</databaseChangeLog>
