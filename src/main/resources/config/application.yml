@@ -37,13 +37,18 @@ spring:
       group-id: host
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: ai.techfin.tradesystem.config.KafkaObjectDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: ai.techfin.tradesystem,ai.techfin.xtpms.service.broker.dto
 
     producer:
       bootstrap-servers:
         - "localhost:9092"
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: ai.techfin.tradesystem.config.KafkaObjectSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       client-id: 1
 
   datasource:
