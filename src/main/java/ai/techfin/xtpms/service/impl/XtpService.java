@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
 @Service("xtp-broker")
@@ -51,7 +52,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     public boolean buy(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType) {
         try {
             checkInit(isInit);
-            if(!isInit){
+            if (!isInit) {
                 return false;
             }
             if (!checkRequestParam(user, stock, quantity, price, priceType, "BUY")) {
@@ -71,7 +72,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
                     .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_CLOSE).build();
             boolean invoke = tradeApi.sellOrBuy(req, user);
-            LOGGER.info("buy invoke {} ",invoke);
+            LOGGER.info("buy invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
             LOGGER.info("buy invoke fail , reason: {} " + e.getMessage());
@@ -83,7 +84,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     public boolean sell(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType) {
         try {
             checkInit(isInit);
-            if(!isInit){
+            if (!isInit) {
                 return false;
             }
             if (!checkRequestParam(user, stock, quantity, price, priceType, "SELL")) {
@@ -102,7 +103,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
                     .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_CLOSE).build();
             boolean invoke = tradeApi.sellOrBuy(req, user);
-            LOGGER.info("sell invoke {} ",invoke);
+            LOGGER.info("sell invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
             LOGGER.info("sell invoke failed, user:{}, reason:{}", user, e.getMessage());
@@ -122,24 +123,24 @@ public class XtpService implements BrokerService, ApplicationContextAware {
      * @return
      */
     private boolean checkRequestParam(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType, String type) {
-        if (user == null || user.equals("")) {
-            LOGGER.info(type + " error ,param user invalid ,user = {} ", user);
+        if (Optional.ofNullable(user).filter(user1 -> !StringUtils.isEmpty(user1)).isEmpty()) {
+            LOGGER.info("{} error, User invalid, user : {}", type, user);
             return false;
         }
-        if (stock == null || stock.getName() == null) {
-            LOGGER.info(type + " error ,param stock invalid ,stock = {} ", stock);
+        if (Optional.ofNullable(stock).map(stock1 -> stock1.getName()).filter(name -> !StringUtils.isEmpty(name)).isEmpty()) {
+            LOGGER.info("{} error, Stock invalid, stock.name : {} ", type, stock.getName());
             return false;
         }
-        if (quantity == null || quantity.compareTo(new BigInteger("0")) == 0) {
-            LOGGER.info(type + " error ,param quantity invalid ,quantity = {} ", quantity);
+        if (Optional.ofNullable(priceType).isEmpty()) {
+            LOGGER.info("{} error, priceType invalid, priceType : {}", type, priceType);
             return false;
         }
-        if (price == null || price.compareTo(new BigDecimal(0)) == 0) {
-            LOGGER.info(type + " error ,param price invalid ,price = {} ", price);
+        if (Optional.ofNullable(price).filter(price1 -> price1.compareTo(new BigDecimal("0")) > 0).isEmpty()) {
+            LOGGER.info("{} error, Price invalid, price : {}", type, price);
             return false;
         }
-        if (priceType == null || priceType.name() == null) {
-            LOGGER.info(type + " error ,param priceType invalid ,priceType = {} ", priceType);
+        if (Optional.ofNullable(quantity).filter(quantity1 -> quantity1.compareTo(new BigInteger("0")) > 0).isEmpty()) {
+            LOGGER.info("{} error, Quantity invalid, quantity : {}", type, quantity);
             return false;
         }
         return true;
@@ -148,7 +149,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     @Override
     public boolean init() {
         checkInit(isInit);
-        if(!isInit){
+        if (!isInit) {
             return false;
         }
         return true;
@@ -157,14 +158,14 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     @Override
     public boolean loginUser(String user, String password, Map<String, String> additional) {
         checkInit(isInit);
-        if(!isInit){
+        if (!isInit) {
             return false;
         }
-        if(StringUtils.isNotEmpty(user) && StringUtils.isNotEmpty(password)){
+        if (StringUtils.isNotEmpty(user) && StringUtils.isNotEmpty(password)) {
             tradeApi.login(user, password);
             return true;
-        }else{
-            LOGGER.info("login error,user : {}, password : {}",user,password);
+        } else {
+            LOGGER.info("login error,user : {}, password : {}", user, password);
             return false;
         }
     }
@@ -173,7 +174,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     @Override
     public boolean subscribePrice(Stock stock) {
         checkInit(isInit);
-        if(!isInit){
+        if (!isInit) {
             return false;
         }
         this.quoteApi.queryTickerPrice(stock.getName(), TickerHelper.getMarket(stock.getName()));

@@ -16,5 +16,6 @@ public interface TradeRespDTOMapper {
     @Mapping(target = "ticker", source = "tradeResponse.ticker")
     @Mapping(target = "sideType",source = "tradeResponse.sideType")
     @Mapping(target = "marketType",source = "tradeResponse.marketType")
+    @Mapping(target = "user" , ignore = true)
     TradeResponseDTO tradeToTradeDTO(TradeResponse tradeResponse);
 }
