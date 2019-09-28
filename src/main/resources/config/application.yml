@@ -37,13 +37,13 @@ spring:
       group-id: host
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: ai.techfin.tradesystem.config.KafkaObjectDeserializer
 
     producer:
       bootstrap-servers:
         - "localhost:9092"
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: ai.techfin.tradesystem.config.KafkaObjectSerializer
       client-id: 1
 
   datasource:
