@@ -22,4 +22,10 @@
                              constraintName="FKhiofsahfuiwfasfewqeq" deferrable="false" initiallyDeferred="false"
                              referencedColumnNames="account" referencedTableName="xtp_account" validate="true"/>
   </changeSet>
+  <changeSet author="mori" id="20190925-add-product-in-xtp">
+    <loadData
+            separator=","
+            tableName="product_in_xtp"
+            file="config/liquibase/data/product_in_xtp.csv"/>
+  </changeSet>
 </databaseChangeLog>
