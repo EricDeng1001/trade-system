@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ModelOrderListVM {
 
-    private List<ModelOrderDTO> placements;
+    private List<ModelOrderDTO> modelOrderDTOS;
 
     private String model;
 
@@ -17,21 +17,24 @@ public class ModelOrderListVM {
 
     private Long id;
 
-    public ModelOrderListVM(List<ModelOrderDTO> placements, String model, String product, Instant createdAt,
-                            Long id) {
-        this.placements = placements;
+    public ModelOrderListVM(
+        List<ModelOrderDTO> modelOrderDTOS,
+        String model, String product,
+        Instant createdAt, Long id
+    ) {
+        this.modelOrderDTOS = modelOrderDTOS;
         this.model = model;
         this.product = product;
         this.createdAt = createdAt;
         this.id = id;
     }
 
-    public List<ModelOrderDTO> getPlacements() {
-        return placements;
+    public List<ModelOrderDTO> getModelOrderDTOS() {
+        return modelOrderDTOS;
     }
 
-    public void setPlacements(List<ModelOrderDTO> placements) {
-        this.placements = placements;
+    public void setModelOrderDTOS(List<ModelOrderDTO> modelOrderDTOS) {
+        this.modelOrderDTOS = modelOrderDTOS;
     }
 
     public Long getId() { return id; }
