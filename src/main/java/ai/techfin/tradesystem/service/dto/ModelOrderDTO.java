@@ -1,41 +1,26 @@
 package ai.techfin.tradesystem.service.dto;
 
-import ai.techfin.tradesystem.domain.Stock;
+import ai.techfin.tradesystem.domain.ModelOrder;
 
 import java.math.BigDecimal;
 
 public class ModelOrderDTO {
 
-    private Stock stock;
+    private ModelOrder modelOrder;
 
     private BigDecimal price;
 
-    private BigDecimal money;
-
-    public ModelOrderDTO(Stock stock, BigDecimal price, BigDecimal money) {
-        this.stock = stock;
+    public ModelOrderDTO(ModelOrder modelOrder, BigDecimal price) {
+        this.modelOrder = modelOrder;
         this.price = price;
-        this.money = money;
+    }
+
+    public ModelOrder getModelOrder() {
+        return modelOrder;
     }
 
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Stock getStock() { return stock; }
-
-    public void setStock(Stock stock) { this.stock = stock; }
-
-    public BigDecimal getMoney() {
-        return money;
-    }
-
-    public void setMoney(BigDecimal money) {
-        this.money = money;
     }
 
 }
