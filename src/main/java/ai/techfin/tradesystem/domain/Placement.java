@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.Instant;
 
 @Embeddable
 public class Placement {
@@ -16,34 +18,27 @@ public class Placement {
     @Embedded
     private Stock stock;
 
+    @Column(nullable = false)
+    private BigInteger quantity;
+
     @Column(nullable = false, precision = 21, scale = 2)
-    private BigDecimal money;
+    private BigDecimal price;
 
-    @Column(name = "price_min", nullable = false, precision = 21, scale = 2)
-    private BigDecimal priceMin;
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt = Instant.now();
 
-    @Column(name = "price_max", nullable = false, precision = 21, scale = 2)
-    private BigDecimal priceMax;
-
-    public Placement(Stock stock, BigDecimal money) {
+    public Placement(Stock stock, BigInteger quantity, BigDecimal price) {
         this.stock = stock;
-        this.money = money;
+        this.quantity = quantity;
+        this.price = price;
     }
-
-    public BigDecimal getPriceMin() { return priceMin; }
-
-    public void setPriceMin(BigDecimal priceMin) { this.priceMin = priceMin; }
-
-    public BigDecimal getPriceMax() { return priceMax; }
-
-    public void setPriceMax(BigDecimal priceMax) { this.priceMax = priceMax; }
 
     public Stock getStock() { return stock; }
 
-    public void setStock(Stock stock) { this.stock = stock; }
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-    public BigDecimal getMoney() { return money; }
-
-    public void setMoney(BigDecimal money) { this.money = money; }
+    public BigInteger getQuantity() { return quantity; }
 
 }
