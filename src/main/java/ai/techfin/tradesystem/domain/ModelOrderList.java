@@ -1,14 +1,17 @@
 package ai.techfin.tradesystem.domain;
 
 import ai.techfin.tradesystem.aop.validation.group.PERSIST;
+import ai.techfin.tradesystem.domain.enums.TradeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.Instant;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "model_order_list")
@@ -27,7 +30,6 @@ public class ModelOrderList {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
-    @Nullable
     @ElementCollection(targetClass = ModelOrder.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "model_order_list_data",
                      joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
@@ -43,7 +45,7 @@ public class ModelOrderList {
     private PlacementList placementList;
 
     public ModelOrderList(String model, ProductAccount productAccount,
-                          @Nullable Set<ModelOrder> orders) {
+                          @NotNull Set<ModelOrder> orders) {
         logger.debug("A model order list is created with full data");
         this.model = model;
         this.orders = orders;
@@ -54,8 +56,16 @@ public class ModelOrderList {
         logger.debug("A model order list is created");
     }
 
-    private void removeRelationship(PlacementList modelOrderList) {
+    public Set<ModelOrder> getSellList() {
+        return orders.stream()
+            .filter(order -> order.getTradeType() == TradeType.SELL)
+            .collect(Collectors.toSet());
+    }
 
+    public Set<ModelOrder> getBuyList() {
+        return orders.stream()
+            .filter(order -> order.getTradeType() == TradeType.BUY)
+            .collect(Collectors.toSet());
     }
 
     public Instant getCreatedAt() {
