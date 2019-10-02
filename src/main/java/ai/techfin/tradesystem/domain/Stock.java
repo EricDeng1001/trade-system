@@ -18,7 +18,7 @@ public class Stock implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(name + market.toString());
     }
 
     @Override
