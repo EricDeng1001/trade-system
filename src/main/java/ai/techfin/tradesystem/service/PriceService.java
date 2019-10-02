@@ -2,6 +2,7 @@ package ai.techfin.tradesystem.service;
 
 import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.tradesystem.domain.Stock;
+import ai.techfin.tradesystem.domain.enums.BrokerType;
 import ai.techfin.tradesystem.service.dto.PriceUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,15 @@ public class PriceService {
         }
     }
 
-    public BigDecimal getXtpPrice(Stock stock) {
-        return xtpPriceMap.get(stock);
+    public BigDecimal getPrice(Stock stock, BrokerType brokerType) {
+        switch (brokerType) {
+            case XTP:
+                return xtpPriceMap.get(stock);
+            case CTP:
+                break;
+            case INTERNAL_SIM:
+        }
+        return null;
     }
 
 }
