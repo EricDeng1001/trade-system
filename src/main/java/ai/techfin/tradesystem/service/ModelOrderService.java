@@ -20,7 +20,7 @@ public class ModelOrderService {
     @Autowired
     public ModelOrderService(PriceService priceService) {this.priceService = priceService;}
 
-    public ModelOrderDTO toModelOrderDTOWithLatestPrice(ModelOrder modelOrder, BrokerType brokerType) {
+    public ModelOrderDTO createDTO(ModelOrder modelOrder, BrokerType brokerType) {
         return new ModelOrderDTO(modelOrder, priceService.getPrice(modelOrder.getStock(), brokerType));
     }
 
