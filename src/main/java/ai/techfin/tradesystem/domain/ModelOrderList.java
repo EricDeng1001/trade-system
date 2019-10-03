@@ -5,7 +5,6 @@ import ai.techfin.tradesystem.domain.enums.TradeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -39,17 +38,17 @@ public class ModelOrderList {
     @JoinTable(name = "product_orders",
                joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-    private ProductAccount productAccount;
+    private Product product;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PlacementList placementList;
 
-    public ModelOrderList(String model, ProductAccount productAccount,
+    public ModelOrderList(String model, Product product,
                           @NotNull Set<ModelOrder> orders) {
         logger.debug("A model order list is created with full data");
         this.model = model;
         this.orders = orders;
-        setProductAccount(productAccount);
+        setProduct(product);
     }
 
     public ModelOrderList() {
@@ -112,13 +111,13 @@ public class ModelOrderList {
         this.id = id;
     }
 
-    public ProductAccount getProductAccount() {
-        return productAccount;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductAccount(ProductAccount productAccount) {
-        this.productAccount = productAccount;
-        productAccount.addModelOrderList(this);
+    public void setProduct(Product product) {
+        this.product = product;
+        product.addModelOrderList(this);
     }
 
     public String getModel() {

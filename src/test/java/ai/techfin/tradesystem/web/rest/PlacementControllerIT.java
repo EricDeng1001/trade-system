@@ -3,7 +3,7 @@ package ai.techfin.tradesystem.web.rest;
 import ai.techfin.tradesystem.TestUtil;
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.ModelOrderList;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
@@ -60,15 +60,15 @@ class PlacementControllerIT {
     @Test
     void canCreatePlacementWhenMOLIsValid() throws Exception {
         ModelOrderList modelOrderList = new ModelOrderList();
-        ProductAccount productAccount = new ProductAccount();
-        productAccount.setInitialAsset(new BigDecimal(1));
-        productAccount.setTotalAsset(new BigDecimal(1));
-        productAccount.setName("TestProductAccount");
-        productAccount.setBrokerType(BrokerType.INTERNAL_SIM);
-        productAccountRepository.save(productAccount);
+        Product product = new Product();
+        product.setInitialAsset(new BigDecimal(1));
+        product.setTotalAsset(new BigDecimal(1));
+        product.setName("TestProductAccount");
+        product.setProvider(BrokerType.INTERNAL_SIM);
+        productAccountRepository.save(product);
         modelOrderList.setModel("model");
         modelOrderList.setOrders(Collections.emptySet());
-        modelOrderList.setProductAccount(productAccount);
+        modelOrderList.setProduct(product);
         modelOrderListRepository.save(modelOrderList);
         PlacementListVM requestBody = new PlacementListVM();
         requestBody.setModelOrderListId(modelOrderList.getId());

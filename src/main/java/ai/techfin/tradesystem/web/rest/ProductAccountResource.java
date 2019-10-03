@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.web.rest;
 
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.web.rest.errors.BadRequestAlertException;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * REST controller for managing {@link ai.techfin.tradesystem.domain.ProductAccount}.
+ * REST controller for managing {@link Product}.
  */
 @RestController
 @RequestMapping("/api")
@@ -43,21 +43,21 @@ public class ProductAccountResource {
     /**
      * {@code POST  /product-accounts} : Create a new productAccount.
      *
-     * @param productAccount the productAccount to create.
+     * @param product the productAccount to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new productAccount, or
      * with status {@code 400 (Bad Request)} if the productAccount has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/product-accounts")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ProductAccount> createProductAccount(@Valid @RequestBody ProductAccount productAccount)
+    public ResponseEntity<Product> createProductAccount(@Valid @RequestBody Product product)
         throws URISyntaxException {
-        log.debug("REST request to save ProductAccount : {}", productAccount);
-        if (productAccount.getId() != null) {
+        log.debug("REST request to save ProductAccount : {}", product);
+        if (product.getId() != null) {
             throw new BadRequestAlertException("A new productAccount cannot already have an ID", ENTITY_NAME,
                                                "idexists");
         }
-        ProductAccount result = productAccountRepository.save(productAccount);
+        Product result = productAccountRepository.save(product);
         return ResponseEntity.created(new URI("/api/product-accounts/" + result.getId()))
             .headers(
                 HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -73,9 +73,9 @@ public class ProductAccountResource {
      */
     @GetMapping("/product-accounts/{id}")
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL})
-    public ResponseEntity<ProductAccount> getProductAccount(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductAccount(@PathVariable Long id) {
         log.debug("REST request to get ProductAccount : {}", id);
-        Optional<ProductAccount> productAccount = productAccountRepository.findById(id);
+        Optional<Product> productAccount = productAccountRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(productAccount);
     }
 
@@ -85,7 +85,7 @@ public class ProductAccountResource {
         log.debug("REST request to get ProductAccount ids");
         return productAccountRepository.findAll()
             .stream()
-            .map(ProductAccount::getId)
+            .map(Product::getId)
             .collect(Collectors.toList());
     }
 
@@ -96,7 +96,7 @@ public class ProductAccountResource {
      */
     @GetMapping("/product-accounts")
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL})
-    public List<ProductAccount> getAllProductAccounts() {
+    public List<Product> getAllProductAccounts() {
         log.debug("REST request to get all ProductAccounts");
         return productAccountRepository.findAll();
     }

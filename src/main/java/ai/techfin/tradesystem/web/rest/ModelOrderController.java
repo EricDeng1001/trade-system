@@ -2,7 +2,7 @@ package ai.techfin.tradesystem.web.rest;
 
 import ai.techfin.tradesystem.domain.ModelOrder;
 import ai.techfin.tradesystem.domain.ModelOrderList;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
@@ -51,7 +51,7 @@ public class ModelOrderController {
     @Secured(AuthoritiesConstants.MODEL)
     public void create(@RequestBody ModelOrderListTwoDimArrayVM vm) {
         String productName = vm.getProduct();
-        Optional<ProductAccount> productAccount = productAccountRepository.findByName(productName);
+        Optional<Product> productAccount = productAccountRepository.findByName(productName);
         if (productAccount.isEmpty()) {
             throw new ResourceNotExistException();
         }
@@ -72,7 +72,7 @@ public class ModelOrderController {
         @RequestParam @NotNull Long productId
     ) {
         logger.info("going to select between: {} to {}", begin, end);
-        Optional<ProductAccount> product = productAccountRepository.findById(productId);
+        Optional<Product> product = productAccountRepository.findById(productId);
         if (product.isEmpty()) {
             return null;
         }
@@ -87,7 +87,7 @@ public class ModelOrderController {
             orderList -> {
                 List<ModelOrderDTO> placements =
                     orderList.getOrders().stream()
-                        .map(order -> modelOrderService.createDTO(order, product.get().getBrokerType()))
+                        .map(order -> modelOrderService.createDTO(order, product.get().getProvider()))
                         .collect(Collectors.toList());
 
                 return new ModelOrderListVM(

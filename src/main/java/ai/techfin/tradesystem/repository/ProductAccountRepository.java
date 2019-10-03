@@ -1,6 +1,6 @@
 package ai.techfin.tradesystem.repository;
 
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +11,8 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductAccountRepository extends JpaRepository<ProductAccount, Long> {
+public interface ProductAccountRepository extends JpaRepository<Product, Long> {
 
-    Optional<ProductAccount> findByName(String name);
+    Optional<Product> findByName(String name);
 
 }
