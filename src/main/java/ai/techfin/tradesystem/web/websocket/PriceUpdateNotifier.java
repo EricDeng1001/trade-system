@@ -20,8 +20,8 @@ public class PriceUpdateNotifier {
     }
 
     @KafkaListener(topics = KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, id = "ws")
-    public void updatePrice(String data) {
+    public void updatePrice(PriceUpdateDTO data) {
         log.debug("going to push price-change message to user");
-        simpMessagingTemplate.convertAndSend("/topic/price-change", PriceUpdateDTO.fromString(data));
+        simpMessagingTemplate.convertAndSend("/topic/price-change", data);
     }
 }
