@@ -4,25 +4,19 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
   <changeSet author="antinus (generated)" id="1569381915517-6">
     <createTable tableName="position">
-      <column name="market" type="INT">
+      <column name="stock_market" type="INT">
         <constraints primaryKey="true" primaryKeyName="positionPK"/>
       </column>
-      <column name="name" type="VARCHAR(255)">
+      <column name="stock_name" type="VARCHAR(255)">
         <constraints primaryKey="true" primaryKeyName="positionPK"/>
       </column>
       <column name="amount" type="BIGINT"/>
-      <column name="product_account_id" type="BIGINT"/>
+      <column name="product_id" type="BIGINT"/>
     </createTable>
   </changeSet>
-  <changeSet author="antinus (generated)" id="1569381915517-7">
-    <renameColumn
-      tableName="product_account" oldColumnName="provider" newColumnName="broker_type"
-      columnDataType="VARCHAR(255)"
-    />
-  </changeSet>
   <changeSet author="antinus (generated)" id="1569381915517-8">
-    <addForeignKeyConstraint baseColumnNames="product_account_id" baseTableName="position"
+    <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="position"
                              constraintName="FKefg7pc93mu3753gm8vtuvt3ft" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="product" validate="true"/>
   </changeSet>
 </databaseChangeLog>

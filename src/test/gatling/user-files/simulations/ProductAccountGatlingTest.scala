@@ -71,7 +71,7 @@ class ProductAccountGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new productAccount")
+            .exec(http("Create new product")
             .post("/api/product-accounts")
             .headers(headers_http_authenticated)
             .body(StringBody("""{
@@ -86,12 +86,12 @@ class ProductAccountGatlingTest extends Simulation {
             .check(headerRegex("Location", "(.*)").saveAs("new_productAccount_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created productAccount")
+                exec(http("Get created product")
                 .get("${new_productAccount_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created productAccount")
+            .exec(http("Delete created product")
             .delete("${new_productAccount_url}")
             .headers(headers_http_authenticated))
             .pause(10)

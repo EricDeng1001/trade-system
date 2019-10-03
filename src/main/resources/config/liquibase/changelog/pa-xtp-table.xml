@@ -15,7 +15,7 @@
   <changeSet author="antinus (generated)" id="1567147927717-42">
     <addForeignKeyConstraint baseColumnNames="product" baseTableName="product_in_xtp"
                              constraintName="FKfdsafwrqwsfafwqefasd" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="product" validate="true"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1567147927717-16">
     <addForeignKeyConstraint baseColumnNames="xtp_account" baseTableName="product_in_xtp"
@@ -24,7 +24,6 @@
   </changeSet>
   <changeSet author="mori" id="20190925-add-product-in-xtp">
     <loadData
-            separator=","
             tableName="product_in_xtp"
             file="config/liquibase/data/product_in_xtp.csv"/>
   </changeSet>

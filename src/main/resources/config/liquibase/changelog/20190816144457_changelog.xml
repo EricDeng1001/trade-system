@@ -25,7 +25,7 @@
   <changeSet author="antinus (generated)" id="1565966715626-8">
     <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_orders"
                              constraintName="FKfah0s8s73bf3e88yytmifxpg0" deferrable="false" initiallyDeferred="false"
-                             referencedColumnNames="id" referencedTableName="product_account" validate="true"/>
+                             referencedColumnNames="id" referencedTableName="product" validate="true"/>
   </changeSet>
   <changeSet author="antinus (generated)" id="1565966715626-9">
     <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="product_orders"
