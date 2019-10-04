@@ -9,9 +9,9 @@ import java.util.Map;
 
 public interface BrokerService {
 
-    boolean buy(String user, Long placementId, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType);
+    boolean buy(String user, Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType);
 
-    boolean sell(String user, Long placementId, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType);
+    boolean sell(String user, Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType);
 
     boolean init();
 

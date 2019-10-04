@@ -4,6 +4,7 @@ import ai.techfin.tradesystem.aop.validation.group.PERSIST;
 import ai.techfin.tradesystem.domain.enums.TradeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

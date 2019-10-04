@@ -7,6 +7,7 @@ import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.ModelOrderService;
+import ai.techfin.tradesystem.service.TradeService;
 import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
 import ai.techfin.tradesystem.web.rest.errors.ResourceNotExistException;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListTwoDimArrayVM;
@@ -37,13 +38,17 @@ public class ModelOrderController {
 
     private final ModelOrderService modelOrderService;
 
+    private final TradeService tradeService;
+
     @Autowired
     public ModelOrderController(ModelOrderListRepository modelOrderListRepository,
                                 ProductAccountRepository productAccountRepository,
-                                ModelOrderService modelOrderService) {
+                                ModelOrderService modelOrderService,
+                                TradeService tradeService) {
         this.modelOrderListRepository = modelOrderListRepository;
         this.productAccountRepository = productAccountRepository;
         this.modelOrderService = modelOrderService;
+        this.tradeService = tradeService;
     }
 
     @PostMapping("/model-order-list")
@@ -51,8 +56,8 @@ public class ModelOrderController {
     @Secured(AuthoritiesConstants.MODEL)
     public void create(@RequestBody ModelOrderListTwoDimArrayVM vm) {
         String productName = vm.getProduct();
-        Optional<Product> productAccount = productAccountRepository.findByName(productName);
-        if (productAccount.isEmpty()) {
+        Optional<Product> product = productAccountRepository.findByName(productName);
+        if (product.isEmpty()) {
             throw new ResourceNotExistException();
         }
         HashSet<ModelOrder> sellOrders = vm.getSellOrders();
@@ -60,8 +65,9 @@ public class ModelOrderController {
         HashSet<ModelOrder> orders = new HashSet<>(sellOrders.size() + buyOrders.size());
         orders.addAll(sellOrders);
         orders.addAll(buyOrders);
-        ModelOrderList created = new ModelOrderList(vm.getModel(), productAccount.get(), orders);
+        ModelOrderList created = new ModelOrderList(vm.getModel(), product.get(), orders);
         modelOrderListRepository.save(created);
+        tradeService.loginProductAccount(product.get());
     }
 
     @GetMapping("/model-order-list")

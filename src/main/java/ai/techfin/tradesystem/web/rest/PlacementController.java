@@ -2,16 +2,15 @@ package ai.techfin.tradesystem.web.rest;
 
 import ai.techfin.tradesystem.domain.ModelOrderList;
 import ai.techfin.tradesystem.domain.PlacementList;
+import ai.techfin.tradesystem.domain.enums.TradeType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
-import ai.techfin.tradesystem.service.PlacementService;
+import ai.techfin.tradesystem.service.TradeService;
 import ai.techfin.tradesystem.web.rest.errors.ResourceNotExistException;
-import ai.techfin.tradesystem.web.rest.vm.PlacementListVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,29 +24,23 @@ public class PlacementController {
 
     private final ModelOrderListRepository modelOrderListRepository;
 
-    private final PlacementService placementService;
+    private final TradeService tradeService;
 
     public PlacementController(ModelOrderListRepository modelOrderListRepository,
-                               PlacementService placementService) {
+                               TradeService tradeService) {
         this.modelOrderListRepository = modelOrderListRepository;
-        this.placementService = placementService;
+        this.tradeService = tradeService;
     }
 
-    @PostMapping("/placement-list")
+    @PostMapping("/placement-list/{tradeType}")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(AuthoritiesConstants.TRADER)
-    public void createPlacement(@RequestBody PlacementListVM placementListVM) {
-        final long id = placementListVM.getModelOrderListId();
-        Optional<ModelOrderList> modelOrderListOp = modelOrderListRepository.findById(id);
+    public void createSellPlacementList(@PathVariable String tradeType, @RequestBody Long modelOrderListId) {
+        Optional<ModelOrderList> modelOrderListOp = modelOrderListRepository.findById(modelOrderListId);
         if (modelOrderListOp.isEmpty()) {
             throw new ResourceNotExistException();
         }
-        placementService.makePlacement(modelOrderListOp.get(), placementListVM.getPlacements());
+        tradeService.process(modelOrderListId, TradeType.valueOf(tradeType));
     }
 
-    @GetMapping("/placement-list")
-    @Secured({AuthoritiesConstants.TRADER, AuthoritiesConstants.ADMIN})
-    public List<PlacementList> queryPlacement() {
-        return placementService.findAll();
-    }
 }
