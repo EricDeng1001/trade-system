@@ -75,7 +75,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             LOGGER.info("buy invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
-            LOGGER.info("buy invoke fail , reason: {} " + e.getMessage());
+            LOGGER.error("buy invoke fail , reason: {} " + e.getMessage());
             return false;
         }
     }
@@ -106,7 +106,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             LOGGER.info("sell invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
-            LOGGER.info("sell invoke failed, user:{}, reason:{}", user, e.getMessage());
+            LOGGER.error("sell invoke failed, user:{}, reason:{}", user, e.getMessage());
             return false;
         }
     }
@@ -124,23 +124,23 @@ public class XtpService implements BrokerService, ApplicationContextAware {
      */
     private boolean checkRequestParam(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType, String type) {
         if (Optional.ofNullable(user).filter(user1 -> !StringUtils.isEmpty(user1)).isEmpty()) {
-            LOGGER.info("{} error, User invalid, user : {}", type, user);
+            LOGGER.error("{} error, User invalid, user : {}", type, user);
             return false;
         }
         if (Optional.ofNullable(stock).map(stock1 -> stock1.getName()).filter(name -> !StringUtils.isEmpty(name)).isEmpty()) {
-            LOGGER.info("{} error, Stock invalid, stock.name : {} ", type, stock.getName());
+            LOGGER.error("{} error, Stock invalid, stock.name : {} ", type, stock.getName());
             return false;
         }
         if (Optional.ofNullable(priceType).isEmpty()) {
-            LOGGER.info("{} error, priceType invalid, priceType : {}", type, priceType);
+            LOGGER.error("{} error, priceType invalid, priceType : {}", type, priceType);
             return false;
         }
         if (Optional.ofNullable(price).filter(price1 -> price1.compareTo(new BigDecimal("0")) > 0).isEmpty()) {
-            LOGGER.info("{} error, Price invalid, price : {}", type, price);
+            LOGGER.error("{} error, Price invalid, price : {}", type, price);
             return false;
         }
         if (Optional.ofNullable(quantity).filter(quantity1 -> quantity1.compareTo(new BigInteger("0")) > 0).isEmpty()) {
-            LOGGER.info("{} error, Quantity invalid, quantity : {}", type, quantity);
+            LOGGER.error("{} error, Quantity invalid, quantity : {}", type, quantity);
             return false;
         }
         return true;
@@ -165,7 +165,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             tradeApi.login(user, password);
             return true;
         } else {
-            LOGGER.info("login error,user : {}, password : {}", user, password);
+            LOGGER.error("login error,user : {}, password : {}", user, password);
             return false;
         }
     }
@@ -192,7 +192,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             }
         } catch (Exception e) {
             isInit = false;
-            LOGGER.info("async init error, reason: {}", e.getMessage());
+            LOGGER.error("async init error, reason: {}", e.getMessage());
         } finally {
             countDownLatch.countDown();
         }
@@ -208,7 +208,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
-            LOGGER.info("xtp init error, reason:{}", e.getMessage());
+            LOGGER.error("xtp init error, reason:{}", e.getMessage());
         }
     }
 }

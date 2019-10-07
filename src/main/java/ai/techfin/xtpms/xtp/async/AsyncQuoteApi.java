@@ -74,7 +74,7 @@ public class AsyncQuoteApi implements QuoteSpi, InitializingBean {
         if (errorMessage == null || errorMessage.getErrorId() == 0) {
             LOGGER.info("TickersPriceInfo : {}", tickerInfo);
         } else {
-            LOGGER.info("Get TickersPriceInfo Error : {} " + errorMessage);
+            LOGGER.error("Get TickersPriceInfo Error : {} " + errorMessage);
         }
         //kafka send
     }

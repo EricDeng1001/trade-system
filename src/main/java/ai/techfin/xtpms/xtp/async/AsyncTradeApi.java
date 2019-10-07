@@ -90,9 +90,9 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
         String sessionId = userWithSessionId.get(user);
         if (sessionId == null || sessionId.equals("0")) {
             if (request.getSideType() == SideType.XTP_SIDE_SELL.type) {
-                LOGGER.info("sell error , reason : user {} not login", user);
+                LOGGER.error("sell error , reason : user {} not login", user);
             } else {
-                LOGGER.info("buy error , reason : user {} not login", user);
+                LOGGER.error("buy error , reason : user {} not login", user);
             }
             return false;
         }
@@ -121,7 +121,7 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
                         tradeApi.insertOrder(request, sessionId);
                     }
                 } catch (InterruptedException e) {
-                    LOGGER.info("insertOrder error, sessionId : {}, reason : {}", sessionId, e.getMessage());
+                    LOGGER.error("insertOrder error, sessionId : {}, reason : {}", sessionId, e.getMessage());
                 }
             }
         }
@@ -132,7 +132,7 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
         String sessionId = "";
         sessionId = tradeApi.login(XTP_TRADE_SERVER_IP, XTP_TRADE_SERVER_PORT, user, password, TransferProtocol.XTP_PROTOCOL_TCP);
         if (sessionId.equals("0")) {
-            LOGGER.info("user : {} login failed ，reason : {} ", user, tradeApi.getApiLastError());
+            LOGGER.error("user : {} login failed ，reason : {} ", user, tradeApi.getApiLastError());
         } else {
             sessionIdWithUser.put(sessionId, new ImmutablePair<>(user, password));
             userWithSessionId.put(user, sessionId);
