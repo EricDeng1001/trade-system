@@ -36,6 +36,12 @@
         </createTable>
         <loadData tableName="user_product" file="config/liquibase/data/user_product.csv"/>
     </changeSet>
+    <changeSet author="antinus (generated)" id="1565966715626-7">
+        <createIndex indexName="IX_null" tableName="user_product" unique="true">
+            <column name="product_id"/>
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
     <changeSet author="antinus (generated)" id="1565582878710-5">
         <addUniqueConstraint columnNames="name" constraintName="UC_PRODUCT_ACCOUNTPRODUCT_COL"
                              tableName="product"/>

@@ -7,9 +7,7 @@ import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.ModelOrderService;
-import ai.techfin.tradesystem.service.TradeService;
 import ai.techfin.tradesystem.service.dto.ModelOrderDTO;
-import ai.techfin.tradesystem.web.rest.errors.ResourceNotExistException;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListTwoDimArrayVM;
 import ai.techfin.tradesystem.web.rest.vm.ModelOrderListVM;
 import org.slf4j.Logger;
@@ -23,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,7 +55,7 @@ public class ModelOrderController {
         String productName = vm.getProduct();
         Optional<Product> product = productAccountRepository.findByName(productName);
         if (product.isEmpty()) {
-            throw new ResourceNotExistException();
+            throw new NoSuchElementException();
         }
         HashSet<ModelOrder> sellOrders = vm.getSellOrders();
         HashSet<ModelOrder> buyOrders = vm.getBuyOrders();
