@@ -38,17 +38,15 @@ public class ModelOrderController {
 
     private final ModelOrderService modelOrderService;
 
-    private final TradeService tradeService;
-
     @Autowired
-    public ModelOrderController(ModelOrderListRepository modelOrderListRepository,
-                                ProductAccountRepository productAccountRepository,
-                                ModelOrderService modelOrderService,
-                                TradeService tradeService) {
+    public ModelOrderController(
+        ModelOrderListRepository modelOrderListRepository,
+        ProductAccountRepository productAccountRepository,
+        ModelOrderService modelOrderService
+    ) {
         this.modelOrderListRepository = modelOrderListRepository;
         this.productAccountRepository = productAccountRepository;
         this.modelOrderService = modelOrderService;
-        this.tradeService = tradeService;
     }
 
     @PostMapping("/model-order-list")
@@ -67,7 +65,7 @@ public class ModelOrderController {
         orders.addAll(buyOrders);
         ModelOrderList created = new ModelOrderList(vm.getModel(), product.get(), orders);
         modelOrderListRepository.save(created);
-        tradeService.loginProductAccount(product.get());
+        modelOrderService.prepareTrade(created);
     }
 
     @GetMapping("/model-order-list")
@@ -82,8 +80,6 @@ public class ModelOrderController {
         if (product.isEmpty()) {
             return null;
         }
-
-        tradeService.loginProductAccount(product.get());
 
         List<ModelOrderList> orderLists = modelOrderListRepository
             .findByCreatedAtBetweenAndProduct(begin, end, product.get());
