@@ -4,14 +4,15 @@ import ai.techfin.tradesystem.domain.enums.MarketType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@AttributeOverrides({
+        @AttributeOverride(name = "name", column = @Column(name = "stock_name")),
+        @AttributeOverride(name = "market", column = @Column(name = "stock_market"))
+})
 public class Stock implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
@@ -30,10 +31,8 @@ public class Stock implements Serializable {
         return false;
     }
 
-    @Column(name = "stock_name", nullable = false)
     private String name;
 
-    @Column(name = "stock_market",nullable = false)
     @Enumerated(value = EnumType.ORDINAL)
     private MarketType market;
 

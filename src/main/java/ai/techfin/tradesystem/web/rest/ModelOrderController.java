@@ -82,8 +82,11 @@ public class ModelOrderController {
         if (product.isEmpty()) {
             return null;
         }
+
+        tradeService.loginProductAccount(product.get());
+
         List<ModelOrderList> orderLists = modelOrderListRepository
-            .findByCreatedAtBetweenAndProductAccount(begin, end, product.get());
+            .findByCreatedAtBetweenAndProduct(begin, end, product.get());
 
         if (orderLists.size() == 0) {
             return null;
