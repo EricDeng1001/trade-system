@@ -24,27 +24,30 @@ public class TradeService {
 
     private final PlacementListRepository placementListRepository;
 
-    private final BrokerService xtpService;
-
+    private final BrokerServiceFactory brokerServiceFactory;
     private final PriceService priceService;
 
-    public TradeService(@Qualifier(ApplicationConstants.BrokerService.XTP) BrokerService xtpService,
-                        PriceService priceService,
-                        ModelOrderListRepository modelOrderListRepository,
-                        PlacementListRepository placementListRepository) {
-        this.xtpService = xtpService;
+    public TradeService(
+        PriceService priceService,
+        ModelOrderListRepository modelOrderListRepository,
+        PlacementListRepository placementListRepository,
+        BrokerServiceFactory brokerServiceFactory) {
+        this.brokerServiceFactory = brokerServiceFactory;
         this.priceService = priceService;
         this.modelOrderListRepository = modelOrderListRepository;
         this.placementListRepository = placementListRepository;
-        xtpService.init();
+        for (var provider: BrokerType.values()) {
+            brokerServiceFactory.getBrokerService(provider).init();
+        }
     }
 
     public void loginProductAccount(Product product) {
         String username = null;
         String password = null;
         Map<String, String> additional = new HashMap<>();
-        BrokerService brokerService = null;
-        switch (product.getProvider()) {
+        BrokerType provider = product.getProvider();
+        BrokerService brokerService = brokerServiceFactory.getBrokerService(provider);
+        switch (provider) {
             case INTERNAL_SIM:
             case CTP:
             case XTP:
@@ -52,16 +55,15 @@ public class TradeService {
                 username = xtpAccount.getAccount();
                 password = xtpAccount.getPassword();
                 additional.put(XtpAccount.TRADE_KEY_PROP_NAME, xtpAccount.getTradeKey());
-                brokerService = xtpService;
         }
         brokerService.loginUser(username, password, additional);
     }
 
-    public void process(Long modelOrderListId, TradeType tradeType) {
+    public PlacementList process(Long modelOrderListId, TradeType tradeType) {
         ModelOrderList modelOrderList = modelOrderListRepository.getOne(modelOrderListId);
         Product product = modelOrderList.getProduct();
         BrokerType provider = product.getProvider();
-        BrokerService brokerService = getBrokerService(provider);
+        BrokerService brokerService = brokerServiceFactory.getBrokerService(provider);
 
         Set<ModelOrder> orders;
         if (tradeType == TradeType.SELL) {
@@ -94,6 +96,7 @@ public class TradeService {
         placementList.setPlacements(placements);
         placementList.setModelOrderList(modelOrderList);
         placementListRepository.save(placementList);
+        return placementList;
     }
 
     /**
@@ -103,19 +106,8 @@ public class TradeService {
      * @param provider broker who provide this service
      */
     public void subscribeStockPrice(Stock stock, BrokerType provider) {
-        BrokerService brokerService = getBrokerService(provider);
+        BrokerService brokerService = brokerServiceFactory.getBrokerService(provider);
         brokerService.subscribePrice(stock);
-    }
-
-    private BrokerService getBrokerService(BrokerType provider) {
-        BrokerService brokerService = null;
-        switch (provider) {
-            case XTP:
-            case CTP:
-            case INTERNAL_SIM:
-                brokerService = xtpService;
-        }
-        return brokerService;
     }
 
 }

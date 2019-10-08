@@ -5,8 +5,8 @@ import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.ModelOrderList;
 import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
-import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
+import ai.techfin.tradesystem.service.ModelOrderService;
 import ai.techfin.tradesystem.service.TradeService;
 import ai.techfin.tradesystem.web.rest.vm.PlacementListVM;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +39,7 @@ class PlacementControllerIT {
     private static final Logger log = LoggerFactory.getLogger(PlacementControllerIT.class);
 
     @Autowired
-    private ModelOrderListRepository modelOrderListRepository;
+    private ModelOrderService modelOrderListRepository;
 
     @Autowired
     private ProductAccountRepository productAccountRepository;
@@ -53,7 +53,8 @@ class PlacementControllerIT {
     void setUp() {
         this.mockMvc =
             MockMvcBuilders
-                .standaloneSetup(new PlacementController(modelOrderListRepository, tradeService))
+                .standaloneSetup(new PlacementController(modelOrderListRepository, tradeService,
+                                                         placementListRepository))
                 .build();
     }
 

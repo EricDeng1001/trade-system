@@ -1,5 +1,6 @@
 package ai.techfin.tradesystem.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class PlacementList {
     private Set<Placement> placements;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private ModelOrderList modelOrderList;
 
     public PlacementList(Set<Placement> placements) {
