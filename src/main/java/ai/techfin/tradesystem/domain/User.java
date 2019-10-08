@@ -110,7 +110,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<ProductAccount> managedProducts = new HashSet<>();
+    private Set<Product> managedProducts = new HashSet<>();
 
     public User() {
         logger.debug("A user is created");
@@ -146,16 +146,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
             "\n}";
     }
 
-    public void addManagedProduct(ProductAccount productAccount) {
+    public void addManagedProduct(Product product) {
         logger.debug("adding a product");
-        this.managedProducts.add(productAccount);
-        if (!productAccount.managedBy(this)) {
-            productAccount.addManager(this);
+        this.managedProducts.add(product);
+        if (!product.managedBy(this)) {
+            product.addManager(this);
         }
     }
 
-    public boolean canManageProduct(ProductAccount productAccount) {
-        return this.managedProducts.contains(productAccount);
+    public boolean canManageProduct(Product product) {
+        return this.managedProducts.contains(product);
     }
 
     public Long getId() {
@@ -167,11 +167,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public Set<ProductAccount> getManagedProducts() {
+    public Set<Product> getManagedProducts() {
         return managedProducts;
     }
 
-    public void setManagedProducts(Set<ProductAccount> managedProducts) {
+    public void setManagedProducts(Set<Product> managedProducts) {
         logger.debug("setting products");
         this.managedProducts.clear();
         managedProducts.forEach(this::addManagedProduct);

@@ -3,11 +3,11 @@ package ai.techfin.tradesystem.web.rest;
 import ai.techfin.tradesystem.TestUtil;
 import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.ModelOrderList;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
-import ai.techfin.tradesystem.service.PlacementService;
+import ai.techfin.tradesystem.service.TradeService;
 import ai.techfin.tradesystem.web.rest.vm.PlacementListVM;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class PlacementControllerIT {
     private ProductAccountRepository productAccountRepository;
 
     @Autowired
-    private PlacementService placementService;
+    private TradeService tradeService;
 
     private MockMvc mockMvc;
 
@@ -53,22 +53,22 @@ class PlacementControllerIT {
     void setUp() {
         this.mockMvc =
             MockMvcBuilders
-                .standaloneSetup(new PlacementController(modelOrderListRepository, placementService))
+                .standaloneSetup(new PlacementController(modelOrderListRepository, tradeService))
                 .build();
     }
 
     @Test
     void canCreatePlacementWhenMOLIsValid() throws Exception {
         ModelOrderList modelOrderList = new ModelOrderList();
-        ProductAccount productAccount = new ProductAccount();
-        productAccount.setInitialAsset(new BigDecimal(1));
-        productAccount.setTotalAsset(new BigDecimal(1));
-        productAccount.setName("TestProductAccount");
-        productAccount.setBrokerType(BrokerType.INTERNAL_SIM);
-        productAccountRepository.save(productAccount);
+        Product product = new Product();
+        product.setInitialAsset(new BigDecimal(1));
+        product.setTotalAsset(new BigDecimal(1));
+        product.setName("TestProductAccount");
+        product.setProvider(BrokerType.INTERNAL_SIM);
+        productAccountRepository.save(product);
         modelOrderList.setModel("model");
         modelOrderList.setOrders(Collections.emptySet());
-        modelOrderList.setProductAccount(productAccount);
+        modelOrderList.setProduct(product);
         modelOrderListRepository.save(modelOrderList);
         PlacementListVM requestBody = new PlacementListVM();
         requestBody.setModelOrderListId(modelOrderList.getId());

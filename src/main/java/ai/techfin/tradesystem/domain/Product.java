@@ -19,11 +19,11 @@ import java.util.Set;
  * A ProductAccount.
  */
 @Entity
-@Table(name = "product_account")
+@Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ProductAccount implements Serializable {
+public class Product implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductAccount.class);
+    private static final Logger logger = LoggerFactory.getLogger(Product.class);
 
     private static final long serialVersionUID = 665934918284011794L;
 
@@ -50,9 +50,9 @@ public class ProductAccount implements Serializable {
     private Instant createdAt = Instant.now();
 
     @NotNull
-    @Column(nullable = false)
+    @Column(name = "provider", nullable = false)
     @Enumerated(EnumType.STRING)
-    private BrokerType brokerType;
+    private BrokerType provider;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "product_in_xtp",
@@ -74,7 +74,7 @@ public class ProductAccount implements Serializable {
                joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Set<ModelOrderList> modelOrderLists = new HashSet<>();
 
-    public ProductAccount() {
+    public Product() {
     }
 
     /**
@@ -91,10 +91,10 @@ public class ProductAccount implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProductAccount)) {
+        if (!(o instanceof Product)) {
             return false;
         }
-        return id != null && id.equals(((ProductAccount) o).id);
+        return id != null && id.equals(((Product) o).id);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class ProductAccount implements Serializable {
             "\n\tinitialAsset=" + getInitialAsset() +
             "\n\ttotalAsset=" + getTotalAsset() +
             "\n\tcreatedAt=" + getCreatedAt() +
-            "\n\tprovider=" + getBrokerType() +
+            "\n\tprovider=" + getProvider() +
             "\n}";
     }
 
@@ -188,12 +188,12 @@ public class ProductAccount implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public BrokerType getBrokerType() {
-        return brokerType;
+    public BrokerType getProvider() {
+        return provider;
     }
 
-    public void setBrokerType(BrokerType brokerType) {
-        this.brokerType = brokerType;
+    public void setProvider(BrokerType provider) {
+        this.provider = provider;
     }
 
     public void setXtpAccount(XtpAccount xtpAccount) {

@@ -2,7 +2,7 @@ package ai.techfin.tradesystem.service.dto;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.Authority;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.User;
 
 import javax.validation.constraints.Email;
@@ -75,7 +75,7 @@ public class UserDTO {
             .map(Authority::getName)
             .collect(Collectors.toSet());
         this.managedProducts = user.getManagedProducts().stream()
-            .map(ProductAccount::getId).collect(Collectors.toSet());
+            .map(Product::getId).collect(Collectors.toSet());
     }
 
     @Override

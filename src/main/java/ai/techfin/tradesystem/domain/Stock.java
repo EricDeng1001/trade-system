@@ -18,7 +18,7 @@ public class Stock implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(name + market.toString());
     }
 
     @Override
@@ -30,10 +30,10 @@ public class Stock implements Serializable {
         return false;
     }
 
-    @Column(nullable = false)
+    @Column(name = "stock_name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "stock_market",nullable = false)
     @Enumerated(value = EnumType.ORDINAL)
     private MarketType market;
 

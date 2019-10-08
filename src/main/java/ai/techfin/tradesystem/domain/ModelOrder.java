@@ -1,9 +1,10 @@
 package ai.techfin.tradesystem.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import ai.techfin.tradesystem.domain.enums.TradeType;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Embeddable
 public class ModelOrder {
@@ -11,23 +12,37 @@ public class ModelOrder {
     @Embedded
     private Stock stock;
 
-    @Column(precision = 16, scale = 15)
-    private BigDecimal weight;
+    @Column(precision = 21, scale = 2)
+    private BigDecimal money;
+
+    @Column(name = "trade_type")
+    @Enumerated(value = EnumType.ORDINAL)
+    private TradeType tradeType;
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(stock);
+    }
+
+    public ModelOrder(Stock stock, BigDecimal money, TradeType tradeType) {
+        this.stock = stock;
+        this.money = money;
+        this.tradeType = tradeType;
+    }
 
     public ModelOrder() {
     }
 
-    public ModelOrder(Stock stock, BigDecimal weight) {
-        this.stock = stock;
-        this.weight = weight;
+    public BigDecimal getMoney() {
+        return money;
     }
 
-    public BigDecimal getWeight() {
-        return weight;
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public TradeType getTradeType() {
+        return tradeType;
     }
 
     public Stock getStock() { return stock; }

@@ -2,7 +2,7 @@ package ai.techfin.tradesystem.service;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.Authority;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.User;
 import ai.techfin.tradesystem.repository.AuthorityRepository;
 import ai.techfin.tradesystem.repository.PersistentTokenRepository;
@@ -232,13 +232,13 @@ public class UserService {
                         .forEach(managedAuthorities::add);
                 }
                 if (userDTO.getManagedProducts() != null) {
-                    Set<ProductAccount> managedProductAccounts = user.getManagedProducts();
-                    managedProductAccounts.clear();
+                    Set<Product> managedProducts = user.getManagedProducts();
+                    managedProducts.clear();
                     userDTO.getManagedProducts().stream()
                         .map(productAccountRepository::findById)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
-                        .forEach(managedProductAccounts::add);
+                        .forEach(managedProducts::add);
                 }
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);

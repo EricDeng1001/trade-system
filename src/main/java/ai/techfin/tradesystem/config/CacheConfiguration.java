@@ -4,7 +4,7 @@ import java.time.Duration;
 
 import ai.techfin.tradesystem.domain.Authority;
 import ai.techfin.tradesystem.domain.PersistentToken;
-import ai.techfin.tradesystem.domain.ProductAccount;
+import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.User;
 import ai.techfin.tradesystem.repository.UserRepository;
 import org.ehcache.config.builders.*;
@@ -53,7 +53,7 @@ public class CacheConfiguration {
             createCache(cm, User.class.getName() + ".persistentTokens");
             createCache(cm, User.class.getName() + ".managedProducts");
             createCache(cm, PersistentToken.class.getName());
-            createCache(cm, ProductAccount.class.getName());
+            createCache(cm, Product.class.getName());
         };
     }
 

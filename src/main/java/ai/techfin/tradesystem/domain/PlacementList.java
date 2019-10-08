@@ -32,8 +32,7 @@ public class PlacementList {
         this.placements = placements;
     }
 
-    public PlacementList() {
-    }
+    public PlacementList() {}
 
     public Long getId() { return id; }
 

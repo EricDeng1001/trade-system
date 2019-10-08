@@ -2,6 +2,7 @@ package ai.techfin.tradesystem.domain;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -13,7 +14,8 @@ public class Position {
     private Long amount;
 
     @ManyToOne
-    private ProductAccount productAccount;
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
     public Stock getStock() {
         return stock;
@@ -23,8 +25,8 @@ public class Position {
         this.stock = stock;
     }
 
-    public ProductAccount getProductAccount() {
-        return productAccount;
+    public Product getProduct() {
+        return product;
     }
 
     public Long getAmount() {
