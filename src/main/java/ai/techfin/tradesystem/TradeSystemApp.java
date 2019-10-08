@@ -2,6 +2,7 @@ package ai.techfin.tradesystem;
 
 import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.config.ApplicationProperties;
+import com.zts.xtp.common.jni.JNILoadLibrary;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
@@ -17,6 +19,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
+@ComponentScan("ai.techfin")
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
 public class TradeSystemApp implements InitializingBean {
@@ -57,6 +60,7 @@ public class TradeSystemApp implements InitializingBean {
             );
             throw new Error("Application should not run with both the 'dev' and 'prod' profiles at the same time.");
         }
+        JNILoadLibrary.loadLibrary();
     }
 
     private static void logApplicationStartup(Environment env) {

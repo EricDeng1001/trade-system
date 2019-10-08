@@ -14,13 +14,13 @@ import java.util.Map;
 public class InternalBroker implements BrokerService {
 
     @Override
-    public boolean buy(String user, Long placementId, Stock stock, BigInteger quantity, BigDecimal price,
+    public boolean buy(String user, Long placementId, Stock stock, Long quantity, BigDecimal price,
                        PriceType priceType) {
         return false;
     }
 
     @Override
-    public boolean sell(String user, Long placementId, Stock stock, BigInteger quantity, BigDecimal price,
+    public boolean sell(String user, Long placementId, Stock stock, Long quantity, BigDecimal price,
                         PriceType priceType) {
         return false;
     }

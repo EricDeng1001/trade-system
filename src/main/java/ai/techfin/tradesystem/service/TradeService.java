@@ -24,7 +24,7 @@ public class TradeService {
 
     private final PriceService priceService;
 
-    public TradeService(@Qualifier(ApplicationConstants.BrokerService.INTERNAL) BrokerService xtpService,
+    public TradeService(@Qualifier(ApplicationConstants.BrokerService.XTP) BrokerService xtpService,
                         PriceService priceService,
                         ModelOrderListRepository modelOrderListRepository,
                         PlacementListRepository placementListRepository) {
@@ -79,7 +79,7 @@ public class TradeService {
         placementList = placementListRepository.save(placementList);
         for (ModelOrder modelOrder: orders) {
             BigDecimal price = priceService.getPrice(modelOrder.getStock(), provider);
-            Long quantity = modelOrder.getMoney().divide(price.multiply(hundred), RoundingMode.FLOOR).multiply(hundred).longValue();
+            Long quantity = modelOrder.getMoney().divide(price.multiply(hundred), 0,RoundingMode.FLOOR).multiply(hundred).longValue();
             Placement placement = new Placement(modelOrder.getStock(), quantity, price);
             placements.add(placement);
             if (tradeType == TradeType.SELL) {

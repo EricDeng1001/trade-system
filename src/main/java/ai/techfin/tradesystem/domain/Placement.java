@@ -24,6 +24,8 @@ public class Placement {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
+    public Placement(){}
+
     public Placement(Stock stock, Long quantity, BigDecimal price) {
         this.stock = stock;
         this.quantity = quantity;
