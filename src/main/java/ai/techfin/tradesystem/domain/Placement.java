@@ -3,7 +3,9 @@ package ai.techfin.tradesystem.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import java.math.BigDecimal;
 import java.time.Instant;
 
@@ -18,18 +20,43 @@ public class Placement {
     @Column(nullable = false)
     private Long quantity;
 
+    /**
+     * represent total quantity dealt in this placement,
+     * no matter if their price is the same
+     */
+    @Column(name = "dealt_q")
+    private Long quantityDealt;
+
+    /**
+     * total money dealt with this placement
+     */
+    @Column(name = "dealt_m")
+    private Long moneyDealt;
+
     @Column(nullable = false, precision = 21, scale = 2)
     private BigDecimal price;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
-    public Placement(){}
+    public Placement() {}
 
     public Placement(Stock stock, Long quantity, BigDecimal price) {
         this.stock = stock;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public Long getQuantityDealt() {
+        return quantityDealt;
+    }
+
+    public Long getMoneyDealt() {
+        return moneyDealt;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
     public Stock getStock() { return stock; }
