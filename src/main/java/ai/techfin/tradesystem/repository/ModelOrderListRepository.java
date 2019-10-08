@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ModelOrderListRepository extends JpaRepository<ModelOrderList, Long> {
 
-    List<ModelOrderList> findByCreatedAtBetweenAndProductAccount(Instant begin, Instant end, Product product);
+    List<ModelOrderList> findByCreatedAtBetweenAndProduct(Instant begin, Instant end, Product product);
 
 }

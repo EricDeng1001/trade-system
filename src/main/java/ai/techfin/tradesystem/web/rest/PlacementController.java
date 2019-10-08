@@ -35,7 +35,7 @@ public class PlacementController {
     @PostMapping("/placement-list/{tradeType}")
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(AuthoritiesConstants.TRADER)
-    public void createSellPlacementList(@PathVariable String tradeType, @RequestBody Long modelOrderListId) {
+    public void createSellPlacementList(@PathVariable("tradeType") String tradeType, @RequestParam Long modelOrderListId) {
         Optional<ModelOrderList> modelOrderListOp = modelOrderListRepository.findById(modelOrderListId);
         if (modelOrderListOp.isEmpty()) {
             throw new ResourceNotExistException();

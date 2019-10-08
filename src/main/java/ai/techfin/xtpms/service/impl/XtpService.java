@@ -49,7 +49,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     }
 
     @Override
-    public boolean buy(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType) {
+    public boolean buy(String user,Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
         try {
             checkInit(isInit);
             if (!isInit) {
@@ -66,7 +66,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .ticker(ticker)
                     .marketType(TickerHelper.getMarket(ticker))
                     .price(price.longValue())
-                    .quantity(quantity.longValue())
+                    .quantity(quantity)
                     .priceType(PriceTypeHelper.getPriceType(priceType.name()))
                     .sideType(SideType.XTP_SIDE_BUY)
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
@@ -81,7 +81,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     }
 
     @Override
-    public boolean sell(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType) {
+    public boolean sell(String user,Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
         try {
             checkInit(isInit);
             if (!isInit) {
@@ -97,7 +97,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .ticker(ticker)
                     .marketType(TickerHelper.getMarket(ticker))
                     .price(price.longValue())
-                    .quantity(quantity.longValue())
+                    .quantity(quantity)
                     .priceType(PriceTypeHelper.getPriceType(priceType.name()))
                     .sideType(SideType.XTP_SIDE_SELL)
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
@@ -122,7 +122,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
      * @param type
      * @return
      */
-    private boolean checkRequestParam(String user, Stock stock, BigInteger quantity, BigDecimal price, PriceType priceType, String type) {
+    private boolean checkRequestParam(String user, Stock stock, Long quantity, BigDecimal price, PriceType priceType, String type) {
         if (Optional.ofNullable(user).filter(user1 -> !StringUtils.isEmpty(user1)).isEmpty()) {
             LOGGER.error("{} error, User invalid, user : {}", type, user);
             return false;
@@ -139,7 +139,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             LOGGER.error("{} error, Price invalid, price : {}", type, price);
             return false;
         }
-        if (Optional.ofNullable(quantity).filter(quantity1 -> quantity1.compareTo(new BigInteger("0")) > 0).isEmpty()) {
+        if (Optional.ofNullable(quantity).filter(quantity1 -> quantity1 != 0L).isEmpty()) {
             LOGGER.error("{} error, Quantity invalid, quantity : {}", type, quantity);
             return false;
         }
@@ -192,7 +192,7 @@ public class XtpService implements BrokerService, ApplicationContextAware {
             }
         } catch (Exception e) {
             isInit = false;
-            LOGGER.error("async init error, reason: {}", e.getMessage());
+            LOGGER.error("XtpService init error, reason: {}", e.getMessage());
         } finally {
             countDownLatch.countDown();
         }
