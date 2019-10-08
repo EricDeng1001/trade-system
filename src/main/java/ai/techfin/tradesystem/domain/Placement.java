@@ -30,8 +30,8 @@ public class Placement {
     /**
      * total money dealt with this placement
      */
-    @Column(name = "dealt_m")
-    private Long moneyDealt;
+    @Column(name = "dealt_m", precision = 21, scale = 2)
+    private BigDecimal moneyDealt;
 
     @Column(nullable = false, precision = 21, scale = 2)
     private BigDecimal price;
@@ -51,7 +51,7 @@ public class Placement {
         return quantityDealt;
     }
 
-    public Long getMoneyDealt() {
+    public BigDecimal getMoneyDealt() {
         return moneyDealt;
     }
 

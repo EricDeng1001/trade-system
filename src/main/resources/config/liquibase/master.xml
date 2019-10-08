@@ -12,6 +12,7 @@
   <property name="clobType" value="clob" dbms="h2"/>
   <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
   <property name="uuidType" value="varchar(36)" dbms="h2, mysql, mariadb"/>
+  <property name="moneyType" value="decimal(21, 2)" dbms="h2, mysql"/>
 
   <includeAll path="config/liquibase/changelog"/>
 </databaseChangeLog>
