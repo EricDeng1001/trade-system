@@ -12,14 +12,14 @@ public interface OrderRespDTOMapper {
 
     @Mapping(source = "errorMessage.errorId", target = "errorId")
     @Mapping(source = "errorMessage.errorMsg", target = "errorMsg")
-    @Mapping(source = "orderResponse.orderXtpId", target = "placementId")
-    @Mapping(source = "orderResponse.ticker", target = "ticker")
     @Mapping(source = "orderResponse.orderStatusType", target = "statusType")
     @Mapping(source = "orderResponse.price", target = "price")
     @Mapping(source = "orderResponse.quantity", target = "quantity")
     @Mapping(source = "orderResponse.priceType", target = "priceType")
-    @Mapping(source = "orderResponse.sideType", target = "sideType")
-    @Mapping(source = "orderResponse.marketType", target = "marketType")
+    @Mapping(source = "orderResponse.sideType", target = "tradeType")
+    @Mapping(source = "orderResponse.ticker", target = "stock.name")
+    @Mapping(source = "orderResponse.marketType", target = "stock.market")
     @Mapping(target = "user" , ignore = true)
+    @Mapping(target = "placementId", ignore = true)
     OrderResponseDTO orderToOrderDTO(OrderResponse orderResponse, ErrorMessage errorMessage);
 }

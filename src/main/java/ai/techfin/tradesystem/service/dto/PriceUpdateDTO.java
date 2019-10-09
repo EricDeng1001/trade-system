@@ -2,12 +2,14 @@ package ai.techfin.tradesystem.service.dto;
 
 import ai.techfin.tradesystem.domain.Stock;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@Data
 public class PriceUpdateDTO implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(PriceUpdateDTO.class);
@@ -37,5 +39,8 @@ public class PriceUpdateDTO implements Serializable {
     public BrokerType getBroker() {
         return broker;
     }
+
+
+    public PriceUpdateDTO(){}
 
 }

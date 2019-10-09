@@ -1,4 +1,4 @@
-package ai.techfin.xtpms.xtp.async;
+package ai.techfin.xtpms.adapter;
 
 import ai.techfin.tradesystem.config.KafkaTopicConfiguration;
 import ai.techfin.xtpms.service.broker.dto.OrderResponseDTO;
@@ -18,23 +18,18 @@ import net.logstash.logback.encoder.org.apache.commons.lang3.tuple.ImmutablePair
 import net.logstash.logback.encoder.org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @PropertySource("classpath:config/xtp.properties")
-@Component("asyncTradeApi")
-@Lazy
-public class AsyncTradeApi implements TradeSpi, InitializingBean {
+@Component("tradeApi")
+public class AsyncTradeApi implements TradeSpi {
     private static final Logger LOGGER = LoggerFactory.getLogger(AsyncTradeApi.class);
 
     private final TradeApi tradeApi;
@@ -63,6 +58,12 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
 
     private final TradeRespDTOMapper tradeRespDTOMapper;
 
+    private final ConcurrentHashMap<String, Long> xtpOrderId2PlacementId = new ConcurrentHashMap<>();
+
+    private final BlockingQueue<String> removeXtpOrderId = new LinkedBlockingQueue<>();
+
+    private final BlockingQueue<Long> addPlacementsIds = new LinkedBlockingQueue<>();
+
     @Autowired
     public AsyncTradeApi(@Value("${logFolder}") String LOG_FOLDER,
                          @Value("${tradeServerIP}") String XTP_TRADE_SERVER_IP,
@@ -86,7 +87,7 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
     }
 
 
-    public boolean sellOrBuy(OrderInsertRequest request, String user) {
+    public boolean sellOrBuy(OrderInsertRequest request, String user, Long placementId) {
         String sessionId = userWithSessionId.get(user);
         if (sessionId == null || sessionId.equals("0")) {
             if (request.getSideType() == SideType.XTP_SIDE_SELL.type) {
@@ -98,6 +99,7 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
         }
 
         try {
+            addPlacementsIds.put(placementId);//将placementId进行保存，orderEvent回调时设置orderResDTO的placementId
             userBlockingQueue.getUserRequestQueue().put(request);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -159,19 +161,6 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
     }
 
     /**
-     * Xtp init初始化，在创容器创建AsyncTradeApi后调用，此对象lazy加载
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        clientId = (short) Math.floor((Math.random() * 5) + 1);
-        tradeApi.init(clientId, TRADE_KEY,
-                LOG_FOLDER, XtpLogLevel.XTP_LOG_LEVEL_ERROR, JniLogLevel.JNI_LOG_LEVEL_ERROR,
-                XtpTeResumeType.XTP_TERT_QUICK);
-        tradeApi.setHeartBeatInterval(180);
-        LOGGER.info("tradeApi init");
-    }
-
-    /**
      * 查询用户资金
      *
      * @param sessionId 用户登录后的参数
@@ -190,19 +179,56 @@ public class AsyncTradeApi implements TradeSpi, InitializingBean {
 
     @Override
     public void onOrderEvent(OrderResponse orderInfo, ErrorMessage errorMessage, String sessionId) {
+        Long placementId = matchPlacementIdAndXtpOrderId(orderInfo.getOrderXtpId());
         if (orderInfo.getOrderStatusType() == OrderStatusType.XTP_ORDER_STATUS_REJECTED) {
             OrderResponseDTO orderResponseDTO = orderRespDTOMapper.orderToOrderDTO(orderInfo, errorMessage);
             orderResponseDTO.setUser(sessionIdWithUser.get(sessionId).getLeft());
+            orderResponseDTO.setPlacementId(placementId);
             kafkaTemplateOrderRes.send(KafkaTopicConfiguration.XTP_TRADE_FAILED, orderResponseDTO);
+            LOGGER.info("orderEvent : sessionId  {}, orderDTO {}", sessionId, orderResponseDTO);
+        }else{
+            LOGGER.info("orderEvent : sessionId  {}, orderInfo {}", sessionId, orderInfo);
         }
-        LOGGER.info("orderEvent : sessionId  {}, orderInfo {}", sessionId, orderInfo);
     }
 
     @Override
     public void onTradeEvent(TradeResponse tradeInfo, String sessionId) {
+        Long placementId = matchPlacementIdAndXtpOrderId(tradeInfo.getOrderXtpId());
         TradeResponseDTO tradeResponseDTO = tradeRespDTOMapper.tradeToTradeDTO(tradeInfo);
-        tradeResponseDTO.setUser(sessionIdWithUser.get(sessionId).getLeft());
+        tradeResponseDTO.setPlacementId(placementId);
         kafkaTemplateTradeRes.send(KafkaTopicConfiguration.XTP_TRADE_SUCCEED, tradeResponseDTO);
-        LOGGER.info("tradeEvent : sessionId  {}, tradeInfo {}", sessionId, tradeInfo);
+        //LOGGER.info("tradeEvent : sessionId  {}, tradeInfo {}", sessionId, tradeInfo);
+        LOGGER.info("tradeEvent : sessionId  {}, tradeDTO {}", sessionId, tradeResponseDTO);
+    }
+
+    private Long matchPlacementIdAndXtpOrderId(String xtpOrderId) {
+        Long id = null;
+        if (xtpOrderId2PlacementId.containsKey(xtpOrderId)) {
+            id = xtpOrderId2PlacementId.get(xtpOrderId);//直接从map里面拿
+        } else {
+            //一开始没有匹配
+            try {
+                id = addPlacementsIds.poll();//拿到这单的placementId
+                xtpOrderId2PlacementId.put(xtpOrderId, id);
+                removeXtpOrderId.put(xtpOrderId);
+                if (removeXtpOrderId.size() > 3) {//累积20条的时候移除头部
+                    String xtpId = removeXtpOrderId.poll();
+                    xtpOrderId2PlacementId.remove(xtpId);
+                }
+            } catch (Exception e) {
+                LOGGER.error("match placementId error,reason : {}", e.getMessage());
+            }
+        }
+        return id;
+    }
+
+    public boolean init() {
+        clientId = (short) Math.floor((Math.random() * 5) + 1);
+        tradeApi.init(clientId, TRADE_KEY,
+                LOG_FOLDER, XtpLogLevel.XTP_LOG_LEVEL_ERROR, JniLogLevel.JNI_LOG_LEVEL_ERROR,
+                XtpTeResumeType.XTP_TERT_QUICK);
+        tradeApi.setHeartBeatInterval(180);
+        LOGGER.info("tradeApi init");
+        return true;
     }
 }

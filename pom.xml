@@ -47,6 +47,7 @@
     <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
     <!-- Profiles -->
     <spring.profiles.cors/>
+    <skipTests>true</skipTests>
   </properties>
   <profiles>
     <profile>
