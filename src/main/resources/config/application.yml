@@ -55,14 +55,14 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: >-
-      jdbc:mysql://localhost:3307/tradeSystem
+      jdbc:mysql://localhost:53306/tradeSystem
       ?useUnicode=true
       &characterEncoding=utf8
       &useSSL=false
       &useLegacyDatetimeCode=false
       &serverTimezone=GMT%2B8
     username: root
-    password: root
+    password:
   data:
     # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
     jest:
