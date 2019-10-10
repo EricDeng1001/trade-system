@@ -39,9 +39,9 @@ public class PlacementController {
         return tradeService.process(modelOrderListId, tradeType);
     }
 
-    @GetMapping("/placement-list")
+    @GetMapping("/placement-list/{id}")
     @Secured({AuthoritiesConstants.TRADER, AuthoritiesConstants.ADMIN})
-    public PlacementList getPlacementList(@RequestBody Long id) {
+    public PlacementList getPlacementList(@PathVariable Long id) {
         return placementListRepository.findById(id).orElseThrow();
     }
 }
