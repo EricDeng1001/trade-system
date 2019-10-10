@@ -15,7 +15,7 @@
     </createTable>
   </changeSet>
   <!--解决找不到product表-->
-  <include file="config/liquibase/changelog/product.xml" ></include>
+  <include file="config/liquibase/changelog/product.xml"/>
   <changeSet author="antinus (generated)" id="1569381915517-8">
     <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="position"
                              constraintName="FKefg7pc93mu3753gm8vtuvt3ft" deferrable="false" initiallyDeferred="false"
