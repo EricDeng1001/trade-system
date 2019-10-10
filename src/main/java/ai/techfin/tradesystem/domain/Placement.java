@@ -18,14 +18,14 @@ public class Placement {
     private Stock stock;
 
     @Column(nullable = false)
-    private Long quantity;
+    private Long quantity = 0L;
 
     /**
      * represent total quantity dealt in this placement,
      * no matter if their price is the same
      */
     @Column(name = "dealt_q")
-    private Long quantityDealt;
+    private Long quantityDealt = 0L;
 
     /**
      * total money dealt with this placement
@@ -51,8 +51,16 @@ public class Placement {
         return quantityDealt;
     }
 
+    public void setQuantityDealt(Long quantityDealt) {
+        this.quantityDealt = quantityDealt;
+    }
+
     public BigDecimal getMoneyDealt() {
         return moneyDealt;
+    }
+
+    public void setMoneyDealt(BigDecimal moneyDealt) {
+        this.moneyDealt = moneyDealt;
     }
 
     public Instant getCreatedAt() {
