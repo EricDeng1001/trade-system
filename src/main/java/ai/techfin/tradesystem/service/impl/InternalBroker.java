@@ -27,7 +27,7 @@ public class InternalBroker implements BrokerService {
 
     @Override
     public boolean init() {
-        return false;
+        return true;
     }
 
     @Override

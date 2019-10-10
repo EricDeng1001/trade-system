@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class TradeResponseDTO implements Serializable {
 
     private Long placementId;
@@ -18,5 +19,6 @@ public class TradeResponseDTO implements Serializable {
     private BigDecimal price;
 
     private Stock stock;
+
 
 }

@@ -10,12 +10,31 @@ import java.util.Objects;
 
 @Embeddable
 @AttributeOverrides({
-        @AttributeOverride(name = "name", column = @Column(name = "stock_name")),
-        @AttributeOverride(name = "market", column = @Column(name = "stock_market"))
-})
+                        @AttributeOverride(name = "name", column = @Column(name = "stock_name")),
+                        @AttributeOverride(name = "market", column = @Column(name = "stock_market"))
+                    })
 public class Stock implements Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(Stock.class);
+
+    private static final long serialVersionUID = -2124895142870249817L;
+
+    private String name;
+
+    @Enumerated(value = EnumType.ORDINAL)
+    private MarketType market;
+
+    public Stock() {}
+
+    public Stock(String name, MarketType market) {
+        this.name = name;
+        this.market = market;
+    }
+
+    @Override
+    public String toString() {
+        return name + "." + market;
+    }
 
     @Override
     public int hashCode() {
@@ -24,24 +43,11 @@ public class Stock implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
+        if (obj == this) { return true; }
         if (obj instanceof Stock) {
             return name != null && name.equals(((Stock) obj).name) && market != null && market == ((Stock) obj).market;
         }
         return false;
-    }
-
-    private String name;
-
-    @Enumerated(value = EnumType.ORDINAL)
-    private MarketType market;
-
-    public Stock() {
-    }
-
-    public Stock(String name, MarketType market) {
-        this.name = name;
-        this.market = market;
     }
 
     public String getName() { return name; }

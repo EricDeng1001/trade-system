@@ -18,7 +18,7 @@ public class Placement {
     private Stock stock;
 
     @Column(nullable = false)
-    private Long quantity = 0L;
+    private Long quantity;
 
     /**
      * represent total quantity dealt in this placement,
@@ -31,7 +31,7 @@ public class Placement {
      * total money dealt with this placement
      */
     @Column(name = "dealt_m", precision = 21, scale = 2)
-    private BigDecimal moneyDealt;
+    private BigDecimal moneyDealt = BigDecimal.ZERO;
 
     @Column(nullable = false, precision = 21, scale = 2)
     private BigDecimal price;
