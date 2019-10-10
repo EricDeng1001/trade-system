@@ -15,7 +15,6 @@ public class OrderResponseDTO implements Serializable {
     private MarketType marketType;
 
     private String errorId;
-
     private String errorMsg;
 
     private double price;

@@ -5,8 +5,8 @@ import ai.techfin.tradesystem.domain.enums.PriceType;
 import ai.techfin.tradesystem.service.BrokerService;
 import ai.techfin.xtpms.service.broker.utils.PriceTypeHelper;
 import ai.techfin.xtpms.service.broker.utils.TickerHelper;
-import ai.techfin.xtpms.xtp.async.AsyncQuoteApi;
-import ai.techfin.xtpms.xtp.async.AsyncTradeApi;
+import ai.techfin.xtpms.adapter.AsyncQuoteApi;
+import ai.techfin.xtpms.adapter.AsyncTradeApi;
 import com.zts.xtp.common.enums.BusinessType;
 import com.zts.xtp.common.enums.PositionEffectType;
 import com.zts.xtp.common.enums.SideType;
@@ -14,48 +14,40 @@ import com.zts.xtp.trade.model.request.OrderInsertRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
 
 @Service("xtp-broker")
-public class XtpService implements BrokerService, ApplicationContextAware {
+public class XtpService implements BrokerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XtpService.class);
 
-    private static volatile boolean isInit = false;
+    private static volatile boolean tradeInit = false;
 
-    private ApplicationContext context;
+    private static volatile boolean quoteInit = false;
 
-    private AsyncTradeApi tradeApi;
+    private final AsyncTradeApi tradeApi;
 
-    private AsyncQuoteApi quoteApi;
+    private final AsyncQuoteApi quoteApi;
 
-    public XtpService() {
-    }
-
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
+    @Autowired
+    public XtpService(AsyncTradeApi tradeApi, AsyncQuoteApi quoteApi) {
+        this.tradeApi = tradeApi;
+        this.quoteApi = quoteApi;
     }
 
     @Override
-    public boolean buy(String user,Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
+    public boolean buy(String user, Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
         try {
-            checkInit(isInit);
-            if (!isInit) {
+            if(!tradeInit && !init()){
+                LOGGER.error("buy invoke failed, user:{}, reason:{}", user, "Xtp TradeApi Uninitialized");
                 return false;
             }
-            if (!checkRequestParam(user, stock, quantity, price, priceType, "BUY")) {
+            if (!checkRequestParam(user, placementId, stock, quantity, price, priceType, "BUY")) {
                 return false;
             }
             String ticker = stock.getName();
@@ -65,13 +57,13 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .orderClientId(AsyncTradeApi.clientId)
                     .ticker(ticker)
                     .marketType(TickerHelper.getMarket(ticker))
-                    .price(price.longValue())
+                    .price(price.doubleValue())
                     .quantity(quantity)
                     .priceType(PriceTypeHelper.getPriceType(priceType.name()))
                     .sideType(SideType.XTP_SIDE_BUY)
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
                     .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_CLOSE).build();
-            boolean invoke = tradeApi.sellOrBuy(req, user);
+            boolean invoke = tradeApi.sellOrBuy(req, user, placementId);
             LOGGER.info("buy invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
@@ -81,13 +73,13 @@ public class XtpService implements BrokerService, ApplicationContextAware {
     }
 
     @Override
-    public boolean sell(String user,Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
+    public boolean sell(String user, Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType) {
         try {
-            checkInit(isInit);
-            if (!isInit) {
+            if(!tradeInit && !init()){
+                LOGGER.error("sell invoke failed, user:{}, reason:{}", user, "Xtp TradeApi Uninitialized");
                 return false;
             }
-            if (!checkRequestParam(user, stock, quantity, price, priceType, "SELL")) {
+            if (!checkRequestParam(user, placementId, stock, quantity, price, priceType, "SELL")) {
                 return false;
             }
             String ticker = stock.getName();
@@ -96,13 +88,13 @@ public class XtpService implements BrokerService, ApplicationContextAware {
                     .orderClientId(AsyncTradeApi.clientId)
                     .ticker(ticker)
                     .marketType(TickerHelper.getMarket(ticker))
-                    .price(price.longValue())
+                    .price(price.doubleValue())
                     .quantity(quantity)
                     .priceType(PriceTypeHelper.getPriceType(priceType.name()))
                     .sideType(SideType.XTP_SIDE_SELL)
                     .businessType(BusinessType.XTP_BUSINESS_TYPE_CASH)
                     .positionEffectType(PositionEffectType.XTP_POSITION_EFFECT_CLOSE).build();
-            boolean invoke = tradeApi.sellOrBuy(req, user);
+            boolean invoke = tradeApi.sellOrBuy(req, user, placementId);
             LOGGER.info("sell invoke {} ", invoke);
             return invoke;
         } catch (Exception e) {
@@ -122,9 +114,13 @@ public class XtpService implements BrokerService, ApplicationContextAware {
      * @param type
      * @return
      */
-    private boolean checkRequestParam(String user, Stock stock, Long quantity, BigDecimal price, PriceType priceType, String type) {
+    private boolean checkRequestParam(String user, Long placementId, Stock stock, Long quantity, BigDecimal price, PriceType priceType, String type) {
         if (Optional.ofNullable(user).filter(user1 -> !StringUtils.isEmpty(user1)).isEmpty()) {
             LOGGER.error("{} error, User invalid, user : {}", type, user);
+            return false;
+        }
+        if (Optional.ofNullable(placementId).filter(placementId1 -> placementId1 != 0L).isEmpty()) {
+            LOGGER.error("{} error, PlacementId invalid, placementId : {}", type, placementId);
             return false;
         }
         if (Optional.ofNullable(stock).map(stock1 -> stock1.getName()).filter(name -> !StringUtils.isEmpty(name)).isEmpty()) {
@@ -148,17 +144,19 @@ public class XtpService implements BrokerService, ApplicationContextAware {
 
     @Override
     public boolean init() {
-        checkInit(isInit);
-        if (!isInit) {
-            return false;
+        if(!tradeInit && tradeApi.init()){
+            tradeInit = true;
         }
-        return true;
+        if(!quoteInit && quoteApi.init()){
+            quoteInit = true;
+        }
+        return tradeInit && quoteInit;
     }
 
     @Override
     public boolean loginUser(String user, String password, Map<String, String> additional) {
-        checkInit(isInit);
-        if (!isInit) {
+        if(!tradeInit && !init()){
+            LOGGER.error("loginUser invoke failed, user:{}, reason:{}", user, "Xtp TradeApi Uninitialized");
             return false;
         }
         if (StringUtils.isNotEmpty(user) && StringUtils.isNotEmpty(password)) {
@@ -170,45 +168,13 @@ public class XtpService implements BrokerService, ApplicationContextAware {
         }
     }
 
-
     @Override
     public boolean subscribePrice(Stock stock) {
-        checkInit(isInit);
-        if (!isInit) {
+        if(!quoteInit && !init()){
+            LOGGER.error("subscribePrice invoke failed, reason:{}",  "Xtp QuoteApi Uninitialized");
             return false;
         }
-        this.quoteApi.queryTickerPrice(stock.getName(), TickerHelper.getMarket(stock.getName()));
+        this.quoteApi.subscribePrice(stock.getName(), TickerHelper.getMarket(stock.getName()));
         return true;
-    }
-
-    //防止第一次init速度慢，导致类没有成功加载，调用其函数导致空指针
-    @Async()
-    void asyncInit(CountDownLatch countDownLatch) {
-        try {
-            if (!isInit) {
-                isInit = true;
-                this.tradeApi = (AsyncTradeApi) this.context.getBean("asyncTradeApi");
-                this.quoteApi = (AsyncQuoteApi) this.context.getBean("asyncQuoteApi");
-            }
-        } catch (Exception e) {
-            isInit = false;
-            LOGGER.error("XtpService init error, reason: {}", e.getMessage());
-        } finally {
-            countDownLatch.countDown();
-        }
-    }
-
-    private void checkInit(boolean isInit) {
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        if (!isInit) {
-            asyncInit(countDownLatch);
-        } else {
-            countDownLatch.countDown();
-        }
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            LOGGER.error("xtp init error, reason:{}", e.getMessage());
-        }
     }
 }

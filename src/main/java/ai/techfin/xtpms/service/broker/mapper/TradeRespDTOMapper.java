@@ -9,13 +9,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring",uses = ClassConverterUtils.class)
 public interface TradeRespDTOMapper {
 
-    @Mapping(target = "placementId", source = "tradeResponse.orderXtpId")
-    @Mapping(target = "tradeId", source = "tradeResponse.execId")
+
     @Mapping(target = "quantity", source = "tradeResponse.quantity")
     @Mapping(target = "price", source = "tradeResponse.price")
-    @Mapping(target = "ticker", source = "tradeResponse.ticker")
-    @Mapping(target = "sideType",source = "tradeResponse.sideType")
-    @Mapping(target = "marketType",source = "tradeResponse.marketType")
-    @Mapping(target = "user" , ignore = true)
+    @Mapping(target = "stock.name", source = "tradeResponse.ticker")
+    @Mapping(target = "stock.market",source = "tradeResponse.marketType")
+    @Mapping(target = "placementId", ignore = true)
     TradeResponseDTO tradeToTradeDTO(TradeResponse tradeResponse);
 }

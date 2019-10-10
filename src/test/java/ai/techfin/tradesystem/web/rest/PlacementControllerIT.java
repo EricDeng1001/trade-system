@@ -5,6 +5,7 @@ import ai.techfin.tradesystem.TradeSystemApp;
 import ai.techfin.tradesystem.domain.ModelOrderList;
 import ai.techfin.tradesystem.domain.Product;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
+import ai.techfin.tradesystem.repository.PlacementListRepository;
 import ai.techfin.tradesystem.repository.ProductAccountRepository;
 import ai.techfin.tradesystem.service.ModelOrderService;
 import ai.techfin.tradesystem.service.TradeService;
@@ -47,6 +48,9 @@ class PlacementControllerIT {
     @Autowired
     private TradeService tradeService;
 
+    @Autowired
+    private PlacementListRepository placementListRepository;
+
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -70,7 +74,7 @@ class PlacementControllerIT {
         modelOrderList.setModel("model");
         modelOrderList.setOrders(Collections.emptySet());
         modelOrderList.setProduct(product);
-        modelOrderListRepository.save(modelOrderList);
+        //modelOrderListRepository.save(modelOrderList);
         PlacementListVM requestBody = new PlacementListVM();
         requestBody.setModelOrderListId(modelOrderList.getId());
         requestBody.setPlacements(Collections.emptySet());

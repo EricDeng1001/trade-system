@@ -1,10 +1,10 @@
 package ai.techfin.xtpms.service.broker.utils;
 
-import ai.techfin.tradesystem.domain.enums.MarketType;
-import ai.techfin.tradesystem.domain.enums.OrderStatusType;
-import ai.techfin.tradesystem.domain.enums.PriceType;
-import ai.techfin.tradesystem.domain.enums.SideType;
+import ai.techfin.tradesystem.domain.enums.*;
+import com.zts.xtp.common.enums.ExchangeType;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component
 public class ClassConverterUtils {
@@ -19,12 +19,12 @@ public class ClassConverterUtils {
         return null;
     }
 
-    public SideType converterSideType(com.zts.xtp.common.enums.SideType xtpSideType) {
+    public TradeType converterSideType(com.zts.xtp.common.enums.SideType xtpSideType) {
         switch (xtpSideType) {
             case XTP_SIDE_BUY:
-                return SideType.BUY;
+                return TradeType.BUY;
             case XTP_SIDE_SELL:
-                return SideType.SELL;
+                return TradeType.SELL;
         }
         return null;
     }
@@ -59,5 +59,19 @@ public class ClassConverterUtils {
                 return OrderStatusType.UNKNOWN;
         }
         return null;
+    }
+
+    public MarketType converterMarketType(ExchangeType exchangeType) {
+        switch (exchangeType) {
+            case SH:
+                return MarketType.SH;
+            case SZ:
+                return MarketType.SZ;
+        }
+        return null;
+    }
+
+    public BigDecimal converterDouble(double lastPrice){
+        return new BigDecimal(lastPrice);
     }
 }

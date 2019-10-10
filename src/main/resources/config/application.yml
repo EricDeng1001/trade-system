@@ -42,7 +42,7 @@ spring:
         spring:
           json:
             trusted:
-              packages: ai.techfin.tradesystem,ai.techfin.xtpms.service.broker.dto
+              packages: ai.techfin.tradesystem.service.dto,ai.techfin.xtpms.service.broker.dto
 
     producer:
       bootstrap-servers:
