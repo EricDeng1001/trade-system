@@ -1,13 +1,11 @@
 package ai.techfin.tradesystem.service;
 
-import ai.techfin.tradesystem.config.ApplicationConstants;
 import ai.techfin.tradesystem.domain.*;
 import ai.techfin.tradesystem.domain.enums.BrokerType;
 import ai.techfin.tradesystem.domain.enums.PriceType;
 import ai.techfin.tradesystem.domain.enums.TradeType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,6 +23,7 @@ public class TradeService {
     private final PlacementListRepository placementListRepository;
 
     private final BrokerServiceFactory brokerServiceFactory;
+
     private final PriceService priceService;
 
     public TradeService(
@@ -36,8 +35,10 @@ public class TradeService {
         this.priceService = priceService;
         this.modelOrderListRepository = modelOrderListRepository;
         this.placementListRepository = placementListRepository;
-        for (var provider: BrokerType.values()) {
-            brokerServiceFactory.getBrokerService(provider).init();
+        for (var provider : BrokerType.values()) {
+            if (!brokerServiceFactory.getBrokerService(provider).init()) {
+                throw new Error("Provider: " + provider + " init failed");
+            }
         }
     }
 
