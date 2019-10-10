@@ -26,7 +26,7 @@ public class Stock implements Serializable {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj instanceof Stock) {
-            return name != null && name.equals(((Stock) obj).name);
+            return name != null && name.equals(((Stock) obj).name) && market != null && market == ((Stock) obj).market;
         }
         return false;
     }
