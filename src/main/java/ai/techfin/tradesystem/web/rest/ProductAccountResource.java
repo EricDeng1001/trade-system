@@ -72,7 +72,7 @@ public class ProductAccountResource {
      * status {@code 404 (Not Found)}.
      */
     @GetMapping("/product-accounts/{id}")
-    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL})
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.MODEL, AuthoritiesConstants.TRADER})
     public ResponseEntity<Product> getProductAccount(@PathVariable Long id) {
         log.debug("REST request to get ProductAccount : {}", id);
         Optional<Product> productAccount = productAccountRepository.findById(id);
