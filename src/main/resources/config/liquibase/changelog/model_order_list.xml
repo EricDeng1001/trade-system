@@ -20,7 +20,7 @@
             <column name="stock_market" type="INT"/>
             <column name="stock_name" type="VARCHAR(255)"/>
             <column name="money" type="DECIMAL(21, 2)"/>
-            <column name="broker_type" type="TINYINT" />
+            <column name="trade_type" type="TINYINT" />
         </createTable>
     </changeSet>
     <changeSet author="antinus (generated)" id="1565941444170-6">
