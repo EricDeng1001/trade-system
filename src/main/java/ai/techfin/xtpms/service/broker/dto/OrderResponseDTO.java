@@ -1,16 +1,12 @@
 package ai.techfin.xtpms.service.broker.dto;
 
-import ai.techfin.tradesystem.domain.enums.MarketType;
-import ai.techfin.tradesystem.domain.enums.OrderStatusType;
-import ai.techfin.tradesystem.domain.enums.PriceType;
-import ai.techfin.tradesystem.domain.enums.SideType;
+import ai.techfin.tradesystem.domain.enums.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class OrderResponseDTO implements Serializable {
 
-    private String placementId;
+    private Long placementId;
 
     private String user;
 
@@ -28,18 +24,18 @@ public class OrderResponseDTO implements Serializable {
 
     private PriceType priceType;
 
-    private SideType sideType;
+    private TradeType tradeType;
     /**
      * 订单状态
      */
     private OrderStatusType statusType;
 
 
-    public String getPlacementId() {
+    public Long getPlacementId() {
         return placementId;
     }
 
-    public void setPlacementId(String placementId) {
+    public void setPlacementId(Long placementId) {
         this.placementId = placementId;
     }
 
@@ -107,12 +103,12 @@ public class OrderResponseDTO implements Serializable {
         this.priceType = priceType;
     }
 
-    public SideType getSideType() {
-        return sideType;
+    public TradeType getTradeType() {
+        return tradeType;
     }
 
-    public void setSideType(SideType sideType) {
-        this.sideType = sideType;
+    public void setTradeType(TradeType tradeType) {
+        this.tradeType = tradeType;
     }
 
     public OrderStatusType getStatusType() {
@@ -135,7 +131,7 @@ public class OrderResponseDTO implements Serializable {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", priceType=" + priceType +
-                ", sideType=" + sideType +
+                ", sideType=" + tradeType +
                 ", statusType=" + statusType +
                 '}';
     }

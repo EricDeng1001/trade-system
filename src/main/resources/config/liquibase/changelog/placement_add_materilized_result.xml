@@ -3,7 +3,7 @@
     <changeSet author="antinus (generated)" id="1567147927717-8">
         <addColumn tableName="placement_list_data">
             <column name="dealt_q" type="bigint"/>
-            <column name="dealt_q" type="${moneyType}"/>
+            <column name="dealt_m" type="${moneyType}"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>
