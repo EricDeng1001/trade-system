@@ -17,8 +17,8 @@ public interface OrderRespDTOMapper {
     @Mapping(source = "orderResponse.quantity", target = "quantity")
     @Mapping(source = "orderResponse.priceType", target = "priceType")
     @Mapping(source = "orderResponse.sideType", target = "tradeType")
-    @Mapping(source = "orderResponse.ticker", target = "stock.name")
-    @Mapping(source = "orderResponse.marketType", target = "stock.market")
+    @Mapping(source = "orderResponse.ticker", target = "ticker")
+    @Mapping(source = "orderResponse.marketType", target = "marketType")
     @Mapping(target = "user" , ignore = true)
     @Mapping(target = "placementId", ignore = true)
     OrderResponseDTO orderToOrderDTO(OrderResponse orderResponse, ErrorMessage errorMessage);
