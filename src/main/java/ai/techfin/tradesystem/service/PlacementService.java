@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -24,10 +25,17 @@ public class PlacementService {
     @Autowired
     public PlacementService(PlacementListRepository placementListRepository) {
         this.placementListRepository = placementListRepository;
+        log.debug("placementListRepository: {}", placementListRepository);
     }
 
-    @KafkaListener(topics = KafkaTopicConfiguration.XTP_TRADE_SUCCEED)
-    private void recordResultAcc(TradeResponseDTO dto) {
+    public @NotNull PlacementList findNotNull(Long id) {
+        return placementListRepository.findById(id).orElseThrow();
+    }
+
+    @KafkaListener(topics = KafkaTopicConfiguration.XTP_TRADE_SUCCEED, id = "placement")
+    public void recordResultAcc(TradeResponseDTO dto) {
+        log.debug("placementListRepository: {}", placementListRepository);
+        log.debug("TradeResponseDTO: {}", dto);
         PlacementList placementList = placementListRepository.findById(dto.getPlacementId()).orElse(null);
         if (placementList == null) {
             return;
@@ -42,6 +50,7 @@ public class PlacementService {
         placement.setQuantityDealt(placement.getQuantityDealt() + dto.getQuantity());
         placement.setMoneyDealt(
             dto.getPrice().multiply(BigDecimal.valueOf(dto.getQuantity())).add(placement.getMoneyDealt()));
+        placementListRepository.save(placementList);
     }
 
 }

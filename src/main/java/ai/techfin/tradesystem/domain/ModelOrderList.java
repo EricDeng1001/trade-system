@@ -4,7 +4,6 @@ import ai.techfin.tradesystem.aop.validation.group.PERSIST;
 import ai.techfin.tradesystem.domain.enums.TradeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Table(name = "model_order_list")
 public class ModelOrderList {
 
-    private static final Logger logger = LoggerFactory.getLogger(ModelOrder.class);
+    private static final Logger log = LoggerFactory.getLogger(ModelOrder.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,19 +40,20 @@ public class ModelOrderList {
                inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private Product product;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private PlacementList placementList;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "placement_list_id", referencedColumnName = "id")
+    private PlacementList placementList = null;
 
     public ModelOrderList(String model, Product product,
                           @NotNull Set<ModelOrder> orders) {
-        logger.debug("A model order list is created with full data");
+        log.debug("A model order list is created with full data");
         this.model = model;
         this.orders = orders;
         setProduct(product);
     }
 
     public ModelOrderList() {
-        logger.debug("A model order list is created");
+        log.debug("A model order list is created");
     }
 
     public Set<ModelOrder> getSellList() {
@@ -86,7 +86,9 @@ public class ModelOrderList {
         var origin = this.placementList;
         if (placementList == null) {
             this.placementList = null;
-            origin.setModelOrderList(null);
+            if (origin.getModelOrderList() == this) {
+                origin.setModelOrderList(null);
+            }
         } else {
             this.placementList = placementList;
             // do that side
@@ -96,10 +98,6 @@ public class ModelOrderList {
                 origin.setModelOrderList(null);
             }
 
-            var thatOrigin = placementList.getModelOrderList();
-            if (thatOrigin != null) {
-                thatOrigin.setPlacementList(null);
-            }
         }
     }
 
@@ -108,7 +106,7 @@ public class ModelOrderList {
     }
 
     public void setId(Long id) {
-        logger.debug("Setting id");
+        log.debug("Setting id");
         this.id = id;
     }
 
@@ -134,7 +132,7 @@ public class ModelOrderList {
     }
 
     public void setOrders(Set<ModelOrder> orders) {
-        logger.debug("Setting model orders for id: {}", id);
+        log.debug("Setting model orders for id: {}", id);
         this.orders = orders;
     }
 

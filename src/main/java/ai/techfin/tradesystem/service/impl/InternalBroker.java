@@ -66,8 +66,8 @@ public class InternalBroker implements BrokerService {
         return true;
     }
 
-    @Scheduled(fixedRate = 10000)
-    private void sendMockPrice() {
+    @Scheduled(fixedRate = 1000000)
+    void sendMockPrice() {
         for (var s: stocksToSendPrice) {
             priceUpdateDTOKafkaTemplate.send(KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC, new PriceUpdateDTO(s, BigDecimal.TEN, BrokerType.INTERNAL_SIM));
         }

@@ -6,7 +6,9 @@ import ai.techfin.tradesystem.domain.enums.PriceType;
 import ai.techfin.tradesystem.domain.enums.TradeType;
 import ai.techfin.tradesystem.repository.ModelOrderListRepository;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class TradeService {
 
     private final ModelOrderListRepository modelOrderListRepository;
@@ -37,7 +40,7 @@ public class TradeService {
         this.placementListRepository = placementListRepository;
         for (var provider : BrokerType.values()) {
             if (!brokerServiceFactory.getBrokerService(provider).init()) {
-                throw new Error("Provider: " + provider + " init failed");
+                log.error("Provider: " + provider + " init failed");
             }
         }
     }
@@ -50,6 +53,7 @@ public class TradeService {
         BrokerService brokerService = brokerServiceFactory.getBrokerService(provider);
         switch (provider) {
             case INTERNAL_SIM:
+                break;
             case CTP:
             case XTP:
                 XtpAccount xtpAccount = product.getXtpAccount();
@@ -60,6 +64,7 @@ public class TradeService {
         brokerService.loginUser(username, password, additional);
     }
 
+    @Transactional
     public PlacementList process(Long modelOrderListId, TradeType tradeType) {
         ModelOrderList modelOrderList = modelOrderListRepository.getOne(modelOrderListId);
         Product product = modelOrderList.getProduct();
@@ -73,11 +78,21 @@ public class TradeService {
             orders = modelOrderList.getBuyList();
         }
 
-        String brokerUser = product.getXtpAccount().getAccount();
+        String brokerUser = null;
+        switch (provider) {
+            case XTP:
+                brokerUser = product.getXtpAccount().getAccount();
+                break;
+        }
+
         BigDecimal hundred = BigDecimal.valueOf(100);
         Set<Placement> placements = new HashSet<>();
-        PlacementList placementList = new PlacementList();
-        placementList = placementListRepository.save(placementList);
+        PlacementList placementList = modelOrderList.getPlacementList();
+
+        if (placementList == null) {
+            placementList = new PlacementList();
+            placementList = placementListRepository.save(placementList);
+        }
 
         for (ModelOrder modelOrder : orders) {
             BigDecimal price = priceService.getPrice(modelOrder.getStock(), provider);
@@ -94,7 +109,7 @@ public class TradeService {
                     .buy(brokerUser, placementList.getId(), modelOrder.getStock(), quantity, price, PriceType.LIMITED);
             }
         }
-        placementList.setPlacements(placements);
+        placementList.getPlacements().addAll(placements);
         placementList.setModelOrderList(modelOrderList);
         placementListRepository.save(placementList);
         return placementList;

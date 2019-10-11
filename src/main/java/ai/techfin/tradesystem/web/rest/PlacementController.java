@@ -5,9 +5,11 @@ import ai.techfin.tradesystem.domain.enums.TradeType;
 import ai.techfin.tradesystem.repository.PlacementListRepository;
 import ai.techfin.tradesystem.security.AuthoritiesConstants;
 import ai.techfin.tradesystem.service.ModelOrderService;
+import ai.techfin.tradesystem.service.PlacementService;
 import ai.techfin.tradesystem.service.TradeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,14 @@ public class PlacementController {
 
     private final TradeService tradeService;
 
-    private final PlacementListRepository placementListRepository;
+    private final PlacementService placementService;
 
+    @Autowired
     public PlacementController(ModelOrderService modelOrderService, TradeService tradeService,
-                               PlacementListRepository placementListRepository) {
+                               PlacementService placementService) {
         this.modelOrderService = modelOrderService;
         this.tradeService = tradeService;
-        this.placementListRepository = placementListRepository;
+        this.placementService = placementService;
     }
 
     @PostMapping("/placement-list/{tradeType}")
@@ -42,6 +45,6 @@ public class PlacementController {
     @GetMapping("/placement-list/{id}")
     @Secured({AuthoritiesConstants.TRADER, AuthoritiesConstants.ADMIN})
     public PlacementList getPlacementList(@PathVariable Long id) {
-        return placementListRepository.findById(id).orElseThrow();
+        return placementService.findNotNull(id);
     }
 }

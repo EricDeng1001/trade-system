@@ -15,7 +15,7 @@ public class ModelOrder {
     @Column(precision = 21, scale = 2)
     private BigDecimal money;
 
-    @Column(name = "trade_type")
+    @Column(name = "trade_type", columnDefinition = "tinyint")
     @Enumerated(value = EnumType.ORDINAL)
     private TradeType tradeType;
 

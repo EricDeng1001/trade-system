@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,11 @@ public class PlacementList {
     @ElementCollection(targetClass = Placement.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "placement_list_data",
                      joinColumns = @JoinColumn(name = "list_id", referencedColumnName = "id"))
-    private Set<Placement> placements;
+    private Set<Placement> placements = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "placementList", cascade = CascadeType.ALL)
     @JsonIgnore
-    private ModelOrderList modelOrderList;
+    private ModelOrderList modelOrderList = null;
 
     public PlacementList(Set<Placement> placements) {
         this.placements = placements;
@@ -54,12 +55,14 @@ public class PlacementList {
             return;
         }
         var origin = this.modelOrderList;
-        if (modelOrderList == null) { // remove the relationship
+        if (modelOrderList == null) {
             // do this side
             this.modelOrderList = null;
             // do the other side
-            origin.setPlacementList(null);
-        } else { // set up new relationship and remove the old one
+            if (origin.getPlacementList() == this) {
+                origin.setPlacementList(null);
+            }
+        } else {
             // do this side
             this.modelOrderList = modelOrderList;
             // do that side
@@ -67,11 +70,6 @@ public class PlacementList {
             // do origin side
             if (origin != null) {
                 origin.setPlacementList(null);
-            }
-
-            var thatOrigin = modelOrderList.getPlacementList();
-            if (thatOrigin != null) {
-                thatOrigin.setModelOrderList(null);
             }
         }
     }

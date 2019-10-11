@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ModelOrderListRepository extends JpaRepository<ModelOrderList, Long> {
 
     List<ModelOrderList> findByCreatedAtBetweenAndProduct(Instant begin, Instant end, Product product);
+
+    List<ModelOrderList> findByModel(String Model);
 
 }

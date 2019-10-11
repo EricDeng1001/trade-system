@@ -19,6 +19,8 @@ public class PriceService {
 
     private ConcurrentHashMap<Stock, BigDecimal> xtpPriceMap = new ConcurrentHashMap<>(10007);
 
+    private ConcurrentHashMap<Stock, BigDecimal> ibPriceMap = new ConcurrentHashMap<>(10007);
+
     @KafkaListener(topics = KafkaTopicConfiguration.XTP_PRICE_CHANGE_TOPIC)
     public void updatePrice(PriceUpdateDTO priceUpdateDTO) {
         switch (priceUpdateDTO.getBroker()) {
@@ -26,6 +28,7 @@ public class PriceService {
                 xtpPriceMap.put(priceUpdateDTO.getStock(), priceUpdateDTO.getPrice());
                 break;
             case INTERNAL_SIM:
+                ibPriceMap.put(priceUpdateDTO.getStock(), priceUpdateDTO.getPrice());
             case CTP:
         }
     }
@@ -37,6 +40,7 @@ public class PriceService {
             case CTP:
                 break;
             case INTERNAL_SIM:
+                return BigDecimal.TEN;
         }
         return null;
     }
