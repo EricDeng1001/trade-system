@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -64,9 +61,14 @@ public class TradeService {
         brokerService.loginUser(username, password, additional);
     }
 
-    @Transactional
     public PlacementList process(Long modelOrderListId, TradeType tradeType) {
-        ModelOrderList modelOrderList = modelOrderListRepository.getOne(modelOrderListId);
+        Optional<ModelOrderList> modelOrderListOptional = modelOrderListRepository.findById(modelOrderListId);
+        ModelOrderList modelOrderList;
+        if (modelOrderListOptional.isEmpty()) {
+            return null;
+        } else {
+            modelOrderList = modelOrderListOptional.get();
+        }
         Product product = modelOrderList.getProduct();
         BrokerType provider = product.getProvider();
         BrokerService brokerService = brokerServiceFactory.getBrokerService(provider);
@@ -111,8 +113,7 @@ public class TradeService {
         }
         placementList.getPlacements().addAll(placements);
         placementList.setModelOrderList(modelOrderList);
-        placementListRepository.save(placementList);
-        return placementList;
+        return placementListRepository.save(placementList);
     }
 
     /**
