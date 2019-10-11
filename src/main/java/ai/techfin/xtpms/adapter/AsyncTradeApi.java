@@ -60,8 +60,6 @@ public class AsyncTradeApi implements TradeSpi {
 
     private final ConcurrentHashMap<String, Long> xtpOrderId2PlacementId = new ConcurrentHashMap<>();
 
-    private final BlockingQueue<String> removeXtpOrderId = new LinkedBlockingQueue<>();
-
     private final BlockingQueue<Long> addPlacementsIds = new LinkedBlockingQueue<>();
 
     @Autowired
@@ -186,6 +184,8 @@ public class AsyncTradeApi implements TradeSpi {
             orderResponseDTO.setPlacementId(placementId);
             kafkaTemplateOrderRes.send(KafkaTopicConfiguration.XTP_TRADE_FAILED, orderResponseDTO);
             LOGGER.info("orderEvent : sessionId  {}, orderDTO {}", sessionId, orderResponseDTO);
+        }else if(orderInfo.getOrderStatusType() == OrderStatusType.XTP_ORDER_STATUS_ALLTRADED){
+            xtpOrderId2PlacementId.remove(orderInfo.getOrderXtpId());
         }else{
             LOGGER.info("orderEvent : sessionId  {}, orderInfo {}", sessionId, orderInfo);
         }
@@ -197,7 +197,6 @@ public class AsyncTradeApi implements TradeSpi {
         TradeResponseDTO tradeResponseDTO = tradeRespDTOMapper.tradeToTradeDTO(tradeInfo);
         tradeResponseDTO.setPlacementId(placementId);
         kafkaTemplateTradeRes.send(KafkaTopicConfiguration.XTP_TRADE_SUCCEED, tradeResponseDTO);
-        //LOGGER.info("tradeEvent : sessionId  {}, tradeInfo {}", sessionId, tradeInfo);
         LOGGER.info("tradeEvent : sessionId  {}, tradeDTO {}", sessionId, tradeResponseDTO);
     }
 
@@ -210,11 +209,6 @@ public class AsyncTradeApi implements TradeSpi {
             try {
                 id = addPlacementsIds.poll();//拿到这单的placementId
                 xtpOrderId2PlacementId.put(xtpOrderId, id);
-                removeXtpOrderId.put(xtpOrderId);
-                if (removeXtpOrderId.size() > 3) {//累积20条的时候移除头部
-                    String xtpId = removeXtpOrderId.poll();
-                    xtpOrderId2PlacementId.remove(xtpId);
-                }
             } catch (Exception e) {
                 LOGGER.error("match placementId error,reason : {}", e.getMessage());
             }
